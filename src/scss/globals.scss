@@ -1,0 +1,70 @@
+@import 'fonts';
+
+@mixin dark {
+  --background: #191f2e;
+  --primary: #111520;
+  --secondary: #363a4b;
+
+  --primary-font-color: #eee;
+  --secondary-font-color: #737c9f;
+  --white: #eee;
+  --black: #010101;
+
+  --invert: invert(0%);
+}
+
+@mixin light {
+  --background: #f6f6f6;
+  --primary: #eee;
+  --secondary: #868fb6;
+
+  --primary-font-color: #010101;
+  --secondary-font-color: #373b4b;
+  --white: #eee;
+  --black: #010101;
+
+  --invert: invert(100%);
+}
+
+:root {
+  @include dark();
+
+  //z-index
+  --z-0: 0
+  --z-10: 10
+  --z-20: 20
+  --z-30: 30
+  --z-40: 40
+  --z-50: 50
+
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--secondary);
+  &:hover {
+  background: var(--secondary-font-color);
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Roboto', sans-serif, system-ui, -apple-system;
+}
