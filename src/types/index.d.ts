@@ -3,8 +3,12 @@ type User = {
   name: string;
   email: string;
   password: string;
-  createdAt: Date;
-  updatedAt: Date;
+  avatar: string;
+  description: string;
+  showProfile: string;
+  contactsRequests: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export type { User };
