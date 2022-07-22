@@ -6,12 +6,12 @@ export default function Input({
   value,
   onChange,
 }: {
-  id?: string;
-  type?: string;
-  name?: string;
+  id: string;
+  type: string;
+  name: string;
   placeholder?: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
   return (
     <>
@@ -24,21 +24,25 @@ export default function Input({
           value={value}
           onChange={onChange}
         />
-        <label
-          className={`label ${value !== '' ? 'label-focus' : ''}`}
-          htmlFor={id}
-        >
+        <label className='label' htmlFor={id}>
           {placeholder}
         </label>
       </div>
       <style jsx>{`
-        @mixin label_focus {
-          color: var(--primary-font-color);
-          border-radius: 50px;
-          top: 20%;
+        $value: false;
+        @mixin label_focus($value) {
+          border-radius: 20px;
+          top: 15%;
           font-size: 12px;
           background: var(--primary);
-          border: 1px solid var(--white);
+          border: 1px solid var(--primary-font-color);
+          @if $value == true {
+            border: 1px solid var(--secondary-font-color);
+            color: var(--secondary-font-color);
+          }
+          @else {
+            color: var(--primary-font-color);
+          }
         }
         .input-wrapper {
           position: relative;
@@ -59,23 +63,28 @@ export default function Input({
             transition: 0.25s;
           }
           .label-focus {
-            @include label_focus();
+            @include label_focus($value);
             color: var(--secondary-font-color);
             border: 1px solid var(--secondary-font-color);
           }
           .input {
             width: 100%;
             height: 40px;
-            font-size: 16px;
-            padding: 10px 10px 0 10px;
+            font-size: 15px;
+            padding: 5px 10px 0 10px;
             color: var(--primary-font-color);
             border: none;
             outline: none;
             background: transparent;
             border: 1px solid var(--secondary-font-color);
+            transition: 0.25s;
+            &:not([value=''])  {
+              color: var(--secondary-font-color);
+            }
             &:focus,
             &:active,
             &:focus-within {
+              color: var(--primary-font-color);
               border: 1px solid var(--primary-font-color);
             }
             &:-webkit-autofill,
@@ -85,9 +94,15 @@ export default function Input({
               transition-delay: 9999s;
               transition-property: background-color, color;
             }
-          }
-          .input:focus ~ .label {
-            @include label_focus();
+            &:not([value='']) ~ .label {
+              @include label_focus($value: true);
+            }
+            &:focus ~ .label {
+              @include label_focus($value);
+            }
+            &:not([value='']) and &:focus ~ .label {
+              @include label_focus($value);
+            }
           }
         }
         @-webkit-keyframes background-color {

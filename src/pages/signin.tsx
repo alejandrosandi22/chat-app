@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import AppLayout from 'common/appLayout';
 import Input from 'components/input';
+import Link from 'next/link';
 
 export default function SignIn() {
   const [email, setEmail] = useState<string>('');
@@ -43,24 +44,30 @@ export default function SignIn() {
             </div>
             <div className='line'></div>
             <div className='signin-social-wrapper'>
-              <a href='/' className='signin-social-item facebook'>
-                <i className='fab fa-facebook signin-social-item-icon' />
-                <span className='signin-social-item-caption'>
-                  Sign In With Facebook
-                </span>
-              </a>
-              <a href='/' className='signin-social-item google'>
-                <i className='fab fa-google signin-social-item-icon' />
-                <span className='signin-social-item-caption'>
-                  Sign In With Google
-                </span>
-              </a>
-              <a href='/' className='signin-social-item github'>
-                <i className='fab fa-github signin-social-item-icon' />
-                <span className='signin-social-item-caption'>
-                  Sign In With Github
-                </span>
-              </a>
+              <Link href='/api/auth/facebook'>
+                <a className='signin-social-item facebook'>
+                  <i className='fab fa-facebook signin-social-item-icon' />
+                  <span className='signin-social-item-caption'>
+                    Sign In With Facebook
+                  </span>
+                </a>
+              </Link>
+              <Link href='/api/auth/google'>
+                <a className='signin-social-item google'>
+                  <i className='fab fa-google signin-social-item-icon' />
+                  <span className='signin-social-item-caption'>
+                    Sign In With Google
+                  </span>
+                </a>
+              </Link>
+              <Link href='/api/auth/github'>
+                <a className='signin-social-item github'>
+                  <i className='fab fa-github signin-social-item-icon' />
+                  <span className='signin-social-item-caption'>
+                    Sign In With Github
+                  </span>
+                </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -68,7 +75,7 @@ export default function SignIn() {
       <style jsx>{`
         .signin {
           position: absolute;
-          background: var(--background);
+          background: var(--primary);
           width: 100%;
           height: 100%;
           display: flex;
@@ -80,12 +87,12 @@ export default function SignIn() {
             width: 400px;
             height: 610px;
             background: var(--primary);
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
             padding: 30px 40px;
             .signin-form {
               display: flex;
               flex-direction: column;
-              gap: 20px;
+              gap: 25px;
               .signin-title {
                 color: var(--primary-font-color);
                 font-size: 35px;
@@ -96,7 +103,7 @@ export default function SignIn() {
                 width: 140px;
                 height: 40px;
                 border: 0;
-                background: var(--white);
+                background: var(--primary-font-color);
                 color: var(--primary);
                 &:hover {
                   background: var(--secondary-font-color);
@@ -126,15 +133,15 @@ export default function SignIn() {
                 content: 'or';
                 display: grid;
                 place-items: center;
-                width: 35px;
-                height: 35px;
+                width: 30px;
+                height: 30px;
                 position: absolute;
                 top: 0;
                 bottom: 0;
                 right: 0;
                 left: 0;
                 margin: auto;
-                font-size: 16px;
+                font-size: 14px;
                 background: var(--primary);
                 color: var(--secondary-font-color);
                 border: 1px solid var(--secondary-font-color);
@@ -154,9 +161,9 @@ export default function SignIn() {
                 width: 250px;
                 height: 40px;
                 padding: 5px 10px;
-                gap: 10px;
+                gap: 15px;
                 background: var(--primary);
-                color: var(--primary-font-color);
+                color: var(--white);
                 .signin-social-item-icon {
                   font-size: 20px;
                   display: flex;
@@ -189,6 +196,7 @@ export default function SignIn() {
             background: var(--primary);
             .signin-wrapper {
               width: 100%;
+              box-shadow: unset;
             }
           }
         }
