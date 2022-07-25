@@ -1,14 +1,25 @@
-type User = {
+type MessageType = {
+  id: string;
+  content: string;
+  fileName?: string;
+  sender: string;
+  receiver: string;
+  type: string;
+  created_at: string;
+};
+
+type UserType = {
   id: number;
   name: string;
   email: string;
-  password: string;
+  username: string;
+  password?: string;
   avatar: string;
-  description: string;
-  showProfile: string;
-  contactsRequests: string;
-  createdAt: string;
-  updatedAt: string;
+  description?: string;
+  showProfile?: string;
+  contactsRequests?: string;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
-export type { User };
+export type { UserType, MessageType };
