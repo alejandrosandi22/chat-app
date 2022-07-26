@@ -81,6 +81,23 @@ export default function Chat() {
                   sender: '1',
                   receiver: '2',
                   type: 'video',
+                  content: '/Turi-ip-ip.mp4',
+                  created_at: '2022-07-20 15:50:01.48249',
+                }}
+                contact={{
+                  id: 2,
+                  name: 'John Doe',
+                  email: 'jondoe@gmail.com',
+                  username: 'johndoe',
+                  avatar: 'https://i.ibb.co/vv2yvRz/denon.png',
+                }}
+              />
+              <Message
+                message={{
+                  id: '1',
+                  sender: '2',
+                  receiver: '1',
+                  type: 'video',
                   content:
                     'https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
                   created_at: '2022-07-20 15:50:01.48249',
