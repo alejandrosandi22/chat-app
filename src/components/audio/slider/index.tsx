@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect, ChangeEventHandler } from 'react';
 
-function Slider({
+export default function Slider({
   percentage = 0,
   onChange,
 }: {
@@ -58,11 +58,11 @@ function Slider({
       <style jsx>
         {`
           .audio-slider-container {
-            --thumb-width: 20px;
-            --thumb-height: 20px;
+            --thumb-width: 12px;
+            --thumb-height: 12px;
             --progress-bar-height: 4px;
             position: relative;
-            width: 70%;
+            width: 100%;
             &::before {
               content: '';
               background-color: var(--primary-font-color);
@@ -87,10 +87,10 @@ function Slider({
               transform: translateY(-50%);
               z-index: 1;
               user-select: none;
-              pointer-events: none;
             }
             .range,
             .thumb {
+              z-index: 50;
               width: var(--thumb-width);
               height: var(--thumb-height);
               box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.753);
@@ -100,7 +100,6 @@ function Slider({
               border-radius: 50%;
               top: 50%;
               transform: translate(0%, -50%);
-              pointer-events: none;
               user-select: none;
             }
             .range {
@@ -122,11 +121,22 @@ function Slider({
                 -webkit-appearance: none;
               }
             }
+            .range:hover ~ .thumb {
+              background: blue;
+            }
+          }
+          @keyframes scale {
+            0% {
+              width: 0px;
+              height: 0px;
+            }
+            100% {
+              width: 15px;
+              height: 15px;
+            }
           }
         `}
       </style>
     </>
   );
 }
-
-export default Slider;

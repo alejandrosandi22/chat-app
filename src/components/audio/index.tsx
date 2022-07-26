@@ -1,13 +1,7 @@
+import { useCalculateTime } from 'hooks';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import ControlPanel from './controls/controlPanel';
 import Slider from './slider';
-
-const calculateTime = (secs: number) => {
-  const minutes = Math.floor(secs / 60);
-  const seconds = Math.floor(secs % 60);
-  const returnedSeconds = seconds < 10 ? `0${seconds}` : `${seconds}`;
-  return `${minutes}:${returnedSeconds}`;
-};
 
 export default function Audio({ src }: { src: string }) {
   const [percentage, setPercentage] = useState(0);
@@ -16,6 +10,10 @@ export default function Audio({ src }: { src: string }) {
   const [currentTime, setCurrentTime] = useState<number>(0);
 
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  const audioTime = useCalculateTime(
+    percentage === 0 || percentage === 100 ? duration : currentTime
+  );
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (audioRef.current) {
@@ -66,10 +64,10 @@ export default function Audio({ src }: { src: string }) {
           isPlaying={isPlaying}
           currentTime={currentTime}
         />
-        <Slider percentage={percentage} onChange={handleInputChange} />
-        <span className='audio-time'>
-          {calculateTime(currentTime === 0 ? duration : currentTime)}
-        </span>
+        <div className='audio-slider-container'>
+          <Slider percentage={percentage} onChange={handleInputChange} />
+        </div>
+        <span className='audio-time'>{audioTime}</span>
         <audio
           ref={audioRef}
           onTimeUpdate={(e) => getCurrentDuration(e.currentTarget)}
@@ -85,6 +83,9 @@ export default function Audio({ src }: { src: string }) {
           justify-content: space-around;
           align-items: center;
           width: 100%;
+          .audio-slider-container {
+            width: 70%;
+          }
           .audio-time {
             font-size: 1rem;
             color: var(--primary-font-color);

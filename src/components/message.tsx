@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { MessageType, UserType } from 'types';
 import moment from 'moment';
 import Audio from './audio';
+import Video from './video';
 
 export default function Message({
   message,
@@ -56,7 +57,7 @@ export default function Message({
         )}
         {message.type === 'video' && (
           <div className='message-content message-video-content'>
-            <video className='message-video' src={message.content} controls />
+            <Video src={message.content} />
           </div>
         )}
         {message.type === 'audio' && (
@@ -151,10 +152,8 @@ export default function Message({
           }
           .message-video-content {
             background: var(--secondary);
-            .message-video {
-              width: 100%;
-              border-radius: 15px 0 15px 15px;
-            }
+            border-radius: 15px 0 15px 15px;
+            width: 100%;
           }
           .message-audio-content {
             background: var(--secondary);
@@ -179,10 +178,7 @@ export default function Message({
           }
           .message-video-content {
             background: var(--primary);
-            .message-video {
-              width: 100%;
-              border-radius: 0px 15px 15px 15px;
-            }
+            border-radius: 0px 15px 15px 15px;
           }
           .message-audio-content {
             background: var(--primary);
