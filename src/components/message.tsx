@@ -176,6 +176,14 @@ export default function Message({
               color: var(--primary-font-color);
             }
           }
+          .message-image-content {
+            position: relative;
+            background: var(--primary);
+            border-radius: 0 15px 15px 15px;
+            .message-image {
+              width: 100%;
+            }
+          }
           .message-video-content {
             background: var(--primary);
             border-radius: 0px 15px 15px 15px;

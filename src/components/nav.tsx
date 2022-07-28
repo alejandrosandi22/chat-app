@@ -6,7 +6,7 @@ export default function Nav() {
         {`
           nav {
             position: relative;
-            width: 100%;
+            width: 5%;
             height: 100%;
             display: flex;
             flex-direction: column;

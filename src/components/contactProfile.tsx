@@ -7,6 +7,7 @@ export default function ContactProfile() {
           .contact-profile {
             width: 100%;
             height: 100%;
+            transition: 0.5s;
           }
         `}
       </style>
