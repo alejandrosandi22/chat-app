@@ -1,3 +1,4 @@
 import useCalculateTime from './useCalculateTime';
+import useFetch from './useFetch';
 
-export { useCalculateTime };
+export { useCalculateTime, useFetch };
