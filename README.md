@@ -25,6 +25,4 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [GraphQL](https://graphql.org/)
 - [PostgreSQL](https://www.postgresql.org/)
 
-You can see the result of the application in the following link: [https://chat-app.alejandrosandi.com](https://chat-app.alejandrosandi.com)
-
 Visit other projects in my portfolio: [https://alejandrosandi.com](https://alejandrosandi.com)
