@@ -23,4 +23,13 @@ type UserType = {
   updatedAt?: string;
 };
 
-export type { UserType, MessageType };
+type EmojiType = {
+  slug: string;
+  character: string;
+  unicodeName: string;
+  codePoint: string;
+  group: string;
+  subGroup: string;
+};
+
+export type { UserType, MessageType, EmojiType };

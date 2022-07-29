@@ -31,7 +31,7 @@ const data = [
     sender: '1',
     receiver: '2',
     type: 'video',
-    content: '/Turi-ip-ip.mp4',
+    content: '/video-turip.mp4',
     created_at: '2022-07-20 15:50:01.48249',
   },
   {
@@ -48,7 +48,8 @@ const data = [
     sender: '1',
     receiver: '2',
     type: 'image',
-    content: '/office_illustration.png',
+    content:
+      'https://www.edgedb.com/_images/_blog/5703398744b0ec842fbe94950c73752e65953128-940.webp',
     created_at: '2022-07-21 16:00:01.48249',
   },
   {
@@ -83,8 +84,16 @@ const data = [
     sender: '1',
     receiver: '2',
     type: 'text',
+    content: 'Hi',
+    created_at: '2022-07-27 22:41:01.48249',
+  },
+  {
+    id: '11',
+    sender: '2',
+    receiver: '1',
+    type: 'text',
     content: 'Hi 😀',
-    created_at: '2022-07-27 11:01:01.48249',
+    created_at: '2022-07-28 11:01:01.48249',
   },
 ];
 

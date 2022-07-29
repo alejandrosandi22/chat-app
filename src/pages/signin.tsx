@@ -42,7 +42,9 @@ export default function SignIn() {
                 Don&apos;t have an account?
               </a>
             </div>
-            <div className='line'></div>
+            <div className='line-wrapper'>
+              <span className='line'></span>
+            </div>
             <div className='signin-social-wrapper'>
               <Link href='/api/auth/facebook'>
                 <a className='signin-social-item facebook'>
@@ -92,13 +94,13 @@ export default function SignIn() {
             .signin-form {
               display: flex;
               flex-direction: column;
-              gap: 25px;
+              gap: 20px;
               .signin-title {
                 color: var(--primary-font-color);
                 font-size: 35px;
               }
               .signin-button {
-                margin: 0 auto;
+                margin: 5px auto;
                 font-size: 16px;
                 width: 140px;
                 height: 40px;
@@ -123,29 +125,33 @@ export default function SignIn() {
                 }
               }
             }
-            .line {
-              position: relative;
-              display: block;
-              width: 100%;
-              height: 1px;
-              background: var(--secondary-font-color);
-              &::before {
-                content: 'or';
-                display: grid;
-                place-items: center;
-                width: 30px;
-                height: 30px;
-                position: absolute;
-                top: 0;
-                bottom: 0;
-                right: 0;
-                left: 0;
-                margin: auto;
-                font-size: 14px;
-                background: var(--primary);
-                color: var(--secondary-font-color);
-                border: 1px solid var(--secondary-font-color);
-                border-radius: 50%;
+            .line-wrapper {
+              display: flex;
+              justify-content: center;
+              margin: 5px;
+              .line {
+                position: relative;
+                width: 100%;
+                height: 1px;
+                background: var(--secondary-font-color);
+                &::before {
+                  content: 'or';
+                  display: grid;
+                  place-items: center;
+                  width: 30px;
+                  height: 30px;
+                  position: absolute;
+                  top: 0;
+                  bottom: 0;
+                  right: 0;
+                  left: 0;
+                  margin: auto;
+                  font-size: 14px;
+                  background: var(--primary);
+                  color: var(--secondary-font-color);
+                  border: 1px solid var(--secondary-font-color);
+                  border-radius: 50%;
+                }
               }
             }
             .signin-social-wrapper {

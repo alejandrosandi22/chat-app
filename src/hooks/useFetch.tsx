@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 export default function useFetch<T>(url: string, options?: object) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const refetch = async () => {
+  const refetch = useCallback(async () => {
     setLoading(true);
     try {
       const response = await fetch(url, options);
@@ -15,7 +15,7 @@ export default function useFetch<T>(url: string, options?: object) {
       if (error instanceof Error) setError(error.message);
     }
     setLoading(false);
-  };
+  }, []);
 
   useEffect(() => {
     refetch();
