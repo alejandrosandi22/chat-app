@@ -36,11 +36,11 @@ export default function Chat() {
           display: flex;
           transition: 0.5s;
           .chat-contacts-wrapper {
-            width: ${contactsToggle ? '25%' : '0'};
+            width: ${!contactsToggle ? '25%' : '0'};
             transition: 0.5s;
           }
           .chat-messages-wrapper {
-            width: ${contactsToggle || toggle ? '70%' : '95%'};
+            width: ${!contactsToggle || toggle ? '70%' : '95%'};
             height: 100%;
             transition: 0.5s;
           }

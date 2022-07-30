@@ -10,6 +10,7 @@ const contact = {
   email: 'jondoe@gmail.com',
   username: 'johndoe',
   avatar: 'https://i.ibb.co/vv2yvRz/denon.png',
+  contacts: [],
 };
 
 export default function MessagesView() {

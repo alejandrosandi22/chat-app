@@ -59,6 +59,7 @@ export default function CurrentContact() {
             color: var(--secondary-font-color);
             font-size: 1.5rem;
             transition: 0.25s;
+            cursor: pointer;
             &:hover {
               color: var(--primary-font-color);
             }

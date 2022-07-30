@@ -23,6 +23,7 @@ export default function Contacts() {
           height: 100%;
           background: var(--background);
           transition: 0.5s;
+          overflow: hidden;
           .contacts-search-wrapper {
             width: 100%;
             height: 70px;

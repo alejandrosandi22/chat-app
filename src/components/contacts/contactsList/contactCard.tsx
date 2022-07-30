@@ -43,8 +43,17 @@ export default function ContactCard({ contact }: ContactCardProps) {
           background: var(--primary);
           height: 60px;
           width: 95%;
+          cursor: default;
           &:hover {
             background: var(--secondary);
+            .contact-card-info {
+              .contact-card-info-last-message {
+                color: var(--primary-font-color);
+              }
+            }
+            .contact-card-chat {
+              color: var(--primary-font-color);
+            }
           }
           .contact-card-avatar {
             position: relative;
@@ -53,6 +62,7 @@ export default function ContactCard({ contact }: ContactCardProps) {
             aspect-ratio: 1 / 1;
             border-radius: 50%;
             overflow: hidden;
+            cursor: pointer;
           }
           .contact-card-info {
             width: calc(100% - 110px);
