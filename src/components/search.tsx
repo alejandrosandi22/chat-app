@@ -42,7 +42,6 @@ export default function Search() {
             border-left: 1px solid var(--secondary-font-color);
             right: 20px;
             height: 50%;
-
             .search-icon {
               cursor: pointer;
               &:hover {
@@ -62,6 +61,7 @@ export default function Search() {
             color: var(--secondary-font-color);
             font-size: 1rem;
             padding: 0 50px 0 1rem;
+            border-radius: 15px;
             &::placeholder {
               color: var(--secondary-font-color);
             }

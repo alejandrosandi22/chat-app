@@ -17,8 +17,11 @@ type UserType = {
   password?: string;
   avatar: string;
   description?: string;
+  contacts: number[];
   showProfile?: string;
   contactsRequests?: string;
+  lastMessage?: MessageType;
+  contacts: number[];
   createdAt?: string;
   updatedAt?: string;
 };

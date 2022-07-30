@@ -73,7 +73,7 @@ const data = [
   {
     id: '9',
     sender: '1',
-    receiver: '3',
+    receiver: '5',
     type: 'audio',
     content:
       'http://www.sonidosmp3gratis.com/sounds/kendo-kadoni-ringtones-prueba-sonido-de.mp3',
@@ -93,15 +93,42 @@ const data = [
     receiver: '1',
     type: 'text',
     content: 'Hi 😀',
-    created_at: '2022-07-28 11:01:01.48249',
+    created_at: '2022-07-29 11:01:01.48249',
+  },
+  {
+    id: '12',
+    sender: '3',
+    receiver: '1',
+    type: 'text',
+    content: 'Hi there! 😀',
+    created_at: '2022-07-30 12:01:01.48249',
+  },
+  {
+    id: '13',
+    sender: '3',
+    receiver: '2',
+    type: 'text',
+    content: 'TEXT',
+    created_at: '2022-04-28 11:01:01.48249',
   },
 ];
 
 export default function Test(req: NextApiRequest, res: NextApiResponse) {
-  const { id: contactId } = req.query;
+  const { id, offset, contactId } = req.query;
+
+  if (offset === 'last') {
+    const lastMessage = data
+      .filter(
+        (data) =>
+          (data.receiver === contactId && data.sender === id) ||
+          (data.receiver === id && data.sender === contactId)
+      )
+      .pop();
+    return res.status(200).json(lastMessage);
+  }
 
   const filterData = data.filter(
-    (item) => item.sender === contactId || item.receiver === contactId
+    (item) => item.sender === id || item.receiver === id
   );
 
   const getDate = (date: string) => {

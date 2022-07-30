@@ -2,7 +2,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-export default function Nav() {
+export default function Nav({
+  toggle,
+  handleToggle,
+}: {
+  toggle: boolean;
+  handleToggle: () => void;
+}) {
   const { pathname } = useRouter();
 
   return (
@@ -53,6 +59,9 @@ export default function Nav() {
               </a>
             </Link>
           </li>
+          <li onClick={handleToggle} className='nav-links-list-item'>
+            <i className='fal fa-angle-double-left nav-links-list-item-icon'></i>
+          </li>
         </ul>
         <ul className='nav-sign-out-list'>
           <li className='nav-sign-out-list-item'>
@@ -67,6 +76,7 @@ export default function Nav() {
       <style jsx>
         {`
           nav {
+            z-index: 50;
             position: relative;
             width: 5%;
             height: 100%;
@@ -97,6 +107,19 @@ export default function Nav() {
                 height: 40px;
                 width: 95%;
                 margin: 10px 0;
+                display: flex;
+                justify-content: center;
+                .nav-links-list-item-icon {
+                  align-self: center;
+                  transform: rotateY(${toggle ? '180deg' : '0deg'});
+                  font-size: 1.5rem;
+                  color: var(--secondary-font-color);
+                  transition: 0.25s;
+                  cursor: pointer;
+                  &:hover {
+                    color: var(--primary-font-color);
+                  }
+                }
                 .nav-links-list-link {
                   width: 100%;
                   height: 100%;

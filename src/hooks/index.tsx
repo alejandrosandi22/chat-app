@@ -1,4 +1,5 @@
 import useCalculateTime from './useCalculateTime';
-import useFetch from './useFetch';
+import useGetMessages from './useGetMessages';
+import useGetContacts from './useGetContacts';
 
-export { useCalculateTime, useFetch };
+export { useCalculateTime, useGetMessages, useGetContacts };

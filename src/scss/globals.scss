@@ -1,16 +1,10 @@
 @import 'fonts';
 
 @mixin dark {
-  --background: #191f2e;
-  --primary: #111520;
-  --secondary: #363a4b;
-  //--secondary: #005f66;
-
-
-/*   --background: #111;
-  --primary: #000;
-  --secondary: #00e1ff; */
-
+  --background: #070a13;
+  --primary: #030407;
+  --secondary: #3e87a1;
+  --thirdary: #030407;
 
   --shadow: 5px 5px 10px #07080d,
   -5px -5px 10px #1b2233;

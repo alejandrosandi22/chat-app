@@ -170,7 +170,7 @@ export default function Message({
             border-radius: 0px 15px 15px 15px;
           }
           .message-text-content {
-            background: var(--primary);
+            background: var(--thirdary);
             border-radius: 0px 15px 15px 15px;
             .message-content-text {
               color: var(--primary-font-color);
@@ -178,18 +178,18 @@ export default function Message({
           }
           .message-image-content {
             position: relative;
-            background: var(--primary);
+            background: var(--thirdary);
             border-radius: 0 15px 15px 15px;
             .message-image {
               width: 100%;
             }
           }
           .message-video-content {
-            background: var(--primary);
+            background: var(--thirdary);
             border-radius: 0px 15px 15px 15px;
           }
           .message-audio-content {
-            background: var(--primary);
+            background: var(--thirdary);
             border-radius: 0px 15px 15px 15px;
           }
           .message-time-wrapper {
