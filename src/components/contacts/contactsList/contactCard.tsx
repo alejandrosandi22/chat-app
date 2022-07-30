@@ -5,15 +5,9 @@ import { UserType } from 'types';
 
 interface ContactCardProps {
   contact: UserType;
-  lastMessage?: string;
-  lastMessageDate?: string;
 }
 
-export default function ContactCard({
-  contact,
-  lastMessage,
-  lastMessageDate,
-}: ContactCardProps) {
+export default function ContactCard({ contact }: ContactCardProps) {
   return (
     <>
       <div className='contact-card'>
@@ -24,11 +18,20 @@ export default function ContactCard({
         </Link>
         <div className='contact-card-info'>
           <div className='contact-card-info-name'>{contact.name}</div>
-          <div className='contact-card-info-last-message'>{lastMessage}</div>
+          <div className='contact-card-info-last-message'>
+            {contact.lastMessage?.type !== 'text'
+              ? contact.lastMessage?.type
+              : contact.lastMessage?.content}
+          </div>
         </div>
         <div className='contact-card-chat'>
           <div className='contact-card-chat-time'>
-            {moment(lastMessageDate).format('h:mm A')}
+            {moment(contact.lastMessage?.created_at).calendar(null, {
+              sameDay: 'h:mm A',
+              lastDay: '[Yesterday]',
+              lastWeek: 'l',
+              sameElse: 'l',
+            })}
           </div>
         </div>
       </div>
@@ -48,9 +51,11 @@ export default function ContactCard({
             width: 40px;
             height: 40px;
             aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            overflow: hidden;
           }
           .contact-card-info {
-            width: calc(100% - 100px);
+            width: calc(100% - 110px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -76,7 +81,7 @@ export default function ContactCard({
             }
           }
           .contact-card-chat {
-            width: 60px;
+            width: 70px;
             color: var(--secondary-font-color);
             font-size: 14px;
           }

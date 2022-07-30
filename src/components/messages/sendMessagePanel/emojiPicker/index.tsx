@@ -24,10 +24,10 @@ enum EmojiGroups {
 }
 
 interface EmojiPickerProps {
-  setText: Dispatch<SetStateAction<string>>;
+  setMessage: Dispatch<SetStateAction<string>>;
 }
 
-function EmojiPicker({ setText }: EmojiPickerProps) {
+function EmojiPicker({ setMessage }: EmojiPickerProps) {
   const [emojis, setEmojis] = useState<EmojiType[]>([]);
   const [search, setSearch] = useState<string>('');
   const [gropingEmojis, setGropingEmojis] = useState<EmojiType[]>([]);
@@ -50,7 +50,7 @@ function EmojiPicker({ setText }: EmojiPickerProps) {
   );
 
   const onSelectEmoji = (emoji: EmojiType) => {
-    setText((text: string) => text + emoji.character);
+    setMessage((text: string) => text + emoji.character);
   };
 
   useEffect(() => {

@@ -1,15 +1,15 @@
 interface SendMessageProps {
-  text: string;
-  setText: (message: string) => void;
+  message: string;
+  setMessage: (message: string) => void;
 }
 
-export default function SendMessage({ text, setText }: SendMessageProps) {
+export default function SendMessage({ message, setMessage }: SendMessageProps) {
   return (
     <>
       <form>
         <input
-          value={text}
-          onChange={(e) => setText(e.target.value)}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
           type='text'
           id='search'
           name='search'
@@ -34,11 +34,12 @@ export default function SendMessage({ text, setText }: SendMessageProps) {
             background: var(--secondary);
             padding: 10px;
             border-radius: 50%;
+            cursor: pointer;
             &:hover {
-              background: var(--secondary-font-color);
+              filter: brightness(0.8);
             }
             .send-message-icon {
-              font-size: 18px;
+              font-size: 16px;
               color: var(--primary-font-color);
             }
           }
@@ -48,7 +49,9 @@ export default function SendMessage({ text, setText }: SendMessageProps) {
             border: none;
             outline: none;
             border: 1px solid var(--secondary);
-            background: transparent;
+            border: none;
+            border-radius: 15px;
+            background: var(--background);
             color: var(--secondary-font-color);
             font-size: 1rem;
             padding: 0 50px 0 1rem;
@@ -58,7 +61,7 @@ export default function SendMessage({ text, setText }: SendMessageProps) {
             &:focus,
             &:active,
             &:focus-within {
-              border: 1px solid var(--secondary-font-color);
+              border: 1px solid var(--secondary);
             }
           }
         }

@@ -1,4 +1,4 @@
-import Slider from 'components/audio/slider';
+import Slider from 'components/messages/messagesView/message/audio/slider';
 import { useCalculateTime } from 'hooks';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
