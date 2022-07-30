@@ -18,6 +18,7 @@ export default function ContactsList({ contacts }: { contacts: UserType[] }) {
           width: 100%;
           height: calc(100% - 70px);
           overflow-y: auto;
+          overflow-x: hidden;
           gap: 10px;
         }
       `}</style>

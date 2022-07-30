@@ -6,8 +6,8 @@
   --secondary: #3e87a1;
   --thirdary: #030407;
 
-  --shadow: 5px 5px 10px #07080d,
-  -5px -5px 10px #1b2233;
+  --shadow: 5px 5px 10px #010203,
+  -5px -5px 10px #05060b;
 
   --primary-font-color: #eee;
   --secondary-font-color: #737c9f;
@@ -64,6 +64,7 @@
 
 html,
 body {
+  background: #070a13;
   height: 100%;
   overflow: hidden;
 }
