@@ -5,17 +5,13 @@ import ContactsList from './contactsList';
 export default function Contacts() {
   const { data, loading } = useGetContacts(1);
 
-  if (!data || !data.length || loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
       <div className='contacts-wrapper'>
         <div className='contacts-search-wrapper'>
           <Search />
         </div>
-        <ContactsList contacts={data} />
+        {(!loading || data) && <ContactsList contacts={data} />}
       </div>
       <style jsx>{`
         .contacts-wrapper {

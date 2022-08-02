@@ -13,29 +13,24 @@
   --secondary-font-color: #737c9f;
   --white: #eee;
   --black: #010101;
-
-  --invert: invert(0%);
 }
 
 @mixin light {
-  --background: #f6f6f6;
-  --primary: #eee;
-  --secondary: #868fb6;
+  --background: #fefefe;
+  --primary: #e9edfc;
+  --secondary: #12b4b6;
+  --thirdary: #e9edfc;
 
-  --shadow: 5px 5px 10px #5f5f5f,
+  --shadow: 5px 5px 10px #d8d8d8,
   -5px -5px 10px #ffffff;
 
-  --primary-font-color: #010101;
-  --secondary-font-color: #373b4b;
+  --primary-font-color: #111;
+  --secondary-font-color: #737c9f;
   --white: #eee;
   --black: #010101;
-
-  --invert: invert(100%);
 }
 
 :root {
-  @include dark();
-
   //z-index
   --z-0: 0
   --z-10: 10
@@ -43,6 +38,14 @@
   --z-30: 30
   --z-40: 40
   --z-50: 50
+}
+.dark {
+  @include dark();
+}
+
+.light {
+  @include light();
+  @include dark();
 }
 
 ::-webkit-scrollbar {

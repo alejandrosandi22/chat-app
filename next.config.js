@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 
-const domains = ['deno.land', 'i.ibb.co', 'deno.com', 'velociraptor.run'];
+const domains = [
+  'deno.land',
+  'i.ibb.co',
+  'deno.com',
+  'velociraptor.run',
+  'images.unsplash.com',
+];
 
 const nextConfig = {
   reactStrictMode: true,

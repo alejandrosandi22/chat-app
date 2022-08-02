@@ -16,7 +16,9 @@ type UserType = {
   username: string;
   password?: string;
   avatar: string;
+  coverPhoto: string;
   description?: string;
+  website: string;
   contacts: number[];
   showProfile?: string;
   contactsRequests?: string;
