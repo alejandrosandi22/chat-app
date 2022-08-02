@@ -6,8 +6,8 @@ export default function Nav({
   toggle,
   handleToggle,
 }: {
-  toggle: boolean;
-  handleToggle: () => void;
+  toggle?: boolean;
+  handleToggle?: () => void;
 }) {
   const { pathname } = useRouter();
 
@@ -34,7 +34,7 @@ export default function Nav({
             </Link>
           </li>
           <li className='nav-links-list-item'>
-            <Link href='/'>
+            <Link href='/username'>
               <a
                 className={
                   pathname === '/[username]'
@@ -47,7 +47,7 @@ export default function Nav({
             </Link>
           </li>
           <li className='nav-links-list-item'>
-            <Link href='/'>
+            <Link href='/settings'>
               <a
                 className={
                   pathname === '/settings'
@@ -59,9 +59,11 @@ export default function Nav({
               </a>
             </Link>
           </li>
-          <li onClick={handleToggle} className='nav-links-list-item'>
-            <i className='fal fa-angle-double-left nav-links-list-item-icon'></i>
-          </li>
+          {toggle && (
+            <li onClick={handleToggle} className='nav-links-list-item'>
+              <i className='fal fa-angle-double-left nav-links-list-item-icon'></i>
+            </li>
+          )}
         </ul>
         <ul className='nav-sign-out-list'>
           <li className='nav-sign-out-list-item'>

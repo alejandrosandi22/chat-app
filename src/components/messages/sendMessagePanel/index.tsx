@@ -80,10 +80,10 @@ export default function SendMessagePanel() {
         }
         .send-message-panel {
           background: var(--background);
-          height: 80%;
+          height: 100%;
           .send-message-wrapper {
             width: 90%;
-            height: 60px;
+            height: 80%;
             background: var(--primary);
             border-radius: 15px;
             display: flex;

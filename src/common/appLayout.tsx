@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import React from 'react';
+import ThemeLayout from './themeLayout';
 
 export default function AppLayout({
   children,
@@ -19,7 +20,7 @@ export default function AppLayout({
         <meta name='author' content='Chat App' />
         <meta name='copyright' content='Chat App' />
       </Head>
-      {children}
+      <ThemeLayout>{children}</ThemeLayout>
     </div>
   );
 }
