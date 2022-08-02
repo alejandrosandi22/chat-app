@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface ThemeType {
   theme: string;
@@ -18,7 +18,20 @@ export const ThemeContext = React.createContext<ThemeType>(INITIAL_VALUES);
 export default function ThemeProvider({ children }: Props) {
   const [theme, setTheme] = useState<string>('');
 
-  const toggleTheme = (newTheme: string) => setTheme(newTheme);
+  useEffect(() => {
+    const localTheme = window.localStorage.getItem('chat-app-theme');
+    if (localTheme) {
+      setTheme(localTheme);
+    } else {
+      setTheme('light');
+      localStorage.setItem('chat-app-theme', 'light');
+    }
+  }, []);
+
+  const toggleTheme = (newTheme: string) => {
+    setTheme(newTheme);
+    window.localStorage.setItem('chat-app-theme', newTheme);
+  };
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>

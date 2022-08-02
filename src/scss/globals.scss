@@ -45,7 +45,6 @@
 
 .light {
   @include light();
-  @include dark();
 }
 
 ::-webkit-scrollbar {
