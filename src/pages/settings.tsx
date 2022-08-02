@@ -1,7 +1,6 @@
 import AppLayout from 'common/appLayout';
 import Nav from 'components/nav';
 import { ThemeContext } from 'context/theme';
-import { useTheme } from 'hooks';
 import { useContext, useState } from 'react';
 
 export default function Settings() {
@@ -12,7 +11,6 @@ export default function Settings() {
     web: true,
   });
   const { theme, toggleTheme } = useContext(ThemeContext);
-  useTheme({ theme, toggleTheme });
   return (
     <>
       <AppLayout title='Chat App | Settings'>
@@ -98,24 +96,15 @@ export default function Settings() {
                     </p>
                   </div>
                   <select
-                    onChange={(e) => toggleTheme(e.target.value)}
                     className='settings-content-select'
+                    placeholder='mode'
                     name='theme'
                     id='theme'
+                    value={theme}
+                    onChange={(e) => toggleTheme(e.target.value)}
                   >
-                    <option value='null'>mode</option>
-                    <option
-                      value='light'
-                      selected={theme === 'light' ? true : false}
-                    >
-                      light
-                    </option>
-                    <option
-                      value='dark'
-                      selected={theme === 'dark' ? true : false}
-                    >
-                      dark
-                    </option>
+                    <option value='light'>light</option>
+                    <option value='dark'>dark</option>
                   </select>
                 </div>
               </div>
