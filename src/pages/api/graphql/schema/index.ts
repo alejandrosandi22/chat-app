@@ -1,34 +1,29 @@
-import { gql } from 'apollo-server-micro';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { resolvers as UserResolvers } from './users/resolvers';
+import { typeDefs as userTypeDefs } from './users/typeDefs';
 
-export const typeDefs = gql`
-  type User {
-    id: ID
-    name: String!
-    email: String!
-    username: String!
-    password: String
-    avatar: String
-    description: String
-    showProfile: String
-    contactRequests: String
-    createdAt: String
-    updatedAt: String
-  }
-  type Query {
-    getUser: User
-    getCurrentUser: User
-    getUsers(showProfile: String, contactRequests: String): [User]
-  }
+import { resolvers as MessageResolvers } from './messages/resolvers';
+import { typeDefs as messageTypeDefs } from './messages/typeDefs';
 
-  type Mutation {
-    createUser(
-      name: String!
-      email: String!
-      password: String!
-      avatar: String!
-      description: String!
-      showProfile: String!
-      contactRequests: String!
-    ): User
-  }
-`;
+export function getResolvers(allResolvers: any) {
+  let Query = {};
+  let Mutation = {};
+
+  const res = allResolvers
+    .map((resolver: any) => {
+      Query = { ...Query, ...resolver.Query };
+      Mutation = { ...Mutation, ...resolver.Mutation };
+      return {
+        Query,
+        Mutation,
+      };
+    })
+    .reduce((_: any, b: any) => b, {});
+
+  return res;
+}
+
+const typeDefs = [userTypeDefs, messageTypeDefs];
+const resolvers = getResolvers([UserResolvers, MessageResolvers]);
+
+export { resolvers, typeDefs };

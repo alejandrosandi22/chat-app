@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { pool } from 'pages/api/utils/database';
-import { User } from 'types';
 import bctypt from 'bcryptjs';
 import { UserInputError } from 'apollo-server-micro';
 
@@ -34,7 +33,7 @@ export const resolvers = {
     },
   },
   Mutation: {
-    createUser: async (_: any, args: User) => {
+    createUser: async (_: any, args: any) => {
       const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [
         args.email,
       ]);

@@ -5,7 +5,7 @@ create table messages(
 	sender int not null,
 	receiver int not null,
   type varchar(10) not null,
-  created_at TIMESTAMP  DEFAULT TIMESTAMP not null,
+  created_at TIMESTAMP  DEFAULT CURRENT_TIMESTAMP not null,
 	CONSTRAINT fk_sender
 		FOREIGN KEY(sender)
 			REFERENCES users(id),

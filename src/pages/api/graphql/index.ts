@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApolloServer } from 'apollo-server-micro';
-import { typeDefs } from './schema';
-import { resolvers } from './schema/resolvers';
+import { typeDefs, resolvers } from './schema';
 import Cors from 'micro-cors';
 import { NextApiRequest } from 'next';
 import jwt, { JwtPayload } from 'jsonwebtoken';

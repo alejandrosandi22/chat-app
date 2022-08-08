@@ -59,7 +59,7 @@ export default function Nav({
               </a>
             </Link>
           </li>
-          {toggle && (
+          {toggle !== undefined && (
             <li onClick={handleToggle} className='nav-links-list-item'>
               <i className='fal fa-angle-double-left nav-links-list-item-icon'></i>
             </li>
