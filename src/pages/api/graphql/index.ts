@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ApolloServer } from 'apollo-server-micro';
 import { typeDefs, resolvers } from './schema';
-import Cors from 'micro-cors';
 import { NextApiRequest } from 'next';
-import jwt, { JwtPayload } from 'jsonwebtoken';
 import { pool } from '../utils/database';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import Cors from 'micro-cors';
 
 const cors = Cors();
 
