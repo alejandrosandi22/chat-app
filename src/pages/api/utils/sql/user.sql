@@ -3,8 +3,8 @@ create database chat_app;
 create table users(
   id SERIAL not null PRIMARY KEY,
   name varchar(255) not null,
-  email varchar(255) not null,
-  username varchar(255) not null,
+  email varchar(255) not null UNIQUE,
+  username varchar(255) not null UNIQUE,
   password varchar(255) not null,
   avatar varchar(255) not null,
   cover_photo varchar(255), 

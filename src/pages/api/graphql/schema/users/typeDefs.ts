@@ -8,7 +8,10 @@ export const typeDefs = gql`
     username: String!
     password: String
     avatar: String
+    coverPhoto: String
+    website: String
     description: String
+    provider: String!
     showProfile: String
     contactRequests: String
     createdAt: String
@@ -24,11 +27,27 @@ export const typeDefs = gql`
     createUser(
       name: String!
       email: String!
+      username: String!
       password: String!
       avatar: String!
+      coverPhoto: String!
+      description: String!
+      website: String!
+      provider: String!
+    ): User
+    updateUser(
+      id: ID!
+      name: String!
+      username: String!
+      avatar: String!
+      coverPhoto: String!
+      website: String!
       description: String!
       showProfile: String!
       contactRequests: String!
+      contacts: [Int]!
     ): User
+    changePassword(password: String!, id: ID!): User
+    deleteUser(email: String!): User
   }
 `;
