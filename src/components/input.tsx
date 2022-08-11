@@ -36,11 +36,11 @@ export default function Input({
           font-size: 12px;
           background: var(--primary);
           border: 1px solid var(--primary-font-color);
+          cursor: default;
           @if $value == true {
             border: 1px solid var(--secondary-font-color);
             color: var(--secondary-font-color);
-          }
-          @else {
+          } @else {
             color: var(--primary-font-color);
           }
         }
@@ -50,6 +50,7 @@ export default function Input({
           flex-direction: column;
           justify-content: flex-end;
           height: 60px;
+          width: 100%;
           .label {
             position: absolute;
             height: 20px;
@@ -61,6 +62,7 @@ export default function Input({
             color: var(--secondary-font-color);
             font-size: 16px;
             transition: 0.25s;
+            cursor: text;
           }
           .label-focus {
             @include label_focus($value);
@@ -78,7 +80,7 @@ export default function Input({
             background: transparent;
             border: 1px solid var(--secondary-font-color);
             transition: 0.25s;
-            &:not([value=''])  {
+            &:not([value='']) {
               color: var(--secondary-font-color);
             }
             &:focus,

@@ -1,46 +1,78 @@
-import { useState } from 'react';
 import AppLayout from 'common/appLayout';
 import Input from 'components/input';
 import SocialSignIn from 'components/socialSignIn';
 import Link from 'next/link';
+import { ChangeEvent, FormEvent, useState } from 'react';
 
-export default function SignIn() {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+interface DataStateType {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+export default function SignUp() {
+  const [data, setData] = useState<DataStateType>({} as DataStateType);
+
+  const handleSetData = (e: ChangeEvent<HTMLInputElement>) => {
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(data);
+  };
 
   return (
     <>
-      <AppLayout title='Chat App | Sign In'>
-        <div className='signin'>
-          <div className='signin-wrapper'>
-            <form className='signin-form'>
-              <h1 className='signin-title'>Sign In</h1>
-              <Input
-                type='email'
-                id='signin-email'
-                name='email'
-                placeholder='Email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <Input
-                type='password'
-                id='signin-password'
-                name='password'
-                placeholder='Password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <button className='signin-button' type='submit'>
-                Sign In
+      <AppLayout title='Chat App | Sign Up'>
+        <div className='signup'>
+          <div className='signup-wrapper'>
+            <form onSubmit={handleSubmit} className='signup-form'>
+              <h1 className='signup-title'>Sign Up</h1>
+              <div className='signup-input-wrapper'>
+                <Input
+                  type='name'
+                  id='signup-name'
+                  name='name'
+                  placeholder='Name'
+                  value={data.name}
+                  onChange={handleSetData}
+                />
+                <Input
+                  type='email'
+                  id='signup-email'
+                  name='email'
+                  placeholder='Email'
+                  value={data.email}
+                  onChange={handleSetData}
+                />
+              </div>
+              <div className='signup-input-wrapper'>
+                <Input
+                  type='password'
+                  id='signup-password'
+                  name='last-password'
+                  placeholder='Password'
+                  value={data.password}
+                  onChange={handleSetData}
+                />
+                <Input
+                  type='confirm-password'
+                  id='signup-confirm-password'
+                  name='confirm-password'
+                  placeholder='Confirm Password'
+                  value={data.confirmPassword}
+                  onChange={handleSetData}
+                />
+              </div>
+              <button className='signup-button' type='submit'>
+                Sign Up
               </button>
             </form>
-            <div className='signin-links-wrapper'>
-              <Link href='/forgot-password'>
-                <a className='signin-links'>Forgot your password?</a>
-              </Link>
-              <Link href='/signup'>
-                <a className='signin-links'>Don&apos;t have an account?</a>
+            <div className='signup-links-wrapper'>
+              <Link href='/signin'>
+                <a className='signup-links'>Do you already have an account?</a>
               </Link>
             </div>
             <div className='line-wrapper'>
@@ -51,7 +83,7 @@ export default function SignIn() {
         </div>
       </AppLayout>
       <style jsx>{`
-        .signin {
+        .signup {
           position: absolute;
           background: var(--primary);
           width: 100%;
@@ -59,23 +91,28 @@ export default function SignIn() {
           display: flex;
           justify-content: center;
           align-items: center;
-          .signin-wrapper {
+          .signup-wrapper {
             display: flex;
             flex-direction: column;
-            width: 400px;
+            width: 600px;
             height: 610px;
             background: var(--primary);
             box-shadow: var(--shadow);
             padding: 30px 40px;
-            .signin-form {
+            .signup-form {
               display: flex;
               flex-direction: column;
               gap: 20px;
-              .signin-title {
+              .signup-title {
                 color: var(--primary-font-color);
                 font-size: 35px;
               }
-              .signin-button {
+              .signup-input-wrapper {
+                width: 100%;
+                display: flex;
+                gap: 10px;
+              }
+              .signup-button {
                 margin: 5px auto;
                 font-size: 16px;
                 width: 140px;
@@ -88,11 +125,11 @@ export default function SignIn() {
                 }
               }
             }
-            .signin-links-wrapper {
+            .signup-links-wrapper {
               display: flex;
               justify-content: space-evenly;
               margin: 25px 0;
-              .signin-links {
+              .signup-links {
                 text-decoration: none;
                 font-size: 14px;
                 color: var(--secondary-font-color);
@@ -134,11 +171,18 @@ export default function SignIn() {
         }
 
         @media (max-width: 768px) {
-          .signin {
+          .signup {
             background: var(--primary);
-            .signin-wrapper {
+            .signup-wrapper {
               width: 100%;
+              height: 100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
               box-shadow: unset;
+              .signup-input-wrapper {
+                flex-direction: column;
+              }
             }
           }
         }
