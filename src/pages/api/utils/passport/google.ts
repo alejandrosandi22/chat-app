@@ -24,8 +24,6 @@ passport.use(
 
         const user = getUser.rows[0] || null;
 
-        console.log({ user });
-
         if (user) {
           if (user.provider === 'google') {
             const token = jwt.sign(
@@ -44,8 +42,8 @@ passport.use(
           password: '',
           avatar: profile.photos[0].value,
           description: '',
-          showProfile: 'public',
-          contactsRequests: '',
+          show_profile_photo: 'public',
+          contacts_request: '',
           provider: 'google',
         };
 

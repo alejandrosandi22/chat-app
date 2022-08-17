@@ -26,10 +26,7 @@ passport.use(
 
         const user = getUser.rows[0] || null;
 
-        console.log(profile);
-
         if (user) {
-          console.log('user exists');
           if (user.provider === 'github') {
             const token = jwt.sign(
               { id: user.id },
@@ -42,7 +39,6 @@ passport.use(
           }
           return cb(null, false, { message: 'User signed with other method' });
         }
-        console.log('user not exists');
 
         const newUserData = {
           name: profile.displayName,
@@ -53,13 +49,9 @@ passport.use(
           web: profile._json.blog ?? '',
         };
 
-        console.log(newUserData);
-
         const newUser = await pool.query(
           `INSERT INTO users VALUES (default, '${newUserData.name}', '${newUserData.email}', '${newUserData.username}', null, '', null, '${newUserData.description}', '${newUserData.web}', default, default, 'github', default, default) RETURNING *;`
         );
-
-        console.log(newUser);
 
         const token = jwt.sign(
           { id: newUser.rows[0].id },
@@ -68,8 +60,6 @@ passport.use(
             expiresIn: '8d',
           }
         );
-
-        console.log({ token });
 
         return cb(null, newUser, { message: 'Sign in successful', token });
       } catch (error) {

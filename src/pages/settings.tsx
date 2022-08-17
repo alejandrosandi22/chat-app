@@ -1,7 +1,10 @@
 import AppLayout from 'common/appLayout';
+import Loading from 'components/loading';
 import Nav from 'components/nav';
 import { ThemeContext } from 'context/theme';
-import { useContext, useState } from 'react';
+import useAuth from 'hooks/useAuth';
+import { useContext, useEffect, useState } from 'react';
+import { UserType } from 'types';
 
 export default function Settings() {
   const [disabledInput, setDisabledInput] = useState({
@@ -11,11 +14,21 @@ export default function Settings() {
     web: true,
   });
   const { theme, toggleTheme } = useContext(ThemeContext);
+  const [user, setUser] = useState<UserType>({} as UserType);
+  const { currentUser, loading } = useAuth();
+
+  useEffect(() => {
+    if (currentUser) {
+      setUser(currentUser);
+    }
+  }, [currentUser]);
+
+  if (loading || !currentUser) return <Loading />;
   return (
     <>
       <AppLayout title='Chat App | Settings'>
         <div className='settings'>
-          <Nav />
+          <Nav user={user} />
           <div className='settings-container'>
             <div className='settings-wrapper'>
               <div className='settings-header'>
@@ -32,7 +45,10 @@ export default function Settings() {
                     type='text'
                     disabled={disabledInput.name}
                     className='settings-content-input'
-                    v-model='user.name.text'
+                    value={user.name}
+                    onChange={(e) => {
+                      setUser({ ...user, name: e.target.value });
+                    }}
                   />
                   <button
                     onClick={() =>
@@ -52,7 +68,10 @@ export default function Settings() {
                   <input
                     disabled={disabledInput.username}
                     className='settings-content-input'
-                    v-model='user.username.text'
+                    value={user.username}
+                    onChange={(e) =>
+                      setUser({ ...user, username: e.target.value })
+                    }
                   />
                   <button className='settings-content-button'>change</button>
                 </div>
@@ -65,20 +84,26 @@ export default function Settings() {
                   <input
                     disabled={disabledInput.descrption}
                     className='settings-content-input'
-                    v-model='user.description.text'
+                    value={user.description ?? '-'}
+                    onChange={(e) => {
+                      setUser({ ...user, description: e.target.value });
+                    }}
                   />
                   <button className='settings-content-button'>change</button>
                 </div>
                 <div className='settings-content-wrapper'>
                   <div className='settings-content-text'>
                     <span className='settings-content-title settings-content-profile-information-title'>
-                      Web
+                      web
                     </span>
                   </div>
                   <input
                     disabled={disabledInput.web}
                     className='settings-content-input'
-                    v-model='user.web.text'
+                    value={user.website ?? '-'}
+                    onChange={(e) =>
+                      setUser({ ...user, website: e.target.value })
+                    }
                   />
                   <button className='settings-content-button'>change</button>
                 </div>
@@ -164,7 +189,7 @@ export default function Settings() {
                       Close your account if you want, it cannot be recovered
                     </p>
                   </div>
-                  <button className='settings-content-button'>change</button>
+                  <button className='settings-content-button'>close</button>
                 </div>
               </div>
             </div>

@@ -1,15 +1,25 @@
+import { deleteCookie } from 'cookies-next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { UserType } from 'types';
 
 export default function Nav({
   toggle,
   handleToggle,
+  user,
 }: {
   toggle?: boolean;
   handleToggle?: () => void;
+  user: UserType;
 }) {
-  const { pathname } = useRouter();
+  const router = useRouter();
+  const { pathname } = router;
+
+  const handleSignOut = () => {
+    deleteCookie('chat-app-user-session');
+    router.push('/signin');
+  };
 
   return (
     <>
@@ -34,7 +44,7 @@ export default function Nav({
             </Link>
           </li>
           <li className='nav-links-list-item'>
-            <Link href='/username'>
+            <Link href={`/${user.username}`}>
               <a
                 className={
                   pathname === '/[username]'
@@ -67,11 +77,12 @@ export default function Nav({
         </ul>
         <ul className='nav-sign-out-list'>
           <li className='nav-sign-out-list-item'>
-            <Link href='/'>
-              <a className='nav-sign-out-list-item-link'>
-                <i className='fal fa-sign-out'></i>
-              </a>
-            </Link>
+            <div
+              onClick={handleSignOut}
+              className='nav-sign-out-list-item-link'
+            >
+              <i className='fal fa-sign-out'></i>
+            </div>
           </li>
         </ul>
       </nav>
@@ -165,6 +176,7 @@ export default function Nav({
                 .nav-sign-out-list-item-link {
                   font-size: 18px;
                   color: var(--secondary-font-color);
+                  cursor: pointer;
                 }
               }
             }

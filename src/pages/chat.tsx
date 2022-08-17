@@ -5,8 +5,11 @@ import Nav from 'components/nav';
 import Contacts from 'components/contacts';
 import Messages from 'components/messages';
 import ContactProfile from 'components/contactProfile';
+import useAuth from 'hooks/useAuth';
+import Loading from 'components/loading';
+import { UserType } from 'types';
 
-export default function Chat() {
+export function ChatEvents({ user }: { user: UserType }) {
   const { toggle } = useContext(ToggleContactProfileContext);
   const [contactsToggle, setContactsToggle] = useState<boolean>(false);
 
@@ -14,20 +17,23 @@ export default function Chat() {
 
   return (
     <>
-      <AppLayout title='Chat App | Messages'>
-        <div className='chat-container'>
-          <Nav toggle={contactsToggle} handleToggle={handleContactsToggle} />
-          <div className='chat-contacts-wrapper'>
-            <Contacts />
-          </div>
-          <div className='chat-messages-wrapper'>
-            <Messages />
-          </div>
-          <div className='contact-profile-container'>
-            <ContactProfile />
-          </div>
+      <div className='chat-container'>
+        <Nav
+          toggle={contactsToggle}
+          handleToggle={handleContactsToggle}
+          user={user}
+        />
+        <div className='chat-contacts-wrapper'>
+          <Contacts />
         </div>
-      </AppLayout>
+        <div className='chat-messages-wrapper'>
+          <Messages />
+        </div>
+        <div className='contact-profile-container'>
+          <ContactProfile />
+        </div>
+      </div>
+
       <style jsx>{`
         .chat-container {
           position: absolute;
@@ -52,5 +58,16 @@ export default function Chat() {
         }
       `}</style>
     </>
+  );
+}
+
+export default function Chat() {
+  const { currentUser, loading } = useAuth();
+  if (loading || !currentUser) return <Loading />;
+
+  return (
+    <AppLayout title='Chat App | Messages'>
+      <ChatEvents user={currentUser} />
+    </AppLayout>
   );
 }

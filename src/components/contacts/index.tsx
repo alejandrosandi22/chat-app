@@ -1,9 +1,10 @@
 import Search from 'components/search';
-import useGetContacts from 'hooks/useGetContacts';
+import { UserType } from 'types';
 import ContactsList from './contactsList';
 
 export default function Contacts() {
-  const { data, loading } = useGetContacts(1);
+  const data = [] as UserType[];
+  const loading = true;
 
   return (
     <>
