@@ -3,17 +3,42 @@ import AppLayout from 'common/appLayout';
 import Input from 'components/input';
 import SocialSignIn from 'components/socialSignIn';
 import Link from 'next/link';
+import { useMutation } from '@apollo/client';
+import { SIGN_IN } from 'graphql/queries';
+import { useRouter } from 'next/router';
+import { setCookie } from 'cookies-next';
 
 export default function SignIn() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const router = useRouter();
+
+  const [signIn, { loading }] = useMutation(SIGN_IN, {
+    onCompleted: (data) => {
+      setCookie('chat-app-user-session', data.signIn.value);
+      router.push('/chat');
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    signIn({
+      variables: {
+        email,
+        password,
+      },
+    });
+  };
 
   return (
     <>
       <AppLayout title='Chat App | Sign In'>
         <div className='signin'>
           <div className='signin-wrapper'>
-            <form className='signin-form'>
+            <form onSubmit={handleSubmit} className='signin-form'>
               <h1 className='signin-title'>Sign In</h1>
               <Input
                 type='email'
@@ -31,9 +56,15 @@ export default function SignIn() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <button className='signin-button' type='submit'>
-                Sign In
-              </button>
+              {loading ? (
+                <div className='signin-spinner'>
+                  <i className='fal fa-spinner-third signin-spinner-icon' />
+                </div>
+              ) : (
+                <button className='signin-button' type='submit'>
+                  Sign In
+                </button>
+              )}
             </form>
             <div className='signin-links-wrapper'>
               <Link href='/forgot-password'>
@@ -87,6 +118,15 @@ export default function SignIn() {
                   background: var(--secondary);
                 }
               }
+              .signin-spinner {
+                margin: 5px auto;
+                height: 40px;
+                .signin-spinner-icon {
+                  color: #fff;
+                  font-size: 22px;
+                  animation: spin 1s infinite;
+                }
+              }
             }
             .signin-links-wrapper {
               display: flex;
@@ -130,6 +170,15 @@ export default function SignIn() {
                 }
               }
             }
+          }
+        }
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
           }
         }
 

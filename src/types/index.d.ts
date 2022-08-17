@@ -16,16 +16,15 @@ type UserType = {
   username: string;
   password?: string;
   avatar: string;
-  coverPhoto: string;
+  cover_photo: string;
   description?: string;
   website: string;
-  contacts: number[];
-  showProfile?: string;
-  contactsRequests?: string;
+  show_profile_photo?: string;
+  contacts_request?: string;
   lastMessage?: MessageType;
   contacts: number[];
-  createdAt?: string;
-  updatedAt?: string;
+  created_at?: string;
+  updated_at?: string;
 };
 
 type EmojiType = {

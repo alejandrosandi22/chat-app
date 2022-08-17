@@ -1,30 +1,46 @@
 import AppLayout from 'common/appLayout';
 import Card from 'components/card';
 import Nav from 'components/nav';
+import { GET_USER } from 'graphql/queries';
+import useAuth from 'hooks/useAuth';
 import { GetServerSideProps } from 'next';
+import { useEffect, useRef } from 'react';
+import client from 'services/apolloClient';
 import { UserType } from 'types';
 
-function friendlyUrl(url: string) {
-  return url.split('//')[1].split('/')[0];
-}
-
 export default function UsersProfile({ user }: { user: UserType }) {
+  const profilePhotoRef = useRef<HTMLImageElement>(null);
+  const { currentUser, loading } = useAuth();
+
+  useEffect(() => {
+    if (!currentUser || loading || !profilePhotoRef.current) return;
+
+    if (user.show_profile_photo === 'only-contacts') {
+      if (!user.contacts.includes(currentUser.id))
+        profilePhotoRef.current.src = '';
+    }
+
+    if (user.show_profile_photo === 'just-me') {
+      if (user.id !== currentUser.id) profilePhotoRef.current.src = '';
+    }
+  }, [currentUser]);
+
   return (
     <>
       <AppLayout title={`Chat App | ${user.name}`}>
         <div className='profile'>
-          <Nav />
+          <Nav user={user} />
           <div className='profile-wrapper'>
             <header className='profile-header'>
               <img
                 className='profile-header-cover-photo'
-                src={user.coverPhoto}
+                src={user.cover_photo}
                 alt='cover-photo'
               />
               <div className='profile-header-user-wrapper'>
                 <img
+                  ref={profilePhotoRef}
                   className='profile-header-avatar'
-                  src={user.avatar}
                   alt='avatar'
                 />
                 <div className='profile-header-user-name-wrapper'>
@@ -60,7 +76,7 @@ export default function UsersProfile({ user }: { user: UserType }) {
                         target='_blank'
                         rel='noreferrer'
                       >
-                        {friendlyUrl(user.website)}
+                        {user.website ?? '-'}
                       </a>
                     </p>
                   </div>
@@ -89,13 +105,13 @@ export default function UsersProfile({ user }: { user: UserType }) {
             position: relative;
             width: 100%;
             height: 100%;
-            background: var(--primary);
+            background: var(--background);
             overflow-y: auto;
             .profile-header {
               position: relative;
               width: 100%;
               aspect-ratio: 19 / 6;
-              background: var(--primary);
+              background: var(--background);
               margin: 0 auto;
               .profile-header-cover-photo {
                 position: relative;
@@ -142,7 +158,7 @@ export default function UsersProfile({ user }: { user: UserType }) {
               }
             }
             .profile-main {
-              background: var(--background);
+              background: var(--primary);
               width: 1000px;
               margin: 175px auto 50px auto;
               border-radius: 5px;
@@ -198,7 +214,7 @@ export default function UsersProfile({ user }: { user: UserType }) {
                   margin: 0 auto;
                   width: 90%;
                   height: 300px;
-                  background: var(--primary);
+                  background: var(--background);
                   margin: 0 auto 30px auto;
                   overflow-x: auto;
                   overflow-y: hidden;
@@ -217,16 +233,21 @@ export default function UsersProfile({ user }: { user: UserType }) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { username } = context.query;
 
-  const user = {
-    id: 1,
-    name: 'Deno',
-    email: 'deno@land.com',
-    username,
-    description: 'Web Developer React | Vue | Angular | Node.js | Next.js',
-    avatar: 'https://deno.land/logo.svg?__frsh_c=2cv7hytwns90',
-    coverPhoto: 'https://8bit.codes/images/blog/deno-js/deno-js-banner.png',
-    website: 'https://deno.land',
-  };
+  const { data } = await client.query({
+    query: GET_USER,
+    variables: {
+      username,
+    },
+  });
+
+  if (!data.getUser) {
+    context.res.writeHead(302, {
+      Location: '/signin',
+    });
+    context.res.end();
+  }
+
+  const user: UserType = data.getUser;
 
   return {
     props: {

@@ -2,38 +2,113 @@
 import { pool } from 'pages/api/utils/database';
 import bctypt from 'bcryptjs';
 import { UserInputError } from 'apollo-server-micro';
+import Cryptr from 'cryptr';
+import jwt from 'jsonwebtoken';
+import { setCookies } from 'cookies-next';
+import { NextApiRequest, NextApiResponse } from 'next';
+
+const cryptr = new Cryptr(process.env.ACCESS_TOKEN_SECRET);
+
+interface HandlerType {
+  req: NextApiRequest;
+  res: NextApiResponse;
+}
 
 export const resolvers = {
   Query: {
-    getUser: async (_root: any, _args: any, context: any) => {
+    getUser: async (_root: any, { username }: { username: string }) => {
+      try {
+        const { rows } = await pool.query(
+          'SELECT * FROM users WHERE username = $1',
+          [username]
+        );
+        return rows[0];
+      } catch (error) {
+        if (error instanceof Error) throw new UserInputError(error.message);
+      }
+    },
+    getContacts: async (_root: any, _args: any, context: any) => {
+      const userId = context.user.id;
+
+      try {
+        const contacts = await pool.query(
+          `SELECT * FROM users WHERE contacts @> ARRAY[${userId}]`
+        );
+
+        const contactsWithLastMessage = await Promise.all(
+          contacts.rows.map(async (contact: { id: number }) => {
+            const lastMessage = await pool.query(
+              `SELECT * FROM messages WHERE (sender = ${userId} AND receiver = ${contact.id}) OR (sender = ${contact.id} AND receiver = ${userId}) ORDER BY created_at DESC LIMIT 1`
+            );
+            return {
+              ...contact,
+              lastMessage: {
+                ...lastMessage.rows[0],
+                content: cryptr.decrypt(lastMessage.rows[0].content),
+                created_at: lastMessage.rows[0].created_at,
+              },
+            };
+          })
+        );
+
+        return contactsWithLastMessage;
+      } catch (error) {
+        if (error instanceof Error) throw new UserInputError(error.message);
+      }
+    },
+    getCurrentUser: async (_root: any, _args: any, context: any) => {
       try {
         return context.user;
       } catch (error) {
         if (error instanceof Error) throw new UserInputError(error.message);
       }
     },
-    getCurrentUser: async (_: any, __: any, { req }: { req: any }) => {
-      const user = await pool.query(`SELECT * FROM users WHERE id = $1`, [
-        req.user.id,
-      ]);
-      return user.rows[0];
-    },
     getUsers: async (
       _: any,
       {
-        showProfile,
-        contactRequests,
-      }: { showProfile: string; contactRequests: string }
+        show_profile_photo,
+        contacts_request,
+      }: { show_profile_photo: string; contacts_request: string }
     ) => {
       const users = await pool.query(
         `SELECT * FROM users WHERE show_profile_photo = $1 AND contacts_request = $2`,
-        [showProfile, contactRequests]
+        [show_profile_photo, contacts_request]
       );
       return users.rows;
     },
   },
   Mutation: {
-    createUser: async (_: any, args: any) => {
+    signIn: async (
+      _root: any,
+      { email, password }: { email: string; password: string },
+      { req, res }: HandlerType
+    ) => {
+      const user = await pool.query(`SELECT * FROM users WHERE email = $1`, [
+        email,
+      ]);
+      if (!user.rows[0]) {
+        throw new Error('User not found');
+      }
+      const isMatch = await bctypt.compare(password, user.rows[0].password);
+      if (!isMatch) {
+        throw new Error('Password is incorrect');
+      }
+
+      const tokenData = {
+        id: user.rows[0].id,
+      };
+
+      const token = jwt.sign(tokenData, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '8d',
+      });
+
+      setCookies('chat-app-user-session', token, { req, res });
+
+      return {
+        value: token,
+      };
+    },
+    createUser: async (_: any, args: any, { req, res }: HandlerType) => {
       const user = await pool.query(`SELECT * FROM users WHERE email = $1`, [
         args.email,
       ]);
@@ -45,8 +120,19 @@ export const resolvers = {
 
       const newUser = await pool.query(
         `INSERT INTO users (id, name, email, username, password, avatar, cover_photo, description, website, provider, show_profile_photo, contacts_request, contacts, created_at, updated_at)
-        VALUES (default, '${args.name}', '${args.email}', '${args.username}', '${hashedPassword}', '${args.avatar}', '${args.coverPhoto}', '${args.description}', '${args.website}', '${args.provider}' ,default, default, '{}', default, default) RETURNING *`
+        VALUES (default, '${args.name}', '${args.email}', '${args.username}', '${hashedPassword}', '${args.avatar}', '${args.cover_photo}', '${args.description}', '${args.website}', '${args.provider}' ,default, default, '{}', default, default) RETURNING *`
       );
+
+      const tokenData = {
+        id: newUser.rows[0].id,
+      };
+
+      const token = jwt.sign(tokenData, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: '8d',
+      });
+
+      setCookies('chat-app-user-session', token, { req, res });
+
       return newUser.rows[0];
     },
     updateUser: async (_: any, args: any) => {
@@ -57,11 +143,11 @@ export const resolvers = {
             args.name,
             args.username,
             args.avatar,
-            args.coverPhoto,
+            args.cover_photo,
             args.website,
             args.description,
-            args.showProfile,
-            args.contactRequests,
+            args.show_profile_photo,
+            args.contacts_request,
             args.contacts,
             args.id,
           ]

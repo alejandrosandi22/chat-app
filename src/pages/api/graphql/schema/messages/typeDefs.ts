@@ -8,11 +8,11 @@ export const typeDefs = gql`
     sender: String!
     receiver: String!
     type: String!
-    createdAt: String
+    created_at: String
   }
   type Query {
     getMessage: Message
-    getLastMessage: Message
+    getLastMessage(contactId: String!, userId: String!): Message
     getConversationMesages(sender: String!, receiver: String!): [Message]
   }
 
@@ -20,8 +20,8 @@ export const typeDefs = gql`
     createMessage(
       content: String!
       filename: String
-      sender: String!
-      receiver: String!
+      sender: Int!
+      receiver: Int!
       type: String!
     ): Message
   }

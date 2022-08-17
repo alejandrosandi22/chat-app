@@ -9,7 +9,6 @@ export default function (req: NextApiRequest, res: NextApiResponse) {
       session: false,
     },
     (error, _user, info) => {
-      console.log({ info });
       if (error) {
         return res
           .status(500)
