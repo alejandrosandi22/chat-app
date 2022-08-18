@@ -6,7 +6,7 @@ export default function ContactsList({ contacts }: { contacts: UserType[] }) {
     <>
       <div className='contacts-list'>
         {contacts.map((contact: UserType) => (
-          <ContactCard key={contact.id} contact={contact} />
+          <ContactCard key={contact.username} contact={contact} />
         ))}
       </div>
       <style jsx>{`

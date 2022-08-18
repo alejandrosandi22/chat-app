@@ -12,6 +12,13 @@ export const typeDefs = gql`
     value: String!
   }
 
+  type Contact {
+    id: Int!
+    name: String!
+    email: String!
+    username: String!
+  }
+
   type User {
     id: Int!
     name: String!

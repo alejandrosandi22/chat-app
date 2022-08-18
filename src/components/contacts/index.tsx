@@ -1,10 +1,9 @@
 import Search from 'components/search';
-import { UserType } from 'types';
+import getContacts from 'hooks/useGetContacts';
 import ContactsList from './contactsList';
 
 export default function Contacts() {
-  const data = [] as UserType[];
-  const loading = true;
+  const { contacts, loading } = getContacts();
 
   return (
     <>
@@ -12,7 +11,7 @@ export default function Contacts() {
         <div className='contacts-search-wrapper'>
           <Search />
         </div>
-        {(!loading || data) && <ContactsList contacts={data} />}
+        {(!loading || contacts) && <ContactsList contacts={contacts} />}
       </div>
       <style jsx>{`
         .contacts-wrapper {

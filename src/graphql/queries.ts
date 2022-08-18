@@ -1,12 +1,27 @@
 import { gql } from '@apollo/client';
 
 export const GET_CONTACTS = gql`
-  query getContacts($userId: Int!) {
-    contacts(userId: $userId) {
-      id
+  query getContacts {
+    getContacts {
       name
+      email
+      username
+      contacts
+      lastMessage {
+        id
+        content
+        type
+        createda_at
+      }
+      cover_photo
+      avatar
+      website
       description
-      photo
+      provider
+      show_profile_photo
+      contacts_request
+      created_at
+      updated_at
     }
   }
 `;
