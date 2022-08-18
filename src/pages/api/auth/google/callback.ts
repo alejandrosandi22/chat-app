@@ -18,7 +18,7 @@ export default function (req: NextApiRequest, res: NextApiResponse) {
       if (info.token) {
         setCookies('chat-app-user-session', info.token, { req, res });
       }
-      return res.status(200).redirect('/signin');
+      return res.status(200).redirect('/chat');
     }
   )(req, res);
 }

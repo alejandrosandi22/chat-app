@@ -1,11 +1,13 @@
 import { gql } from 'apollo-server-micro';
 
 export const typeDefs = gql`
+  scalar Date
+
   type LastMessage {
     id: ID
     content: String!
     type: String!
-    createda_at: String
+    created_at: Date
   }
 
   type Value {
@@ -34,8 +36,8 @@ export const typeDefs = gql`
     contacts_request: String
     lastMessage: LastMessage
     contacts: [Int]!
-    created_at: String
-    updated_at: String
+    created_at: Date
+    updated_at: Date
   }
   type Query {
     getUser(username: String!): User
@@ -46,28 +48,23 @@ export const typeDefs = gql`
 
   type Mutation {
     signIn(email: String!, password: String!): Value
-    createUser(
+    signUp(
       name: String!
       email: String!
       username: String!
       password: String!
-      avatar: String!
-      cover_photo: String!
-      description: String
-      website: String
-      provider: String!
-    ): User
+    ): Value
     updateUser(
-      id: ID!
-      name: String!
-      username: String!
-      avatar: String!
-      cover_photo: String!
+      id: ID
+      name: String
+      username: String
+      avatar: String
+      cover_photo: String
       website: String
       description: String
-      show_profile_photo: String!
-      contacts_request: String!
-      contacts: [Int]!
+      show_profile_photo: String
+      contacts_request: String
+      contacts: [Int]
     ): User
     changePassword(password: String!, id: ID!): User
     deleteUser(email: String!): User

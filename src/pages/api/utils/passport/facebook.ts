@@ -15,7 +15,7 @@ passport.use(
       clientID: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
       callbackURL: process.env.FACEBOOK_CALLBACK_URL,
-      profileFields: ['id', 'displayName', 'email'],
+      profileFields: ['displayName', 'email', 'picture.type(large)'],
     },
     async function (_accessToken, _refreshToken, profile: any, cb) {
       try {
@@ -40,16 +40,13 @@ passport.use(
           name: profile.displayName,
           email: profile.emails[0].value,
           username: getUsername(profile.emails[0].value),
-          password: '',
           avatar: profile.photos[0].value,
-          description: '',
-          show_profile_photo: 'public',
-          contacts_request: '',
           provider: 'facebook',
         };
 
         const newUser = await pool.query(
-          `INSERT INTO users VALUES (default, '${newUserData.name}', '${newUserData.email}', '${newUserData.username}', null, '', null, '', default, default, 'google', default, default) RETURNING *;`
+          `INSERT INTO users (id, name, email, username, password, avatar, cover_photo, description, website, provider, show_profile_photo, contacts_request, contacts, created_at, updated_at)
+        VALUES (default, '${newUserData.name}', '${newUserData.email}', '${newUserData.username}', null, '${newUserData.avatar}', null, null, null, '${newUserData.provider}' ,default, default, '{}', default, default) RETURNING *`
         );
 
         const token = jwt.sign(

@@ -17,7 +17,6 @@ const firebaseConfig = {
 
 const app = firebase.initializeApp(firebaseConfig);
 const storage = getStorage(app);
-console.log(app);
 
 interface FileUpload {
   file: File;
@@ -33,7 +32,7 @@ export const uploadFile = async ({
   if (!file) return;
   let url = '';
 
-  const fileName = `${username}`;
+  const fileName = `/avatares/${username}`;
   const storageRef = ref(storage, fileName);
   const uploadTask = uploadBytesResumable(storageRef, file);
 

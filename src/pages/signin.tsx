@@ -121,6 +121,8 @@ export default function SignIn() {
               .signin-spinner {
                 margin: 5px auto;
                 height: 40px;
+                display: grid;
+                place-items: center;
                 .signin-spinner-icon {
                   color: #fff;
                   font-size: 22px;

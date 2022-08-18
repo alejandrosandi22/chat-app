@@ -4,7 +4,7 @@ import 'pages/api/utils/passport';
 
 export default function (req: NextApiRequest, res: NextApiResponse) {
   passport.authenticate('auth-facebook', {
-    scope: ['profile', 'email'],
+    scope: ['email', 'public_profile'],
     session: false,
   })(req, res);
 }

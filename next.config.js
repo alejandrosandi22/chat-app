@@ -6,6 +6,7 @@ const domains = [
   'deno.com',
   'velociraptor.run',
   'images.unsplash.com',
+  'firebasestorage.googleapis.com',
 ];
 
 const nextConfig = {

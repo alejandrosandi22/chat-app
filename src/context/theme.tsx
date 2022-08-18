@@ -23,8 +23,8 @@ export default function ThemeProvider({ children }: Props) {
     if (localTheme) {
       setTheme(localTheme);
     } else {
-      setTheme('light');
-      localStorage.setItem('chat-app-theme', 'light');
+      setTheme('dark');
+      localStorage.setItem('chat-app-theme', 'dark');
     }
   }, []);
 

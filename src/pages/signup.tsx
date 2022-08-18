@@ -1,18 +1,32 @@
+import { useMutation } from '@apollo/client';
 import AppLayout from 'common/appLayout';
 import Input from 'components/input';
 import SocialSignIn from 'components/socialSignIn';
+import { SIGN_UP } from 'graphql/queries';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 interface DataStateType {
   name: string;
   email: string;
+  username: string;
   password: string;
-  confirmPassword: string;
 }
 
 export default function SignUp() {
+  const [inputPasswordType, setInputPasswordType] =
+    useState<string>('password');
+  const router = useRouter();
   const [data, setData] = useState<DataStateType>({} as DataStateType);
+  const [handleSignUp, { loading }] = useMutation(SIGN_UP, {
+    onCompleted: () => {
+      router.push('/chat');
+    },
+    onError(error) {
+      console.error(error);
+    },
+  });
 
   const handleSetData = (e: ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -20,6 +34,9 @@ export default function SignUp() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    handleSignUp({
+      variables: data,
+    });
   };
 
   return (
@@ -31,13 +48,23 @@ export default function SignUp() {
               <h1 className='signup-title'>Sign Up</h1>
               <div className='signup-input-wrapper'>
                 <Input
-                  type='name'
+                  type='text'
                   id='signup-name'
                   name='name'
                   placeholder='Name'
                   value={data.name}
                   onChange={handleSetData}
                 />
+                <Input
+                  type='text'
+                  id='signup-username'
+                  name='username'
+                  placeholder='Username'
+                  value={data.username}
+                  onChange={handleSetData}
+                />
+              </div>
+              <div className='signup-input-wrapper'>
                 <Input
                   type='email'
                   id='signup-email'
@@ -46,28 +73,34 @@ export default function SignUp() {
                   value={data.email}
                   onChange={handleSetData}
                 />
-              </div>
-              <div className='signup-input-wrapper'>
                 <Input
-                  type='password'
+                  type={inputPasswordType}
                   id='signup-password'
-                  name='last-password'
+                  name='password'
                   placeholder='Password'
                   value={data.password}
                   onChange={handleSetData}
                 />
-                <Input
-                  type='confirm-password'
-                  id='signup-confirm-password'
-                  name='confirm-password'
-                  placeholder='Confirm Password'
-                  value={data.confirmPassword}
-                  onChange={handleSetData}
-                />
+                <button
+                  type='button'
+                  onClick={() =>
+                    setInputPasswordType(
+                      inputPasswordType === 'password' ? 'text' : 'password'
+                    )
+                  }
+                >
+                  here
+                </button>
               </div>
-              <button className='signup-button' type='submit'>
-                Sign Up
-              </button>
+              {loading ? (
+                <div className='signin-spinner'>
+                  <i className='fal fa-spinner-third signin-spinner-icon' />
+                </div>
+              ) : (
+                <button className='signup-button' type='submit'>
+                  Sign Up
+                </button>
+              )}
             </form>
             <div className='signup-links-wrapper'>
               <Link href='/signin'>
@@ -123,6 +156,17 @@ export default function SignUp() {
                   background: var(--secondary);
                 }
               }
+              .signin-spinner {
+                margin: 5px auto;
+                height: 40px;
+                display: grid;
+                place-items: center;
+                .signin-spinner-icon {
+                  color: #fff;
+                  font-size: 22px;
+                  animation: spin 1s infinite;
+                }
+              }
             }
             .signup-links-wrapper {
               display: flex;
@@ -166,6 +210,15 @@ export default function SignUp() {
                 }
               }
             }
+          }
+        }
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
           }
         }
 
