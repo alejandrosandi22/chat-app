@@ -1,6 +1,8 @@
 import { gql } from 'apollo-server-micro';
 
 export const typeDefs = gql`
+  scalar Date
+
   type Message {
     id: ID
     content: String!
@@ -8,7 +10,7 @@ export const typeDefs = gql`
     sender: String!
     receiver: String!
     type: String!
-    created_at: String
+    created_at: Date
   }
   type Query {
     getMessage: Message

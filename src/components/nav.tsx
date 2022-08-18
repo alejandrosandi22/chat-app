@@ -69,6 +69,11 @@ export default function Nav({
               </a>
             </Link>
           </li>
+          <li className='nav-links-list-item'>
+            <span className='nav-links-list-link'>
+              <i className='fal fa-bell'></i>
+            </span>
+          </li>
           {toggle !== undefined && (
             <li onClick={handleToggle} className='nav-links-list-item'>
               <i className='fal fa-angle-double-left nav-links-list-item-icon'></i>
@@ -140,6 +145,7 @@ export default function Nav({
                   align-items: center;
                   justify-content: center;
                   text-decoration: none;
+                  cursor: pointer;
                   &:hover {
                     i {
                       color: var(--primary-font-color);

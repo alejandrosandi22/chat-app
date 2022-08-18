@@ -5,7 +5,7 @@ import { getAuth } from 'services/apolloClient';
 
 export default function useAuth() {
   const router = useRouter();
-  const { data, loading, error } = useQuery(GET_CURRENT_USER, {
+  const { data, loading, error, refetch } = useQuery(GET_CURRENT_USER, {
     onCompleted(data) {
       if (!data.getCurrentUser) {
         router.push('/signin');
@@ -22,5 +22,5 @@ export default function useAuth() {
     },
   });
 
-  return { loading, error, currentUser: data?.getCurrentUser };
+  return { loading, error, currentUser: data?.getCurrentUser, refetch };
 }

@@ -4,15 +4,8 @@ import bctypt from 'bcryptjs';
 import { UserInputError } from 'apollo-server-micro';
 import Cryptr from 'cryptr';
 import jwt from 'jsonwebtoken';
-import { setCookies } from 'cookies-next';
-import { NextApiRequest, NextApiResponse } from 'next';
 
 const cryptr = new Cryptr(process.env.ACCESS_TOKEN_SECRET);
-
-interface HandlerType {
-  req: NextApiRequest;
-  res: NextApiResponse;
-}
 
 export const resolvers = {
   Query: {
@@ -80,8 +73,7 @@ export const resolvers = {
   Mutation: {
     signIn: async (
       _root: any,
-      { email, password }: { email: string; password: string },
-      { req, res }: HandlerType
+      { email, password }: { email: string; password: string }
     ) => {
       const user = await pool.query(`SELECT * FROM users WHERE email = $1`, [
         email,
@@ -102,13 +94,11 @@ export const resolvers = {
         expiresIn: '8d',
       });
 
-      setCookies('chat-app-user-session', token, { req, res });
-
       return {
         value: token,
       };
     },
-    createUser: async (_: any, args: any, { req, res }: HandlerType) => {
+    signUp: async (_: any, args: any) => {
       const user = await pool.query(`SELECT * FROM users WHERE email = $1`, [
         args.email,
       ]);
@@ -120,7 +110,7 @@ export const resolvers = {
 
       const newUser = await pool.query(
         `INSERT INTO users (id, name, email, username, password, avatar, cover_photo, description, website, provider, show_profile_photo, contacts_request, contacts, created_at, updated_at)
-        VALUES (default, '${args.name}', '${args.email}', '${args.username}', '${hashedPassword}', '${args.avatar}', '${args.cover_photo}', '${args.description}', '${args.website}', '${args.provider}' ,default, default, '{}', default, default) RETURNING *`
+        VALUES (default, '${args.name}', '${args.email}', '${args.username}', '${hashedPassword}', '/static/images/user.png', null, null, null, 'email' ,default, default, '{}', default, default) RETURNING *`
       );
 
       const tokenData = {
@@ -131,25 +121,34 @@ export const resolvers = {
         expiresIn: '8d',
       });
 
-      setCookies('chat-app-user-session', token, { req, res });
-
-      return newUser.rows[0];
+      return {
+        value: token,
+      };
     },
-    updateUser: async (_: any, args: any) => {
+    updateUser: async (_: any, args: any, context: any) => {
       try {
+        const userId = context.user.id;
+
+        const getUser = await pool.query(
+          `SELECT * FROM users WHERE id = ${userId}`
+        );
+        const user = getUser.rows[0];
+
+        const contacts = user.contacts;
+
         const updatedUser = await pool.query(
-          `UPDATE users SET name = $1, username = $2, avatar = $3, cover_photo = $4, website = $5, description = $6, show_profile_photo = $7, contacts_request = $8, contacts = $9, updated_at = default WHERE id = $10 RETURNING *`,
+          `UPDATE users SET name = $1, username = $2, avatar = $3, cover_photo = $4, website = $5, description = $6, show_profile_photo = $7, contacts_request = $8, contacts = ARRAY [${
+            args.contacts ? contacts.concat(args.contacts) : user.contacts
+          }], updated_at = default WHERE id = ${userId} RETURNING *`,
           [
-            args.name,
-            args.username,
-            args.avatar,
-            args.cover_photo,
-            args.website,
-            args.description,
-            args.show_profile_photo,
-            args.contacts_request,
-            args.contacts,
-            args.id,
+            args.name ?? user.name,
+            args.username ?? user.username,
+            args.avatar ?? user.avatar,
+            args.cover_photo ?? user.cover_photo,
+            args.website ?? user.website,
+            args.description ?? user.description,
+            args.show_profile_photo ?? user.show_profile_photo,
+            args.contacts_request ?? user.contacts_request,
           ]
         );
         return updatedUser.rows[0];

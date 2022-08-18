@@ -1,52 +1,131 @@
 import AppLayout from 'common/appLayout';
 import Card from 'components/card';
+import Loading from 'components/loading';
 import Nav from 'components/nav';
 import { GET_USER } from 'graphql/queries';
 import useAuth from 'hooks/useAuth';
+import useUpdateUser from 'hooks/useUpdateUser';
+import { uploadFile } from '../firebase/client';
 import { GetServerSideProps } from 'next';
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import client from 'services/apolloClient';
 import { UserType } from 'types';
 
 export default function UsersProfile({ user }: { user: UserType }) {
   const profilePhotoRef = useRef<HTMLImageElement>(null);
   const { currentUser, loading } = useAuth();
+  const [progress, setProgress] = useState<number>(0);
+  const [avatar, setAvatar] = useState<string | undefined>(undefined);
+  const { updateUser } = useUpdateUser();
 
   useEffect(() => {
     if (!currentUser || loading || !profilePhotoRef.current) return;
 
     if (user.show_profile_photo === 'only-contacts') {
       if (!user.contacts.includes(currentUser.id))
-        profilePhotoRef.current.src = '';
+        profilePhotoRef.current.src = 'static/images/user.png';
     }
 
     if (user.show_profile_photo === 'just-me') {
-      if (user.id !== currentUser.id) profilePhotoRef.current.src = '';
+      if (user.id !== currentUser.id)
+        profilePhotoRef.current.src = 'static/images/user.png';
     }
   }, [currentUser]);
+
+  const imageOnError = () => {
+    if (profilePhotoRef.current) {
+      profilePhotoRef.current.src = 'static/images/user.png';
+    }
+  };
+
+  useEffect(() => {
+    if (progress === 100) {
+      setProgress(0);
+    }
+  }, [progress]);
+
+  const handleUpdateAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const file: File = e.target.files[0];
+
+    if (file.size > 1000000) {
+      alert('File is too big');
+      return;
+    }
+    uploadFile({
+      file,
+      setProgress,
+      username: `${currentUser.username}-avatar`,
+    }).then((res) => {
+      updateUser({
+        onCompleted: () => {
+          setAvatar(res?.url);
+        },
+        variables: {
+          avatar: res?.url,
+        },
+      });
+    });
+  };
+
+  if (loading && !currentUser) return <Loading />;
 
   return (
     <>
       <AppLayout title={`Chat App | ${user.name}`}>
         <div className='profile'>
-          <Nav user={user} />
+          <Nav user={currentUser} />
           <div className='profile-wrapper'>
             <header className='profile-header'>
-              <img
-                className='profile-header-cover-photo'
-                src={user.cover_photo}
-                alt='cover-photo'
-              />
+              <div className='profile-header-cover-photo-wrapper'>
+                {currentUser && currentUser.id === user.id && (
+                  <span className='profile-header-cover-photo-change'>
+                    <button className='profile-header-cover-photo-change-button'>
+                      <i className='fal fa-upload' />
+                    </button>
+                    <button className='profile-header-cover-photo-change-button'>
+                      <i className='fal fa-trash' />
+                    </button>
+                  </span>
+                )}
+                {!user.cover_photo ? (
+                  <div className='profile-header-cover-photo'></div>
+                ) : (
+                  <img
+                    className='profile-header-cover-photo'
+                    src={user.cover_photo}
+                    alt='cover-photo'
+                  />
+                )}
+              </div>
               <div className='profile-header-user-wrapper'>
-                <img
-                  ref={profilePhotoRef}
-                  className='profile-header-avatar'
-                  alt='avatar'
-                />
+                <div className='profile-header-avatar'>
+                  <img
+                    ref={profilePhotoRef}
+                    className='profile-header-avatar-image'
+                    src={avatar ?? user.avatar}
+                    onError={imageOnError}
+                    alt='avatar'
+                  />
+                  {currentUser && currentUser.id === user.id && (
+                    <label
+                      htmlFor='update-avatar'
+                      className='profile-header-avatar-image-change'
+                    >
+                      <input
+                        id='update-avatar'
+                        type='file'
+                        hidden
+                        onChange={handleUpdateAvatar}
+                      />
+                      <i className='fal fa-upload' />
+                    </label>
+                  )}
+                </div>
                 <div className='profile-header-user-name-wrapper'>
                   <h1 className='profile-header-user-name'>{user.name}</h1>
                   <h2 className='profile-header-user-contacts'>
-                    {user.description}
+                    {user.description ?? '-'}
                   </h2>
                 </div>
               </div>
@@ -113,17 +192,57 @@ export default function UsersProfile({ user }: { user: UserType }) {
               aspect-ratio: 19 / 6;
               background: var(--background);
               margin: 0 auto;
-              .profile-header-cover-photo {
+              .profile-header-cover-photo-wrapper {
                 position: relative;
                 top: 0;
                 left: 0;
                 width: 100%;
                 aspect-ratio: 19 / 6;
-                object-fit: cover;
-                background: var(--primary);
+                background: var(--background);
+                border-bottom: 1px solid var(--primary);
+                &:hover {
+                  .profile-header-cover-photo-change {
+                    opacity: 1;
+                  }
+                }
+                .profile-header-cover-photo-change {
+                  position: absolute;
+                  bottom: 0;
+                  left: 0;
+                  width: 100%;
+                  height: 30px;
+                  background: linear-gradient(
+                    rgba(0, 0, 0, 0),
+                    var(--background)
+                  );
+                  display: flex;
+                  align-items: center;
+                  justify-content: flex-end;
+                  opacity: 0;
+                  transition: 0.5s;
+                  &:hover {
+                    opacity: 1;
+                  }
+                  .profile-header-cover-photo-change-button {
+                    border: none;
+                    background: transparent;
+                    cursor: pointer;
+                    outline: none;
+                    margin: 0 10px;
+                    i {
+                      color: var(--primary-font-color);
+                      font-size: 1.25rem;
+                    }
+                  }
+                }
+                .profile-header-cover-photo {
+                  width: 100%;
+                  object-fit: cover;
+                }
               }
               .profile-header-user-wrapper {
                 position: absolute;
+                pointer-events: none;
                 width: 1000px;
                 left: 0;
                 right: 0;
@@ -133,11 +252,47 @@ export default function UsersProfile({ user }: { user: UserType }) {
                 z-index: var(--z-10);
                 display: flex;
                 .profile-header-avatar {
+                  position: relative;
                   height: 175px;
                   border-radius: 50%;
                   border: 5px solid var(--primary);
                   aspect-ratio: 1 / 1;
                   box-sizing: unset;
+                  .profile-header-avatar-image {
+                    pointer-events: all;
+                    background: var(--primary);
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                  }
+                  .profile-header-avatar-image-change {
+                    pointer-events: all;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 50%;
+                    background: var(--primary);
+                    opacity: 0;
+                    display: grid;
+                    place-items: center;
+                    transition: 0.5s ease;
+                    &:hover {
+                      cursor: pointer;
+                      opacity: 0.5;
+                      i {
+                        transform: translateY(0);
+                      }
+                    }
+
+                    i {
+                      font-size: 2.5rem;
+                      color: var(--white);
+                      transform: translateY(50px);
+                      transition: 0.5s ease;
+                    }
+                  }
                 }
                 .profile-header-user-name-wrapper {
                   margin: 0 20px;
