@@ -15,10 +15,13 @@ interface DataStateType {
 }
 
 export default function SignUp() {
-  const [inputPasswordType, setInputPasswordType] =
-    useState<string>('password');
   const router = useRouter();
-  const [data, setData] = useState<DataStateType>({} as DataStateType);
+  const [data, setData] = useState<DataStateType>(() => ({
+    name: '',
+    email: '',
+    username: '',
+    password: '',
+  }));
   const [handleSignUp, { loading }] = useMutation(SIGN_UP, {
     onCompleted: () => {
       router.push('/chat');
@@ -74,23 +77,13 @@ export default function SignUp() {
                   onChange={handleSetData}
                 />
                 <Input
-                  type={inputPasswordType}
+                  type='password'
                   id='signup-password'
                   name='password'
                   placeholder='Password'
                   value={data.password}
                   onChange={handleSetData}
                 />
-                <button
-                  type='button'
-                  onClick={() =>
-                    setInputPasswordType(
-                      inputPasswordType === 'password' ? 'text' : 'password'
-                    )
-                  }
-                >
-                  here
-                </button>
               </div>
               {loading ? (
                 <div className='signin-spinner'>
@@ -140,6 +133,7 @@ export default function SignUp() {
                 font-size: 35px;
               }
               .signup-input-wrapper {
+                position: relative;
                 width: 100%;
                 display: flex;
                 gap: 10px;

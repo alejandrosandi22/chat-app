@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 export default function Input({
   id,
   type,
@@ -13,20 +15,38 @@ export default function Input({
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }) {
+  const [inputPasswordType, setInputPasswordType] =
+    useState<string>('password');
+
+  const handlePasswordType = () => {
+    if (inputPasswordType === 'password') {
+      setInputPasswordType('text');
+    } else {
+      setInputPasswordType('password');
+    }
+  };
+
   return (
     <>
       <div className='input-wrapper'>
         <input
           className='input'
-          type={type}
+          type={type === 'password' ? inputPasswordType : type}
           id={id}
           name={name}
           value={value}
           onChange={onChange}
         />
-        <label className='label' htmlFor={id}>
-          {placeholder}
-        </label>
+        <label htmlFor={id}>{placeholder}</label>
+        {type === 'password' && (
+          <button type='button' onClick={handlePasswordType}>
+            {inputPasswordType === 'password' ? (
+              <i className='fas fa-eye' />
+            ) : (
+              <i className='fas fa-eye-slash' />
+            )}
+          </button>
+        )}
       </div>
       <style jsx>{`
         $value: false;
@@ -51,7 +71,7 @@ export default function Input({
           justify-content: flex-end;
           height: 60px;
           width: 100%;
-          .label {
+          label {
             position: absolute;
             height: 20px;
             display: grid;
@@ -73,7 +93,7 @@ export default function Input({
             width: 100%;
             height: 40px;
             font-size: 15px;
-            padding: 5px 10px 0 10px;
+            padding: 5px ${type === 'password' ? '45px' : '10px'} 0 10px;
             color: var(--primary-font-color);
             border: none;
             outline: none;
@@ -96,14 +116,35 @@ export default function Input({
               transition-delay: 9999s;
               transition-property: background-color, color;
             }
-            &:not([value='']) ~ .label {
+            &:not([value='']) ~ label {
               @include label_focus($value: true);
             }
-            &:focus ~ .label {
+            &:focus ~ label {
               @include label_focus($value);
             }
-            &:not([value='']) and &:focus ~ .label {
+            &:not([value='']) and &:focus ~ label {
               @include label_focus($value);
+            }
+            &:focus ~ button {
+              i {
+                color: var(--primary-font-color);
+              }
+            }
+          }
+          button {
+            position: absolute;
+            bottom: 5px;
+            height: 30px;
+            width: 30px;
+            right: 10px;
+            background: none;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            transition: 0.25s;
+            i {
+              font-size: 20px;
+              color: var(--secondary-font-color);
             }
           }
         }
