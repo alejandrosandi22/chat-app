@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { MessageType } from 'types';
 import Message from './message';
 import moment from 'moment';
-import { useGetMessages } from 'hooks';
+import { useGetMessages } from 'hooks/useGetMessages';
 
 const contact = {
   id: 2,

@@ -14,6 +14,11 @@ export const typeDefs = gql`
     value: String!
   }
 
+  type RemoveValue {
+    value: Boolean!
+    message: String!
+  }
+
   type Contact {
     id: Int!
     name: String!
@@ -42,7 +47,7 @@ export const typeDefs = gql`
   type Query {
     getUser(username: String!): User
     getCurrentUser: User
-    getContacts: [User]
+    getContacts(userId: Int): [User]
     getUsers(show_profile_photo: String, contacts_request: String): [User]
   }
 
@@ -66,6 +71,7 @@ export const typeDefs = gql`
       contacts_request: String
       contacts: [Int]
     ): User
+    removeContact(id: Int!): User
     changePassword(password: String!, id: ID!): User
     deleteUser(email: String!): User
   }

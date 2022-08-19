@@ -1,5 +1,5 @@
 import Slider from 'components/messages/messagesView/message/audio/slider';
-import { useCalculateTime } from 'hooks';
+import useCalculateTime from 'hooks/useCalculateTime';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 export default function Video({ src }: { src: string }) {

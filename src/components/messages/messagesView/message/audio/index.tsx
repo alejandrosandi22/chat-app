@@ -1,4 +1,4 @@
-import { useCalculateTime } from 'hooks';
+import useCalculateTime from 'hooks/useCalculateTime';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import ControlPanel from './controls/controlPanel';
 import Slider from './slider';

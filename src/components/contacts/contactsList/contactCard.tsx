@@ -1,5 +1,5 @@
+import useErrorImage from 'hooks/useErrorImage';
 import moment from 'moment';
-import Image from 'next/image';
 import Link from 'next/link';
 import { UserType } from 'types';
 
@@ -8,12 +8,14 @@ interface ContactCardProps {
 }
 
 export default function ContactCard({ contact }: ContactCardProps) {
+  const { imageOnError } = useErrorImage();
+
   return (
     <>
       <div className='contact-card'>
         <Link href={`/[username]`} as={`/${contact.username}`}>
           <a className='contact-card-avatar'>
-            <Image src={contact.avatar} layout='fill' alt='avatar' />
+            <img src={contact.avatar} alt='avatar' onError={imageOnError} />
           </a>
         </Link>
         <div className='contact-card-info'>
@@ -63,6 +65,10 @@ export default function ContactCard({ contact }: ContactCardProps) {
             border-radius: 50%;
             overflow: hidden;
             cursor: pointer;
+            img {
+              width: 100%;
+              height: 100%;
+            }
           }
           .contact-card-info {
             width: calc(100% - 110px);
