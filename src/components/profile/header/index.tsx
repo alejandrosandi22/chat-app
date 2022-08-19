@@ -1,7 +1,7 @@
 import { uploadFile } from '../../../firebase/client';
 import useErrorImage from 'hooks/useErrorImage';
 import useUpdateUser from 'hooks/useUpdateUser';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserType } from 'types';
 
 interface HeaderProps {
@@ -10,7 +10,6 @@ interface HeaderProps {
 }
 
 export default function Header({ currentUser, user }: HeaderProps) {
-  const profilePhotoRef = useRef<HTMLImageElement>(null);
   const [avatar, setAvatar] = useState<string | undefined>(undefined);
   const [progress, setProgress] = useState<number>(0);
 
@@ -18,16 +17,13 @@ export default function Header({ currentUser, user }: HeaderProps) {
   const { updateUser } = useUpdateUser();
 
   useEffect(() => {
-    if (!profilePhotoRef.current) return;
-
     if (user.show_profile_photo === 'only-contacts') {
       if (!user.contacts.includes(currentUser.id))
-        profilePhotoRef.current.src = 'static/images/user.png';
+        setAvatar('static/images/user.png');
     }
 
     if (user.show_profile_photo === 'just-me') {
-      if (user.id !== currentUser.id)
-        profilePhotoRef.current.src = 'static/images/user.png';
+      if (user.id !== currentUser.id) setAvatar('static/images/user.png');
     }
   }, [currentUser]);
 
@@ -87,9 +83,8 @@ export default function Header({ currentUser, user }: HeaderProps) {
         <div className='profile-header-user-wrapper'>
           <div className='profile-header-avatar'>
             <img
-              ref={profilePhotoRef}
               className='profile-header-avatar-image'
-              src={avatar ?? user.avatar}
+              src={avatar ? avatar : user.avatar}
               onError={imageOnError}
               alt='avatar'
             />

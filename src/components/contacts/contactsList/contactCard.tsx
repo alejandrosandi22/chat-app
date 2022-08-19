@@ -1,21 +1,43 @@
 import useErrorImage from 'hooks/useErrorImage';
 import moment from 'moment';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { UserType } from 'types';
 
 interface ContactCardProps {
   contact: UserType;
+  currentUser: UserType;
 }
 
-export default function ContactCard({ contact }: ContactCardProps) {
+export default function ContactCard({
+  contact,
+  currentUser,
+}: ContactCardProps) {
   const { imageOnError } = useErrorImage();
+
+  const [avatar, setAvatar] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (contact.show_profile_photo === 'only-contacts') {
+      if (!contact.contacts.includes(currentUser.id))
+        setAvatar('static/images/user.png');
+    }
+
+    if (contact.show_profile_photo === 'just-me') {
+      if (contact.id !== currentUser.id) setAvatar('static/images/user.png');
+    }
+  }, [contact]);
 
   return (
     <>
       <div className='contact-card'>
         <Link href={`/[username]`} as={`/${contact.username}`}>
           <a className='contact-card-avatar'>
-            <img src={contact.avatar} alt='avatar' onError={imageOnError} />
+            <img
+              src={avatar ? avatar : contact.avatar}
+              alt='avatar'
+              onError={imageOnError}
+            />
           </a>
         </Link>
         <div className='contact-card-info'>

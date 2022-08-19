@@ -1,12 +1,22 @@
 import { UserType } from 'types';
 import ContactCard from './contactCard';
 
-export default function ContactsList({ contacts }: { contacts: UserType[] }) {
+export default function ContactsList({
+  contacts,
+  currentUser,
+}: {
+  contacts: UserType[];
+  currentUser: UserType;
+}) {
   return (
     <>
       <div className='contacts-list'>
         {contacts.map((contact: UserType) => (
-          <ContactCard key={contact.username} contact={contact} />
+          <ContactCard
+            key={contact.username}
+            contact={contact}
+            currentUser={currentUser}
+          />
         ))}
       </div>
       <style jsx>{`

@@ -9,7 +9,7 @@ import useAuth from 'hooks/useAuth';
 import Loading from 'components/loading';
 import { UserType } from 'types';
 
-export function ChatEvents({ user }: { user: UserType }) {
+export function ChatEvents({ currentUser }: { currentUser: UserType }) {
   const { toggle } = useContext(ToggleContactProfileContext);
   const [contactsToggle, setContactsToggle] = useState<boolean>(false);
 
@@ -21,10 +21,10 @@ export function ChatEvents({ user }: { user: UserType }) {
         <Nav
           toggle={contactsToggle}
           handleToggle={handleContactsToggle}
-          user={user}
+          user={currentUser}
         />
         <div className='chat-contacts-wrapper'>
-          <Contacts />
+          <Contacts currentUser={currentUser} />
         </div>
         <div className='chat-messages-wrapper'>
           <Messages />
@@ -67,7 +67,7 @@ export default function Chat() {
 
   return (
     <AppLayout title='Chat App | Messages'>
-      <ChatEvents user={currentUser} />
+      <ChatEvents currentUser={currentUser} />
     </AppLayout>
   );
 }

@@ -8,9 +8,7 @@ interface MainProps {
 }
 
 export default function Main({ currentUser, user }: MainProps) {
-  const { contacts, loading } = useGetContacts(user.id);
-
-  if (loading) return <></>;
+  const { contacts, loading, refetch } = useGetContacts(user.id);
 
   return (
     <>
@@ -47,16 +45,20 @@ export default function Main({ currentUser, user }: MainProps) {
         </section>
         <section className='profile-main-contacts'>
           <h2 className='profile-main-contacts-title'>Contacts</h2>
-          <div className='profile-main-contacts-wrapper'>
-            {contacts &&
-              contacts.map((contact) => (
-                <Card
-                  key={contact.username}
-                  contact={contact}
-                  currentUser={currentUser.id === user.id ? true : false}
-                />
-              ))}
-          </div>
+          {!loading && (
+            <div className='profile-main-contacts-wrapper'>
+              {contacts &&
+                contacts.map((contact) => (
+                  <Card
+                    key={contact.username}
+                    contact={contact}
+                    currentUser={currentUser}
+                    isCurrentUser={user.id === currentUser.id}
+                    refetch={refetch}
+                  />
+                ))}
+            </div>
+          )}
         </section>
       </main>
       <style jsx>{`

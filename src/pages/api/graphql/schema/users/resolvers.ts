@@ -72,18 +72,22 @@ export const resolvers = {
         if (error instanceof Error) throw new UserInputError(error.message);
       }
     },
-    getUsers: async (
+    searchUsers: async (
       _: any,
-      {
-        show_profile_photo,
-        contacts_request,
-      }: { show_profile_photo: string; contacts_request: string }
+      { search }: { search: string },
+      context: any
     ) => {
-      const users = await pool.query(
-        `SELECT * FROM users WHERE show_profile_photo = $1 AND contacts_request = $2`,
-        [show_profile_photo, contacts_request]
-      );
-      return users.rows;
+      const id = context.user.id;
+
+      try {
+        const users = await pool.query(
+          `SELECT * FROM users WHERE id != ${id} AND username ILIKE '%${search}%' OR name ILIKE '%${search}%' LIMIT 10`
+        );
+
+        return users.rows;
+      } catch (error: unknown) {
+        if (error instanceof Error) throw new UserInputError(error.message);
+      }
     },
   },
   Mutation: {

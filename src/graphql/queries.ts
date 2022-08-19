@@ -142,3 +142,19 @@ export const REMOVE_CONTACT = gql`
     }
   }
 `;
+
+export const SEARCH_USERS = gql`
+  query searchUsers($search: String!) {
+    searchUsers(search: $search) {
+      id
+      name
+      email
+      username
+      avatar
+      cover_photo
+      website
+      description
+      show_profile_photo
+    }
+  }
+`;

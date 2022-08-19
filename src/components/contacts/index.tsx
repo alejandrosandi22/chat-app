@@ -1,17 +1,20 @@
 import Search from 'components/search';
 import useGetContacts from 'hooks/useGetContacts';
+import { UserType } from 'types';
 import ContactsList from './contactsList';
 
-export default function Contacts() {
+export default function Contacts({ currentUser }: { currentUser: UserType }) {
   const { contacts, loading } = useGetContacts();
 
   return (
     <>
       <div className='contacts-wrapper'>
         <div className='contacts-search-wrapper'>
-          <Search />
+          <Search currentUser={currentUser} />
         </div>
-        {(!loading || contacts) && <ContactsList contacts={contacts} />}
+        {(!loading || contacts) && (
+          <ContactsList currentUser={currentUser} contacts={contacts} />
+        )}
       </div>
       <style jsx>{`
         .contacts-wrapper {
