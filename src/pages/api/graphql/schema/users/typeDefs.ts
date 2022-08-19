@@ -48,7 +48,7 @@ export const typeDefs = gql`
     getUser(username: String!): User
     getCurrentUser: User
     getContacts(userId: Int): [User]
-    getUsers(show_profile_photo: String, contacts_request: String): [User]
+    searchUsers(search: String): [User]
   }
 
   type Mutation {

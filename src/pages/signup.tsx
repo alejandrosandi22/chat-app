@@ -2,6 +2,7 @@ import { useMutation } from '@apollo/client';
 import AppLayout from 'common/appLayout';
 import Input from 'components/input';
 import SocialSignIn from 'components/socialSignIn';
+import { setCookie } from 'cookies-next';
 import { SIGN_UP } from 'graphql/queries';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -23,7 +24,8 @@ export default function SignUp() {
     password: '',
   }));
   const [handleSignUp, { loading }] = useMutation(SIGN_UP, {
-    onCompleted: () => {
+    onCompleted(data) {
+      setCookie('chat-app-user-session', data.signUp.value);
       router.push('/chat');
     },
     onError(error) {

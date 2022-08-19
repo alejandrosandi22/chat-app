@@ -1,20 +1,40 @@
 import useErrorImage from 'hooks/useErrorImage';
 import useRemoveContact from 'hooks/useRemoveContact';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { UserType } from 'types';
 
 export default function Card({
   contact,
   currentUser,
+  refetch,
+  isCurrentUser,
 }: {
   contact: UserType;
-  currentUser: boolean;
+  currentUser: UserType;
+  refetch: () => void;
+  isCurrentUser?: boolean;
 }) {
   const { imageOnError } = useErrorImage();
   const { removeContact, loading } = useRemoveContact();
+  const [avatar, setAvatar] = useState<string | undefined>();
+
+  useEffect(() => {
+    if (contact.show_profile_photo === 'only-contacts') {
+      if (!contact.contacts.includes(currentUser.id))
+        setAvatar('static/images/user.png');
+    }
+
+    if (contact.show_profile_photo === 'just-me') {
+      if (contact.id !== currentUser.id) setAvatar('static/images/user.png');
+    }
+  }, [contact]);
 
   const handleRemoveContact = () => {
     removeContact({
+      onCompleted: () => {
+        refetch();
+      },
       variables: {
         removeContactId: contact.id,
       },
@@ -26,7 +46,7 @@ export default function Card({
       <div className='card'>
         <ul className='card-list'>
           {loading && <h1>Loading ..</h1>}
-          {currentUser && (
+          {isCurrentUser && (
             <li className='card-list-item'>
               <i className='fal fa-ellipsis-v card-list-item-icon' />
               <ul className='card-list-options'>
@@ -45,7 +65,7 @@ export default function Card({
             <a>
               <img
                 className='card-contact-info-avatar'
-                src={contact.avatar}
+                src={avatar ? avatar : contact.avatar}
                 onError={imageOnError}
                 alt='avatar'
               />

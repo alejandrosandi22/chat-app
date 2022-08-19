@@ -4,7 +4,7 @@ import { getAuth } from 'services/apolloClient';
 import { UserType } from 'types';
 
 export default function useGetContacts(userId?: number) {
-  const { data, loading } = useQuery(GET_CONTACTS, {
+  const { data, loading, refetch } = useQuery(GET_CONTACTS, {
     variables: { userId },
     onError(error) {
       console.error(error);
@@ -19,5 +19,6 @@ export default function useGetContacts(userId?: number) {
   return {
     contacts: data?.getContacts as UserType[],
     loading,
+    refetch,
   };
 }
