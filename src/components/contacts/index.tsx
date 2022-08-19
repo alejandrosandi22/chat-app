@@ -1,9 +1,9 @@
 import Search from 'components/search';
-import getContacts from 'hooks/useGetContacts';
+import useGetContacts from 'hooks/useGetContacts';
 import ContactsList from './contactsList';
 
 export default function Contacts() {
-  const { contacts, loading } = getContacts();
+  const { contacts, loading } = useGetContacts();
 
   return (
     <>

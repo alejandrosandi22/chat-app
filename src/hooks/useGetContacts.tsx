@@ -1,9 +1,11 @@
 import { useQuery } from '@apollo/client';
 import { GET_CONTACTS } from 'graphql/queries';
 import { getAuth } from 'services/apolloClient';
+import { UserType } from 'types';
 
-export default function getContacts() {
+export default function useGetContacts(userId?: number) {
   const { data, loading } = useQuery(GET_CONTACTS, {
+    variables: { userId },
     onError(error) {
       console.error(error);
     },
@@ -15,7 +17,7 @@ export default function getContacts() {
   });
 
   return {
-    contacts: data?.getContacts,
+    contacts: data?.getContacts as UserType[],
     loading,
   };
 }

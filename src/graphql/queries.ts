@@ -1,8 +1,9 @@
 import { gql } from '@apollo/client';
 
 export const GET_CONTACTS = gql`
-  query getContacts {
-    getContacts {
+  query getContacts($userId: Int) {
+    getContacts(userId: $userId) {
+      id
       name
       email
       username
@@ -130,6 +131,14 @@ export const UPDATE_USER = gql`
       contacts: $contacts
     ) {
       name
+    }
+  }
+`;
+
+export const REMOVE_CONTACT = gql`
+  mutation RemoveContact($removeContactId: Int!) {
+    removeContact(id: $removeContactId) {
+      id
     }
   }
 `;

@@ -1,24 +1,61 @@
-export default function Card() {
+import useErrorImage from 'hooks/useErrorImage';
+import useRemoveContact from 'hooks/useRemoveContact';
+import Link from 'next/link';
+import { UserType } from 'types';
+
+export default function Card({
+  contact,
+  currentUser,
+}: {
+  contact: UserType;
+  currentUser: boolean;
+}) {
+  const { imageOnError } = useErrorImage();
+  const { removeContact, loading } = useRemoveContact();
+
+  const handleRemoveContact = () => {
+    removeContact({
+      variables: {
+        removeContactId: contact.id,
+      },
+    });
+  };
+
   return (
     <>
       <div className='card'>
         <ul className='card-list'>
-          <li className='card-list-item'>
-            <i className='fal fa-ellipsis-v card-list-item-icon' />
-            <ul className='card-list-options'>
-              <li className='card-list-options-item'>Remove from contacts</li>
-            </ul>
-          </li>
+          {loading && <h1>Loading ..</h1>}
+          {currentUser && (
+            <li className='card-list-item'>
+              <i className='fal fa-ellipsis-v card-list-item-icon' />
+              <ul className='card-list-options'>
+                <li
+                  onClick={handleRemoveContact}
+                  className='card-list-options-item'
+                >
+                  Remove from contacts
+                </li>
+              </ul>
+            </li>
+          )}
         </ul>
         <div className='card-contact-info-wrapper'>
-          <img
-            className='card-contact-info-avatar'
-            src='https://ps.w.org/user-avatar-reloaded/assets/icon-128x128.png?rev=2540745'
-            alt='avatar'
-          />
+          <Link href={`/${contact.username}`}>
+            <a>
+              <img
+                className='card-contact-info-avatar'
+                src={contact.avatar}
+                onError={imageOnError}
+                alt='avatar'
+              />
+            </a>
+          </Link>
           <div className='card-contact-info-text-wrapper'>
-            <p className='card-contact-info-name'>User Name</p>
-            <p className='card-contact-info-username'>@username</p>
+            <Link href={`/${contact.username}`}>
+              <a className='card-contact-info-name'>{contact.name}</a>
+            </Link>
+            <p className='card-contact-info-username'>@{contact.username}</p>
           </div>
         </div>
       </div>
@@ -27,7 +64,7 @@ export default function Card() {
           position: relative;
           height: 270px;
           aspect-ratio: 3 / 4;
-          background: var(--background);
+          background: var(--primary);
           .card-list {
             z-index: var(--z-10);
             position: absolute;
@@ -82,16 +119,23 @@ export default function Card() {
               border-radius: 50%;
               width: 130px;
               aspect-ratio: 1 / 1;
+              text-decoration: none;
             }
             .card-contact-info-text-wrapper {
+              width: 100%;
+              display: flex;
+              flex-direction: column;
               .card-contact-info-name {
                 text-align: center;
+                width: 100%;
                 font-size: 20px;
                 color: var(--primary-font-color);
+                text-decoration: none;
               }
               .card-contact-info-username {
                 text-align: center;
                 font-size: 15px;
+                width: 100%;
                 color: var(--secondary-font-color);
               }
             }

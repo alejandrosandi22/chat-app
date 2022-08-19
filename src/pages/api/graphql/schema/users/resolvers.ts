@@ -20,19 +20,35 @@ export const resolvers = {
         if (error instanceof Error) throw new UserInputError(error.message);
       }
     },
-    getContacts: async (_root: any, _args: any, context: any) => {
-      const userId = context.user.id;
+    getContacts: async (
+      _root: any,
+      { userId }: { userId: number },
+      context: any
+    ) => {
+      const id = userId ?? context.user.id;
 
       try {
         const contacts = await pool.query(
-          `SELECT * FROM users WHERE contacts @> ARRAY[${userId}]`
+          `SELECT * FROM users WHERE contacts @> ARRAY[${id}]`
         );
 
         const contactsWithLastMessage = await Promise.all(
           contacts.rows.map(async (contact: { id: number }) => {
             const lastMessage = await pool.query(
-              `SELECT * FROM messages WHERE (sender = ${userId} AND receiver = ${contact.id}) OR (sender = ${contact.id} AND receiver = ${userId}) ORDER BY created_at DESC LIMIT 1`
+              `SELECT * FROM messages WHERE (sender = ${id} AND receiver = ${contact.id}) OR (sender = ${contact.id} AND receiver = ${id}) ORDER BY created_at DESC LIMIT 1`
             );
+
+            if (!lastMessage.rows[0])
+              return {
+                ...contact,
+                lastMessage: {
+                  id: 0,
+                  content: '',
+                  type: '',
+                  created_at: new Date(),
+                },
+              };
+
             return {
               ...contact,
               lastMessage: {
@@ -153,6 +169,44 @@ export const resolvers = {
         );
         return updatedUser.rows[0];
       } catch (error: unknown) {
+        if (error instanceof Error) throw new UserInputError(error.message);
+      }
+    },
+    removeContact: async (_: any, args: any, context: any) => {
+      try {
+        const userId = context.user.id;
+        const contactId = args.id;
+
+        const getUser = await pool.query(
+          `SELECT * FROM users WHERE id = ${userId}`
+        );
+
+        const getContact = await pool.query(
+          `SELECT * FROM users WHERE id = ${contactId}`
+        );
+
+        const contact = getContact.rows[0];
+        const user = getUser.rows[0];
+
+        const userContacts = user.contacts;
+        const contactContacts = contact.contacts;
+
+        const newContactContacts = contactContacts.filter(
+          (contact: number) => contact !== userId
+        );
+        const newUserContacts = userContacts.filter(
+          (contact: number) => contact !== contactId
+        );
+
+        await pool.query(
+          `UPDATE users SET contacts = ARRAY[${newContactContacts}]::integer[], updated_at = default WHERE id = ${contactId} RETURNING *`
+        );
+        const updatedUser = await pool.query(
+          `UPDATE users SET contacts = ARRAY[${newUserContacts}]::integer[], updated_at = default WHERE id = ${userId} RETURNING *`
+        );
+
+        return updatedUser.rows[0];
+      } catch (error) {
         if (error instanceof Error) throw new UserInputError(error.message);
       }
     },
