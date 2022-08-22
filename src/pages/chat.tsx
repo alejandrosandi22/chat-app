@@ -50,9 +50,9 @@ export function ChatEvents({ currentUser }: { currentUser: UserType }) {
             transition: 0.5s;
           }
           .contact-profile-container {
-            width: ${toggle ? '25%' : '0'};
-            transition: 0.5s;
+            width: ${toggle ? '25%' : '0%'};
             background: var(--primary);
+            transition: 0.5s;
           }
         }
       `}</style>
