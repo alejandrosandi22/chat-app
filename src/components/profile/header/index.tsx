@@ -22,7 +22,11 @@ export default function Header({ user }: HeaderProps) {
     if (user.show_profile_photo === 'only-contacts') {
       if (user.contacts.includes(currentUser.id)) setAvatar(user.avatar);
     }
-  }, [currentUser]);
+
+    if (user.show_profile_photo === 'just-me') {
+      if (user.id === currentUser.id) setAvatar(user.avatar);
+    }
+  }, [currentUser, user]);
 
   useEffect(() => {
     if (progress === 100) {
@@ -224,11 +228,13 @@ export default function Header({ user }: HeaderProps) {
                 font-size: 50px;
                 font-weight: normal;
                 color: var(--primary-font-color);
+                pointer-events: all;
               }
               .profile-header-user-contacts {
                 font-size: 25px;
                 font-weight: normal;
                 color: var(--primary-font-color);
+                pointer-events: all;
               }
             }
           }
