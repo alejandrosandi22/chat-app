@@ -1,7 +1,7 @@
 import AppLayout from 'common/appLayout';
 import Loading from 'components/loading';
 import Nav from 'components/nav';
-import useAuth from 'hooks/useAuth';
+import useAuth from 'hooks/auth/useAuth';
 import client from 'services/apolloClient';
 import { UserType } from 'types';
 import { GET_USER } from 'graphql/queries';
@@ -10,7 +10,6 @@ import Profile from 'components/profile';
 
 export default function UsersProfile({ user }: { user: UserType }) {
   const { currentUser, loading } = useAuth();
-
   if (loading || !currentUser) return <Loading />;
 
   return (
@@ -18,7 +17,7 @@ export default function UsersProfile({ user }: { user: UserType }) {
       <AppLayout title={`Chat App | ${user.name}`}>
         <div className='profile'>
           <Nav user={currentUser} />
-          <Profile currentUser={currentUser} user={user} />
+          <Profile user={user} />
         </div>
       </AppLayout>
       <style jsx>{`

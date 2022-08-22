@@ -1,4 +1,4 @@
-import { deleteCookie } from 'cookies-next';
+import useSignOut from 'hooks/auth/useSignOut';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -13,13 +13,8 @@ export default function Nav({
   handleToggle?: () => void;
   user: UserType;
 }) {
-  const router = useRouter();
-  const { pathname } = router;
-
-  const handleSignOut = () => {
-    deleteCookie('chat-app-user-session');
-    router.push('/signin');
-  };
+  const { pathname } = useRouter();
+  const { signOut } = useSignOut();
 
   return (
     <>
@@ -82,10 +77,7 @@ export default function Nav({
         </ul>
         <ul className='nav-sign-out-list'>
           <li className='nav-sign-out-list-item'>
-            <div
-              onClick={handleSignOut}
-              className='nav-sign-out-list-item-link'
-            >
+            <div onClick={signOut} className='nav-sign-out-list-item-link'>
               <i className='fal fa-sign-out'></i>
             </div>
           </li>

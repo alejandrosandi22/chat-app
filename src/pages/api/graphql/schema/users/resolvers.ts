@@ -45,7 +45,7 @@ export const resolvers = {
                   id: 0,
                   content: '',
                   type: '',
-                  created_at: new Date(),
+                  created_at: null,
                 },
               };
 

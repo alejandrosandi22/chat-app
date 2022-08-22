@@ -2,7 +2,7 @@ import AppLayout from 'common/appLayout';
 import Loading from 'components/loading';
 import Nav from 'components/nav';
 import { ThemeContext } from 'context/theme';
-import useAuth from 'hooks/useAuth';
+import useAuth from 'hooks/auth/useAuth';
 import { useContext, useEffect, useState } from 'react';
 import { UserType } from 'types';
 

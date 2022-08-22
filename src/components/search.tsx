@@ -1,15 +1,11 @@
+import useGetCurrentUser from 'hooks/useGetCurrentUser';
 import useSearch from 'hooks/useSearch';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { UserType } from 'types';
 
-export function SearchResults({
-  results,
-  currentUser,
-}: {
-  results: UserType[];
-  currentUser: UserType;
-}) {
+export function SearchResults({ results }: { results: UserType[] }) {
+  const { currentUser } = useGetCurrentUser();
   return (
     <>
       {results.map((user: UserType) => {
@@ -80,7 +76,7 @@ export function SearchResults({
   );
 }
 
-export default function Search({ currentUser }: { currentUser: UserType }) {
+export default function Search() {
   const [search, setSearch] = useState<string>('');
   const [results, setResults] = useState<Array<UserType>>([]);
 
@@ -116,11 +112,7 @@ export default function Search({ currentUser }: { currentUser: UserType }) {
           />
         </form>
         <section>
-          <div>
-            {data && (
-              <SearchResults currentUser={currentUser} results={results} />
-            )}
-          </div>
+          <div>{data && <SearchResults results={results} />}</div>
         </section>
       </div>
       <style jsx>{`

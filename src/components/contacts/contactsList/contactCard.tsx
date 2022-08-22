@@ -1,21 +1,25 @@
-import useErrorImage from 'hooks/useErrorImage';
-import moment from 'moment';
-import Link from 'next/link';
+import { useAppDispatch } from 'hooks';
 import { useEffect, useState } from 'react';
+import { setSelectContact } from 'store/reducers/selectContact';
 import { UserType } from 'types';
+import useGetCurrentUser from 'hooks/useGetCurrentUser';
+import useErrorImage from 'hooks/useErrorImage';
+import Link from 'next/link';
+import moment from 'moment';
 
 interface ContactCardProps {
   contact: UserType;
-  currentUser: UserType;
 }
 
-export default function ContactCard({
-  contact,
-  currentUser,
-}: ContactCardProps) {
+export default function ContactCard({ contact }: ContactCardProps) {
   const { imageOnError } = useErrorImage();
-
+  const { currentUser } = useGetCurrentUser();
   const [avatar, setAvatar] = useState<string | undefined>();
+  const dispatch = useAppDispatch();
+
+  const handleSelectContact = () => {
+    dispatch(setSelectContact(contact));
+  };
 
   useEffect(() => {
     if (contact.show_profile_photo === 'only-contacts') {
@@ -30,7 +34,7 @@ export default function ContactCard({
 
   return (
     <>
-      <div className='contact-card'>
+      <div onClick={handleSelectContact} className='contact-card'>
         <Link href={`/[username]`} as={`/${contact.username}`}>
           <a className='contact-card-avatar'>
             <img
@@ -50,12 +54,13 @@ export default function ContactCard({
         </div>
         <div className='contact-card-chat'>
           <div className='contact-card-chat-time'>
-            {moment(contact.lastMessage?.created_at).calendar(null, {
-              sameDay: 'h:mm A',
-              lastDay: '[Yesterday]',
-              lastWeek: 'l',
-              sameElse: 'l',
-            })}
+            {contact.lastMessage?.created_at &&
+              moment(contact.lastMessage?.created_at).calendar(null, {
+                sameDay: 'h:mm A',
+                lastDay: '[Yesterday]',
+                lastWeek: 'l',
+                sameElse: 'l',
+              })}
           </div>
         </div>
       </div>

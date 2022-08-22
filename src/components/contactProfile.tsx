@@ -1,7 +1,15 @@
+import { useAppSelector } from 'hooks';
+
 export default function ContactProfile() {
+  const { contact } = useAppSelector((state) => state.selectContact);
   return (
     <>
-      <div className='contact-profile'></div>
+      <div className='contact-profile'>
+        <img src={contact?.cover_photo} alt='' />
+        <section>
+          <img src={contact?.avatar} alt='' />
+        </section>
+      </div>
       <style jsx>
         {`
           .contact-profile {

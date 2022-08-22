@@ -1,4 +1,5 @@
 import useErrorImage from 'hooks/useErrorImage';
+import useGetCurrentUser from 'hooks/useGetCurrentUser';
 import useRemoveContact from 'hooks/useRemoveContact';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -6,18 +7,17 @@ import { UserType } from 'types';
 
 export default function Card({
   contact,
-  currentUser,
   refetch,
   isCurrentUser,
 }: {
   contact: UserType;
-  currentUser: UserType;
   refetch: () => void;
   isCurrentUser?: boolean;
 }) {
   const { imageOnError } = useErrorImage();
   const { removeContact, loading } = useRemoveContact();
   const [avatar, setAvatar] = useState<string | undefined>();
+  const { currentUser } = useGetCurrentUser();
 
   useEffect(() => {
     if (contact.show_profile_photo === 'only-contacts') {
