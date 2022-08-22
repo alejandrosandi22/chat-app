@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@apollo/client": "3.6.9",
+    "@reduxjs/toolkit": "1.8.5",
     "apollo-server-micro": "3.10.0",
     "bcryptjs": "2.4.3",
     "cookies-next": "2.1.1",
@@ -26,7 +27,8 @@
     "passport-google-oauth20": "2.0.0",
     "pg": "8.7.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-redux": "8.0.2"
   },
   "devDependencies": {
     "@styled-jsx/plugin-sass": "^4.0.2",

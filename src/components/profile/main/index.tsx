@@ -1,14 +1,15 @@
 import Card from 'components/card';
 import useGetContacts from 'hooks/useGetContacts';
+import useGetCurrentUser from 'hooks/useGetCurrentUser';
 import { UserType } from 'types';
 
 interface MainProps {
   user: UserType;
-  currentUser: UserType;
 }
 
-export default function Main({ currentUser, user }: MainProps) {
+export default function Main({ user }: MainProps) {
   const { contacts, loading, refetch } = useGetContacts(user.id);
+  const { currentUser } = useGetCurrentUser();
 
   return (
     <>
@@ -52,7 +53,6 @@ export default function Main({ currentUser, user }: MainProps) {
                   <Card
                     key={contact.username}
                     contact={contact}
-                    currentUser={currentUser}
                     isCurrentUser={user.id === currentUser.id}
                     refetch={refetch}
                   />

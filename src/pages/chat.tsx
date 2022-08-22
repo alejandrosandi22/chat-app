@@ -5,14 +5,13 @@ import Nav from 'components/nav';
 import Contacts from 'components/contacts';
 import Messages from 'components/messages';
 import ContactProfile from 'components/contactProfile';
-import useAuth from 'hooks/useAuth';
+import useAuth from 'hooks/auth/useAuth';
 import Loading from 'components/loading';
 import { UserType } from 'types';
 
 export function ChatEvents({ currentUser }: { currentUser: UserType }) {
   const { toggle } = useContext(ToggleContactProfileContext);
   const [contactsToggle, setContactsToggle] = useState<boolean>(false);
-
   const handleContactsToggle = () => setContactsToggle(!contactsToggle);
 
   return (
@@ -24,7 +23,7 @@ export function ChatEvents({ currentUser }: { currentUser: UserType }) {
           user={currentUser}
         />
         <div className='chat-contacts-wrapper'>
-          <Contacts currentUser={currentUser} />
+          <Contacts />
         </div>
         <div className='chat-messages-wrapper'>
           <Messages />
@@ -63,7 +62,7 @@ export function ChatEvents({ currentUser }: { currentUser: UserType }) {
 
 export default function Chat() {
   const { currentUser, loading } = useAuth();
-  if (loading || !currentUser) return <Loading />;
+  if (!currentUser || loading) return <Loading />;
 
   return (
     <AppLayout title='Chat App | Messages'>

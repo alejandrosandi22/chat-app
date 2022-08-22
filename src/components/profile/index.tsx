@@ -4,15 +4,14 @@ import Main from './main';
 
 interface ProfileProps {
   user: UserType;
-  currentUser: UserType;
 }
 
-export default function Profile({ currentUser, user }: ProfileProps) {
+export default function Profile({ user }: ProfileProps) {
   return (
     <>
       <div>
-        <Header currentUser={currentUser} user={user} />
-        <Main currentUser={currentUser} user={user} />
+        <Header user={user} />
+        <Main user={user} />
       </div>
       <style jsx>{`
         div {

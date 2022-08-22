@@ -3,27 +3,24 @@ import useErrorImage from 'hooks/useErrorImage';
 import useUpdateUser from 'hooks/useUpdateUser';
 import { useEffect, useState } from 'react';
 import { UserType } from 'types';
+import useGetCurrentUser from 'hooks/useGetCurrentUser';
 
 interface HeaderProps {
   user: UserType;
-  currentUser: UserType;
 }
 
-export default function Header({ currentUser, user }: HeaderProps) {
-  const [avatar, setAvatar] = useState<string | undefined>(undefined);
+export default function Header({ user }: HeaderProps) {
+  const [avatar, setAvatar] = useState<string>('/static/images/user.png');
   const [progress, setProgress] = useState<number>(0);
-
+  const { currentUser } = useGetCurrentUser();
   const { imageOnError } = useErrorImage();
   const { updateUser } = useUpdateUser();
 
   useEffect(() => {
-    if (user.show_profile_photo === 'only-contacts') {
-      if (!user.contacts.includes(currentUser.id))
-        setAvatar('static/images/user.png');
-    }
+    if (user.show_profile_photo === 'public') setAvatar(user.avatar);
 
-    if (user.show_profile_photo === 'just-me') {
-      if (user.id !== currentUser.id) setAvatar('static/images/user.png');
+    if (user.show_profile_photo === 'only-contacts') {
+      if (user.contacts.includes(currentUser.id)) setAvatar(user.avatar);
     }
   }, [currentUser]);
 
@@ -48,7 +45,9 @@ export default function Header({ currentUser, user }: HeaderProps) {
     }).then((res) => {
       updateUser({
         onCompleted: () => {
-          setAvatar(res?.url);
+          if (res) {
+            setAvatar(res.url);
+          }
         },
         variables: {
           avatar: res?.url,
@@ -84,7 +83,7 @@ export default function Header({ currentUser, user }: HeaderProps) {
           <div className='profile-header-avatar'>
             <img
               className='profile-header-avatar-image'
-              src={avatar ? avatar : user.avatar}
+              src={avatar}
               onError={imageOnError}
               alt='avatar'
             />
