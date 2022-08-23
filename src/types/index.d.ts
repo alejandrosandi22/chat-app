@@ -1,10 +1,10 @@
 type MessageType = {
   date?: string;
-  id: string;
+  id: number;
   content: string;
   fileName?: string;
-  sender: string;
-  receiver: string;
+  sender: number;
+  receiver: number;
   type: string;
   created_at: string;
 };

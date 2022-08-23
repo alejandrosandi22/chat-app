@@ -3,21 +3,14 @@ import { MessageType } from 'types';
 import Message from './message';
 import moment from 'moment';
 import { useGetMessages } from 'hooks/useGetMessages';
-
-const contact = {
-  id: 2,
-  name: 'John Doe',
-  email: 'jondoe@gmail.com',
-  username: 'johndoe',
-  avatar: 'https://i.ibb.co/vv2yvRz/denon.png',
-  contacts: [],
-};
+import { useAppSelector } from 'hooks';
 
 export default function MessagesView() {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const chatRef = useRef<HTMLElement>(null);
+  const { contact } = useAppSelector((state) => state.selectContact);
 
-  const { data, loading } = useGetMessages(contact.id);
+  const { data, loading } = useGetMessages(contact ? contact.id : 0);
 
   useEffect(() => {
     if (chatRef.current)
@@ -28,28 +21,29 @@ export default function MessagesView() {
     if (data) setMessages(data);
   }, [data]);
 
-  if (loading || !messages) return null;
+  if (loading || !messages || !contact) return null;
 
   return (
     <>
       <main ref={chatRef} className='chat-messages-wrapper'>
-        {messages.map((message: MessageType) => {
-          return (
-            <div key={message.id} className='chat-message-list-wrapper'>
-              {message.date && (
-                <h3 className='chat-message-date'>
-                  {moment(message.date).calendar(null, {
-                    sameDay: '[Today]',
-                    lastDay: '[Yesterday]',
-                    lastWeek: 'll',
-                    sameElse: 'll',
-                  })}
-                </h3>
-              )}
-              <Message message={message} contact={contact} />
-            </div>
-          );
-        })}
+        {messages.length > 0 &&
+          messages.map((message: MessageType) => {
+            return (
+              <div key={message.id} className='chat-message-list-wrapper'>
+                {message.date && (
+                  <h3 className='chat-message-date'>
+                    {moment(message.date).calendar(null, {
+                      sameDay: '[Today]',
+                      lastDay: '[Yesterday]',
+                      lastWeek: 'll',
+                      sameElse: 'll',
+                    })}
+                  </h3>
+                )}
+                <Message message={message} contact={contact} />
+              </div>
+            );
+          })}
       </main>
       <style jsx>{`
         .chat-messages-wrapper {

@@ -158,3 +158,18 @@ export const SEARCH_USERS = gql`
     }
   }
 `;
+
+export const GET_MESSAGES = gql`
+  query GetMessages($contactId: Int!) {
+    getMessages(contactId: $contactId) {
+      id
+      date
+      content
+      receiver
+      sender
+      type
+      filename
+      created_at
+    }
+  }
+`;

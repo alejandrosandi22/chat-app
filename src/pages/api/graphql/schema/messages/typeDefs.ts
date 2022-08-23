@@ -5,17 +5,17 @@ export const typeDefs = gql`
 
   type Message {
     id: ID
+    date: Date
     content: String!
     filename: String
-    sender: String!
-    receiver: String!
+    sender: Int!
+    receiver: Int!
     type: String!
     created_at: Date
   }
   type Query {
-    getMessage: Message
+    getMessages(contactId: Int!): [Message]
     getLastMessage(contactId: String!, userId: String!): Message
-    getConversationMesages(sender: String!, receiver: String!): [Message]
   }
 
   type Mutation {
