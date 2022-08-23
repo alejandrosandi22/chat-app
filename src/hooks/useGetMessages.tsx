@@ -1,18 +1,21 @@
-import { useEffect, useState } from 'react';
-import getMessages from 'services/getMessages';
-import { MessageType } from 'types';
+import { useQuery } from '@apollo/client';
+import { GET_MESSAGES } from 'graphql/queries';
+import { getAuth } from 'services/apolloClient';
 
 export function useGetMessages(contactId: number) {
-  const [data, setData] = useState<MessageType[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const { data, loading, error } = useQuery(GET_MESSAGES, {
+    onError(error) {
+      console.error(error);
+    },
+    variables: {
+      contactId,
+    },
+    context: {
+      headers: {
+        authorization: getAuth(),
+      },
+    },
+  });
 
-  useEffect(() => {
-    setLoading(true);
-    getMessages(1, contactId).then((data) => {
-      setData(data);
-      setLoading(false);
-    });
-  }, [contactId]);
-
-  return { data, loading };
+  return { data: data?.getMessages, loading, error };
 }

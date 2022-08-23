@@ -1,12 +1,54 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { pool } from 'pages/api/utils/database';
 import Cryptr from 'cryptr';
+import { MessageType } from 'types';
 
 const cryptr = new Cryptr(process.env.ACCESS_TOKEN_SECRET);
 
 export const resolvers = {
   Query: {
-    getMessage: () => {},
+    getMessages: async (
+      _: any,
+      { contactId }: { contactId: number },
+      context: any
+    ) => {
+      const userId = context.user.id;
+      const messages = await pool.query(
+        `SELECT * FROM messages WHERE (sender = ${userId} AND receiver = ${contactId}) OR (sender = ${contactId} AND receiver = ${userId}) ORDER BY created_at LIMIT 10`
+      );
+
+      const decryptMessages: MessageType[] = messages.rows.reduce(function (
+        accumulator,
+        currentValue
+      ) {
+        accumulator.push({
+          ...currentValue,
+          content: cryptr.decrypt(currentValue.content),
+        });
+        return accumulator;
+      },
+      []);
+
+      let date = '';
+
+      const getDate = (date: string) => {
+        const dateObj = new Date(date);
+        return `${dateObj.getDate()}/${dateObj.getMonth() + 1 < 10 ? 0 : ''}${
+          dateObj.getMonth() + 1
+        }/${dateObj.getFullYear()}`;
+      };
+
+      return decryptMessages.map((message) => {
+        if (date !== getDate(message.created_at)) {
+          date = getDate(message.created_at);
+          return {
+            date: message.created_at,
+            ...message,
+          };
+        }
+        return message;
+      });
+    },
     getLastMessage: async (
       _: any,
       { contactId, userId }: { contactId: string; userId: string }
@@ -19,13 +61,6 @@ export const resolvers = {
       } catch (error) {
         if (error instanceof Error) throw new Error(error.message);
       }
-    },
-    getConversationMesages: async (_root: any, args: any) => {
-      const { sender, receiver } = args;
-
-      return await pool.query(
-        `SELECT * FROM messages WHERE (sender = ${sender} AND receiver = ${receiver}) OR (sender = ${receiver} AND receiver = ${sender}) ORDER BY created_at ASC`
-      );
     },
   },
   Mutation: {

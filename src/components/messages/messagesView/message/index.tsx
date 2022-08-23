@@ -3,6 +3,7 @@ import { MessageType, UserType } from 'types';
 import moment from 'moment';
 import Audio from './audio';
 import Video from './video';
+import useGetCurrentUser from 'hooks/useGetCurrentUser';
 
 export default function Message({
   message,
@@ -11,24 +12,21 @@ export default function Message({
   message: MessageType;
   contact: UserType;
 }) {
-  const user = {
-    id: '1',
-    avatar: 'https://deno.land/favicon.ico',
-  };
+  const { currentUser } = useGetCurrentUser();
 
   return (
     <>
       <div
         className={`message ${
-          message.sender === user.id ? 'receiver' : 'sender'
+          message.sender === currentUser.id ? 'receiver' : 'sender'
         }`}
       >
         <div className='message-avatar-wrapper'>
-          {message.sender === user.id ? (
+          {message.sender === currentUser.id ? (
             <Image
               className='message-avatar'
               layout='fill'
-              src={user.avatar}
+              src={currentUser.avatar}
               alt='user avatar'
             />
           ) : (
