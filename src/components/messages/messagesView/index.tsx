@@ -2,15 +2,16 @@ import { useEffect, useRef, useState } from 'react';
 import { MessageType } from 'types';
 import Message from './message';
 import moment from 'moment';
-import { useGetMessages } from 'hooks/useGetMessages';
+import { useGetMessages } from 'hooks/messages/useGetMessages';
 import { useAppSelector } from 'hooks';
 
 export default function MessagesView() {
   const [messages, setMessages] = useState<MessageType[]>([]);
+  const [page, setPage] = useState<number>(0);
   const chatRef = useRef<HTMLElement>(null);
   const { contact } = useAppSelector((state) => state.selectContact);
 
-  const { data, loading } = useGetMessages(contact ? contact.id : 0);
+  const { data, loading } = useGetMessages(contact ? contact.id : 0, page);
 
   useEffect(() => {
     if (chatRef.current)
