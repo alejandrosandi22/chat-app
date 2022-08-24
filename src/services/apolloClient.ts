@@ -7,14 +7,13 @@ export const getAuth = () => {
 };
 
 const client = new ApolloClient({
-  ssrMode: true,
-  cache: new InMemoryCache(),
   link: new HttpLink({
     headers: {
       authorization: getAuth(),
     },
-    uri: 'http://localhost:3000/api/graphql',
+    uri: 'http://localhost:4000/graphql',
   }),
+  cache: new InMemoryCache(),
 });
 
 export default client;

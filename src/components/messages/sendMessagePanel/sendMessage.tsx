@@ -1,12 +1,32 @@
+import { useAppSelector } from 'hooks';
+import useSendMessage from 'hooks/messages/useSendMessage';
+import { FormEvent } from 'react';
+
 interface SendMessageProps {
   message: string;
   setMessage: (message: string) => void;
 }
 
 export default function SendMessage({ message, setMessage }: SendMessageProps) {
+  const { sendMessage } = useSendMessage();
+  const { contact } = useAppSelector((state) => state.selectContact);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await sendMessage({
+      variables: {
+        receiver: contact?.id,
+        content: message,
+        type: 'text',
+      },
+    });
+
+    setMessage('');
+  };
+
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit}>
         <input
           value={message}
           onChange={(e) => setMessage(e.target.value)}

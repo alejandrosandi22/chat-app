@@ -160,8 +160,8 @@ export const SEARCH_USERS = gql`
 `;
 
 export const GET_MESSAGES = gql`
-  query GetMessages($contactId: Int!) {
-    getMessages(contactId: $contactId) {
+  query GetMessages($contactId: Int!, $offset: Int!) {
+    getMessages(contactId: $contactId, offset: $offset) {
       id
       date
       content
@@ -169,6 +169,42 @@ export const GET_MESSAGES = gql`
       sender
       type
       filename
+      created_at
+    }
+  }
+`;
+
+export const SEND_MESSAGE = gql`
+  mutation SendMessage(
+    $content: String!
+    $receiver: Int!
+    $type: String!
+    $filename: String
+  ) {
+    sendMessage(
+      content: $content
+      receiver: $receiver
+      type: $type
+      filename: $filename
+    ) {
+      id
+      filename
+      content
+      sender
+      receiver
+      created_at
+    }
+  }
+`;
+
+export const MESSAGE_SENDED = gql`
+  subscription messegeSended {
+    messegeSended {
+      id
+      filename
+      content
+      sender
+      receiver
       created_at
     }
   }
