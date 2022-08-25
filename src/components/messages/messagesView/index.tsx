@@ -7,7 +7,7 @@ import { useAppSelector } from 'hooks';
 
 export default function MessagesView() {
   const [messages, setMessages] = useState<MessageType[]>([]);
-  const [page, setPage] = useState<number>(0);
+  const [page] = useState<number>(0);
   const chatRef = useRef<HTMLElement>(null);
   const { contact } = useAppSelector((state) => state.selectContact);
 

@@ -3,25 +3,13 @@ import AppLayout from 'common/appLayout';
 import Input from 'components/input';
 import SocialSignIn from 'components/socialSignIn';
 import Link from 'next/link';
-import { useMutation } from '@apollo/client';
-import { SIGN_IN } from 'graphql/queries';
-import { useRouter } from 'next/router';
-import { setCookie } from 'cookies-next';
+import useSignIn from 'hooks/auth/useSignIn';
 
 export default function SignIn() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const router = useRouter();
 
-  const [signIn, { loading }] = useMutation(SIGN_IN, {
-    onCompleted: (data) => {
-      setCookie('chat-app-user-session', data.signIn.value);
-      router.push('/chat');
-    },
-    onError: (error) => {
-      console.error(error);
-    },
-  });
+  const { signIn, loading } = useSignIn();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
