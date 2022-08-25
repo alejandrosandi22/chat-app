@@ -22,7 +22,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 - [TypeScript](https://www.typescriptlang.org/)
 - [Next.js](https://nextjs.org/)
-- [GraphQL](https://graphql.org/)
-- [PostgreSQL](https://www.postgresql.org/)
 
 Visit other projects in my portfolio: [https://alejandrosandi.com](https://alejandrosandi.com)
