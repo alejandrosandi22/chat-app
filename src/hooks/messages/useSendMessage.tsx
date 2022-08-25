@@ -1,12 +1,9 @@
 import { useMutation } from '@apollo/client';
-import { SEND_MESSAGE } from 'graphql/queries';
+import { SEND_MESSAGE } from 'graphql/mutations';
 import { getAuth } from 'services/apolloClient';
 
 export default function useSendMessage() {
   const [sendMessage, { data, loading }] = useMutation(SEND_MESSAGE, {
-    onCompleted(data) {
-      console.log(data);
-    },
     onError(error) {
       console.error(error);
     },
