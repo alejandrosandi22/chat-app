@@ -23,6 +23,6 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - [TypeScript](https://www.typescriptlang.org/)
 - [Next.js](https://nextjs.org/)
 
-Visit the graphql server (here)[https://github.com/alejandrosandi22/chat-app-server]
+Visit the graphql server [here](https://github.com/alejandrosandi22/chat-app-server)
 <br/>
 Visit other projects in my portfolio: [https://alejandrosandi.com](https://alejandrosandi.com)
