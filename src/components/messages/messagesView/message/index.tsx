@@ -1,17 +1,14 @@
+import React from 'react';
 import Image from 'next/image';
-import { MessageType, UserType } from 'types';
+import { MessageType } from 'types';
 import moment from 'moment';
 import Audio from './audio';
 import Video from './video';
 import useGetCurrentUser from 'hooks/useGetCurrentUser';
+import { useAppSelector } from 'hooks';
 
-export default function Message({
-  message,
-  contact,
-}: {
-  message: MessageType;
-  contact: UserType;
-}) {
+export default function Message({ message }: { message: MessageType }) {
+  const { contact } = useAppSelector((state) => state.selectContact);
   const { currentUser } = useGetCurrentUser();
 
   return (
@@ -26,14 +23,14 @@ export default function Message({
             <Image
               className='message-avatar'
               layout='fill'
-              src={currentUser.avatar}
+              src={currentUser.avatar ?? '/static/images/user.png'}
               alt='user avatar'
             />
           ) : (
             <Image
               className='message-avatar'
               layout='fill'
-              src={contact.avatar}
+              src={contact?.avatar ?? '/static/images/user.png'}
               alt='contact avatar'
             />
           )}
@@ -95,6 +92,7 @@ export default function Message({
           margin: 10px 0;
           gap: 10px;
           display: grid;
+          animation: show 1s both;
           .message-avatar-wrapper {
             grid-area: avatar;
             position: relative;
@@ -193,6 +191,15 @@ export default function Message({
           .message-time-wrapper {
             display: flex;
             justify-content: flex-end;
+          }
+        }
+
+        @keyframes show {
+          0% {
+            opacity: 0;
+          }
+          100% {
+            opacity: 1;
           }
         }
       `}</style>

@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from 'store';
 import { UserType } from 'types';
 
 interface CounterState {
@@ -21,5 +20,4 @@ export const userSlice = createSlice({
 });
 
 export const { setUser } = userSlice.actions;
-export const selectUser = (state: RootState) => state.userReducer.user;
 export default userSlice.reducer;
