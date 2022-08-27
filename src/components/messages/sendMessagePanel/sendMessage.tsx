@@ -14,14 +14,15 @@ export default function SendMessage({ message, setMessage }: SendMessageProps) {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await sendMessage({
+      onCompleted: () => {
+        setMessage('');
+      },
       variables: {
         receiver: contact?.id,
         content: message,
         type: 'text',
       },
     });
-
-    setMessage('');
   };
 
   return (
@@ -34,6 +35,7 @@ export default function SendMessage({ message, setMessage }: SendMessageProps) {
           id='search'
           name='search'
           placeholder='Search'
+          autoComplete='off'
         />
         <button>
           <i className='fal fa-paper-plane send-message-icon' />

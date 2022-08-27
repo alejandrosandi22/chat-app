@@ -3,35 +3,32 @@ import { MessageType } from 'types';
 import Message from './message';
 import moment from 'moment';
 import { useGetMessages } from 'hooks/messages/useGetMessages';
-import { useAppSelector } from 'hooks';
 
 export default function MessagesView() {
-  const [messages, setMessages] = useState<MessageType[]>([]);
-  const [page] = useState<number>(0);
   const chatRef = useRef<HTMLElement>(null);
-  const { contact } = useAppSelector((state) => state.selectContact);
-
-  const { data, loading } = useGetMessages(contact ? contact.id : 0, page);
+  const [isScroll] = useState<boolean>(false);
+  const { messages, loading, loadMoreMessages } = useGetMessages();
 
   useEffect(() => {
-    if (chatRef.current)
-      chatRef.current.scrollTo(0, chatRef.current.scrollHeight);
+    if (chatRef.current && !isScroll)
+      chatRef.current.scrollTo({
+        left: 0,
+        top: chatRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
   }, [messages]);
 
-  useEffect(() => {
-    if (data) setMessages(data);
-  }, [data]);
-
-  if (loading || !messages || !contact) return null;
+  if (loading || !messages) return null;
 
   return (
     <>
       <main ref={chatRef} className='chat-messages-wrapper'>
+        <button onClick={loadMoreMessages}>load more</button>
         {messages.length > 0 &&
           messages.map((message: MessageType) => {
             return (
               <div key={message.id} className='chat-message-list-wrapper'>
-                {message.date && (
+                {message?.date && (
                   <h3 className='chat-message-date'>
                     {moment(message.date).calendar(null, {
                       sameDay: '[Today]',
@@ -41,7 +38,7 @@ export default function MessagesView() {
                     })}
                   </h3>
                 )}
-                <Message message={message} contact={contact} />
+                <Message message={message} />
               </div>
             );
           })}
@@ -57,6 +54,7 @@ export default function MessagesView() {
           overflow-y: auto;
           overflow-x: hidden;
           background: var(--background);
+          transition: all 0.5s;
           .chat-message-list-wrapper {
             width: 100%;
             display: flex;

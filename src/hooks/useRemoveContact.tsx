@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { REMOVE_CONTACT } from 'graphql/queries';
+import { REMOVE_CONTACT } from 'graphql/mutations';
 import { getAuth } from 'services/apolloClient';
 
 export default function useRemoveContact() {

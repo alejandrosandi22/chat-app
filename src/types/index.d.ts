@@ -1,5 +1,5 @@
 type MessageType = {
-  date?: string;
+  date?: string | null;
   id: number;
   content: string;
   fileName?: string;

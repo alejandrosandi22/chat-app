@@ -81,60 +81,6 @@ export const GET_USER = gql`
   }
 `;
 
-export const SIGN_UP = gql`
-  mutation SignUp(
-    $name: String!
-    $email: String!
-    $username: String!
-    $password: String!
-  ) {
-    signUp(
-      name: $name
-      email: $email
-      username: $username
-      password: $password
-    ) {
-      value
-    }
-  }
-`;
-
-export const UPDATE_USER = gql`
-  mutation UpdateUser(
-    $name: String
-    $username: String
-    $avatar: String
-    $coverPhoto: String
-    $website: String
-    $description: String
-    $showProfilePhoto: String
-    $contactsRequest: String
-    $contacts: [Int]
-  ) {
-    updateUser(
-      name: $name
-      username: $username
-      avatar: $avatar
-      cover_photo: $coverPhoto
-      website: $website
-      description: $description
-      show_profile_photo: $showProfilePhoto
-      contacts_request: $contactsRequest
-      contacts: $contacts
-    ) {
-      name
-    }
-  }
-`;
-
-export const REMOVE_CONTACT = gql`
-  mutation RemoveContact($removeContactId: Int!) {
-    removeContact(id: $removeContactId) {
-      id
-    }
-  }
-`;
-
 export const SEARCH_USERS = gql`
   query searchUsers($search: String!) {
     searchUsers(search: $search) {
@@ -152,8 +98,8 @@ export const SEARCH_USERS = gql`
 `;
 
 export const GET_MESSAGES = gql`
-  query GetMessages($contactId: Int!, $offset: Int!) {
-    getMessages(contactId: $contactId, offset: $offset) {
+  query GetMessages($contactId: Int!, $offset: Int!, $limit: Int!) {
+    getMessages(contactId: $contactId, offset: $offset, limit: $limit) {
       id
       date
       content
