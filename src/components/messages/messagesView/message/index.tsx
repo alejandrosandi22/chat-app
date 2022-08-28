@@ -4,7 +4,7 @@ import { MessageType } from 'types';
 import moment from 'moment';
 import Audio from './audio';
 import Video from './video';
-import useGetCurrentUser from 'hooks/useGetCurrentUser';
+import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
 import { useAppSelector } from 'hooks';
 
 export default function Message({ message }: { message: MessageType }) {
@@ -166,7 +166,7 @@ export default function Message({ message }: { message: MessageType }) {
             border-radius: 0px 15px 15px 15px;
           }
           .message-text-content {
-            background: var(--thirdary);
+            background: var(--third);
             border-radius: 0px 15px 15px 15px;
             .message-content-text {
               color: var(--primary-font-color);
@@ -174,18 +174,18 @@ export default function Message({ message }: { message: MessageType }) {
           }
           .message-image-content {
             position: relative;
-            background: var(--thirdary);
+            background: var(--third);
             border-radius: 0 15px 15px 15px;
             .message-image {
               width: 100%;
             }
           }
           .message-video-content {
-            background: var(--thirdary);
+            background: var(--third);
             border-radius: 0px 15px 15px 15px;
           }
           .message-audio-content {
-            background: var(--thirdary);
+            background: var(--third);
             border-radius: 0px 15px 15px 15px;
           }
           .message-time-wrapper {

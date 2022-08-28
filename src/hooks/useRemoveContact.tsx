@@ -1,5 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { REMOVE_CONTACT } from 'graphql/mutations';
+import { GET_CURRENT_USER } from 'graphql/queries';
 import { getAuth } from 'services/apolloClient';
 
 export default function useRemoveContact() {
@@ -12,6 +13,7 @@ export default function useRemoveContact() {
         authorization: getAuth(),
       },
     },
+    refetchQueries: [{ query: GET_CURRENT_USER }],
   });
 
   return {

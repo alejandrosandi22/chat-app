@@ -13,3 +13,17 @@ export const MESSAGE_SENDED = gql`
     }
   }
 `;
+
+export const REQUEST_SENDED = gql`
+  subscription RequestSended {
+    requestSended {
+      id
+      content
+      receiver
+      sender
+      state
+      response
+      created_at
+    }
+  }
+`;

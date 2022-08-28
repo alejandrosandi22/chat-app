@@ -1,5 +1,5 @@
 import useErrorImage from 'hooks/useErrorImage';
-import useGetCurrentUser from 'hooks/useGetCurrentUser';
+import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
 import useRemoveContact from 'hooks/useRemoveContact';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';

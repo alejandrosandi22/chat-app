@@ -3,7 +3,7 @@ import AppLayout from 'common/appLayout';
 import Input from 'components/input';
 import SocialSignIn from 'components/socialSignIn';
 import { setCookie } from 'cookies-next';
-import { SIGN_UP } from 'graphql/queries';
+import { SIGN_UP } from 'graphql/mutations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ChangeEvent, FormEvent, useState } from 'react';
@@ -25,7 +25,7 @@ export default function SignUp() {
   }));
   const [handleSignUp, { loading }] = useMutation(SIGN_UP, {
     onCompleted(data) {
-      setCookie('chat-app-user-session', data.signUp.value);
+      setCookie('chat-app-user-session', data.signUp.token);
       router.push('/chat');
     },
     onError(error) {

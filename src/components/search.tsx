@@ -1,4 +1,4 @@
-import useGetCurrentUser from 'hooks/useGetCurrentUser';
+import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
 import useSearch from 'hooks/useSearch';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';

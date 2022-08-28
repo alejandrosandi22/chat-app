@@ -36,4 +36,14 @@ type EmojiType = {
   subGroup: string;
 };
 
-export type { UserType, MessageType, EmojiType };
+type RequestType = {
+  id: number;
+  content: string;
+  sender: number;
+  receiver: number;
+  state: boolean;
+  response: boolean;
+  created_at: string;
+};
+
+export type { UserType, MessageType, EmojiType, RequestType };

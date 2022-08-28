@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client';
+import { USER_DETAILS } from './fragments';
 
 export const SEND_MESSAGE = gql`
   mutation SendMessage(
@@ -26,7 +27,7 @@ export const SEND_MESSAGE = gql`
 export const SIGN_IN = gql`
   mutation signIn($email: String!, $password: String!) {
     signIn(email: $email, password: $password) {
-      value
+      token
     }
   }
 `;
@@ -52,13 +53,15 @@ export const SIGN_UP = gql`
       username: $username
       password: $password
     ) {
-      value
+      token
     }
   }
 `;
 
 export const UPDATE_USER = gql`
+  ${USER_DETAILS}
   mutation UpdateUser(
+    $userId: Int
     $name: String
     $username: String
     $avatar: String
@@ -70,6 +73,7 @@ export const UPDATE_USER = gql`
     $contacts: [Int]
   ) {
     updateUser(
+      userId: $userId
       name: $name
       username: $username
       avatar: $avatar
@@ -80,7 +84,29 @@ export const UPDATE_USER = gql`
       contacts_request: $contactsRequest
       contacts: $contacts
     ) {
-      name
+      ...UserDetails
+    }
+  }
+`;
+
+export const SEND_REQUEST = gql`
+  mutation SendRequest($receiver: Int!, $content: String!) {
+    sendRequest(receiver: $receiver, content: $content) {
+      id
+      content
+      receiver
+      sender
+      state
+      response
+      created_at
+    }
+  }
+`;
+
+export const UPDATE_REQUEST = gql`
+  mutation UpdateRequest($id: Int!, $state: Boolean, $response: Boolean) {
+    updateRequest(id: $id, state: $state, response: $response) {
+      value
     }
   }
 `;

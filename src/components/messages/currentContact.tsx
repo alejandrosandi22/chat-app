@@ -1,5 +1,5 @@
 import { ToggleContactProfileContext } from 'context/toggleContactProfile';
-import useGetCurrentUser from 'hooks/useGetCurrentUser';
+import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
 import Image from 'next/image';
 import { useContext, useEffect, useState } from 'react';
 import { UserType } from 'types';

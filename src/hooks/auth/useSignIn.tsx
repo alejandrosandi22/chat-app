@@ -8,7 +8,7 @@ export default function useSignIn() {
 
   const [signIn, { loading }] = useMutation(SIGN_IN, {
     onCompleted: (data) => {
-      setCookie('chat-app-user-session', data.signIn.value);
+      setCookie('chat-app-user-session', data.signIn.token);
       router.push('/chat');
     },
     onError: (error) => {

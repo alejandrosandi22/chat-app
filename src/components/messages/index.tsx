@@ -29,6 +29,7 @@ export default function Messages() {
                 height: calc(100% - 70px);
                 display: grid;
                 place-items: center;
+                background: var(--background);
                 h1 {
                   font-size: 2rem;
                   font-weight: normal;

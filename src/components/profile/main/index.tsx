@@ -1,6 +1,6 @@
 import Card from 'components/card';
 import useGetContacts from 'hooks/useGetContacts';
-import useGetCurrentUser from 'hooks/useGetCurrentUser';
+import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
 import { UserType } from 'types';
 
 interface MainProps {
