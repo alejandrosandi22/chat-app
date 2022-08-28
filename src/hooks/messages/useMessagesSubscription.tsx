@@ -2,7 +2,7 @@ import { useApolloClient, useSubscription } from '@apollo/client';
 import { GET_CONTACTS, GET_MESSAGES } from 'graphql/queries';
 import { MESSAGE_SENDED } from 'graphql/subscriptions';
 
-export default function useSubscriptions() {
+export default function useMessagesSubscription() {
   const client = useApolloClient();
 
   useSubscription(MESSAGE_SENDED, {

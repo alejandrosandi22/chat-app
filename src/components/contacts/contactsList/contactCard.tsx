@@ -2,7 +2,7 @@ import { useAppDispatch } from 'hooks';
 import { useEffect, useState } from 'react';
 import { setSelectContact } from 'store/reducers/selectContact';
 import { UserType } from 'types';
-import useGetCurrentUser from 'hooks/useGetCurrentUser';
+import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
 import useErrorImage from 'hooks/useErrorImage';
 import Link from 'next/link';
 import moment from 'moment';

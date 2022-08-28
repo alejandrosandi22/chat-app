@@ -4,6 +4,10 @@ import Input from 'components/input';
 import SocialSignIn from 'components/socialSignIn';
 import Link from 'next/link';
 import useSignIn from 'hooks/auth/useSignIn';
+import { GetServerSideProps } from 'next';
+import client from 'services/apolloClient';
+import { GET_CURRENT_USER } from 'graphql/queries';
+import { getCookie } from 'cookies-next';
 
 export default function SignIn() {
   const [email, setEmail] = useState<string>('');
@@ -185,3 +189,30 @@ export default function SignIn() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const token = getCookie('chat-app-user-session', { req, res });
+
+  const { data } = await client.query({
+    query: GET_CURRENT_USER,
+    context: {
+      headers: {
+        authorization: token ? `bearer ${token}` : undefined,
+      },
+    },
+  });
+
+  if (data.getCurrentUser) {
+    return {
+      redirect: {
+        permanent: false,
+        destination: '/chat',
+      },
+      props: {},
+    };
+  }
+
+  return {
+    props: {},
+  };
+};

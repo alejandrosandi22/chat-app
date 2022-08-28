@@ -1,0 +1,35 @@
+@mixin dark {
+  --background: #070a13;
+  --primary: #030407;
+  --secondary: #3e87a1;
+  --third: #030407;
+
+  --shadow: 5px 5px 10px #010203, -5px -5px 10px #05060b;
+
+  --primary-font-color: #eee;
+  --secondary-font-color: #737c9f;
+  --white: #eee;
+  --black: #010101;
+}
+
+@mixin light {
+  --background: #f5f5f5;
+  --primary: #dfdfde;
+  --secondary: #00fff0;
+  --third: #dfdfde;
+
+  --shadow: 5px 5px 10px #d8d8d8, -5px -5px 10px #ffffff;
+
+  --primary-font-color: #111;
+  --secondary-font-color: #737c9f;
+  --white: #eee;
+  --black: #010101;
+}
+
+.dark {
+  @include dark();
+}
+
+.light {
+  @include light();
+}

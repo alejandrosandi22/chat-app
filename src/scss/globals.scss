@@ -1,34 +1,5 @@
 @import 'fonts';
-
-@mixin dark {
-  --background: #070a13;
-  --primary: #030407;
-  --secondary: #3e87a1;
-  --thirdary: #030407;
-
-  --shadow: 5px 5px 10px #010203,
-  -5px -5px 10px #05060b;
-
-  --primary-font-color: #eee;
-  --secondary-font-color: #737c9f;
-  --white: #eee;
-  --black: #010101;
-}
-
-@mixin light {
-  --background: #fefefe;
-  --primary: #e9edfc;
-  --secondary: #12b4b6;
-  --thirdary: #e9edfc;
-
-  --shadow: 5px 5px 10px #d8d8d8,
-  -5px -5px 10px #ffffff;
-
-  --primary-font-color: #111;
-  --secondary-font-color: #737c9f;
-  --white: #eee;
-  --black: #010101;
-}
+@import 'colors';
 
 :root {
   //z-index
@@ -39,13 +10,7 @@
   --z-40: 40
   --z-50: 50
 }
-.dark {
-  @include dark();
-}
 
-.light {
-  @include light();
-}
 
 ::-webkit-scrollbar {
   width: 7px;

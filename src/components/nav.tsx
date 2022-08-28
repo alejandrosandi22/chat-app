@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { UserType } from 'types';
+import Requests from 'components/requests';
 
 export default function Nav({
   toggle,
@@ -64,11 +65,7 @@ export default function Nav({
               </a>
             </Link>
           </li>
-          <li className='nav-links-list-item'>
-            <span className='nav-links-list-link'>
-              <i className='fal fa-bell'></i>
-            </span>
-          </li>
+          <Requests />
           {toggle !== undefined && (
             <li onClick={handleToggle} className='nav-links-list-item'>
               <i className='fal fa-angle-double-left nav-links-list-item-icon'></i>

@@ -1,9 +1,9 @@
 import { uploadFile } from '../../../firebase/client';
 import useErrorImage from 'hooks/useErrorImage';
-import useUpdateUser from 'hooks/useUpdateUser';
+import useUpdateUser from 'hooks/user/useUpdateUser';
 import { useEffect, useState } from 'react';
 import { UserType } from 'types';
-import useGetCurrentUser from 'hooks/useGetCurrentUser';
+import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
 
 interface HeaderProps {
   user: UserType;
@@ -198,7 +198,7 @@ export default function Header({ user }: HeaderProps) {
                 width: 100%;
                 height: 100%;
                 border-radius: 50%;
-                background: var(--primary);
+                background: var(--black);
                 opacity: 0;
                 display: grid;
                 place-items: center;

@@ -24,6 +24,4 @@ declare global {
   }
 }
 
-declare module '@emoji-mart/react';
-
 export {};

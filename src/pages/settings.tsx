@@ -3,23 +3,53 @@ import Loading from 'components/loading';
 import Nav from 'components/nav';
 import { ThemeContext } from 'context/theme';
 import useAuth from 'hooks/auth/useAuth';
-import { useContext, useEffect, useState } from 'react';
+import useUpdateUser from 'hooks/user/useUpdateUser';
+import { FormEvent, useContext, useEffect, useState } from 'react';
 import { UserType } from 'types';
+import handleUpdate from 'services/update';
 
 export default function Settings() {
   const [disabledInput, setDisabledInput] = useState({
     name: true,
     username: true,
-    descrption: true,
+    description: true,
     web: true,
   });
+  const [currentData, setCurrentData] = useState<UserType>({
+    name: '',
+    username: '',
+    description: '',
+    website: '',
+  } as UserType);
   const { theme, toggleTheme } = useContext(ThemeContext);
-  const [user, setUser] = useState<UserType>({} as UserType);
+  const [user, setUser] = useState<UserType>({
+    name: '',
+    username: '',
+    description: '',
+    website: '',
+  } as UserType);
   const { currentUser, loading } = useAuth();
+
+  const { updateUser, loading: loadingUpdate } = useUpdateUser();
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    handleUpdate({
+      user,
+      currentData,
+      updateUser,
+      key: e.currentTarget.id,
+    });
+    setDisabledInput({
+      ...disabledInput,
+      name: true,
+    });
+  };
 
   useEffect(() => {
     if (currentUser) {
       setUser(currentUser);
+      setCurrentData(currentUser);
     }
   }, [currentUser]);
 
@@ -35,30 +65,66 @@ export default function Settings() {
                 <h1 className='settings-header-title'>Profile information</h1>
               </div>
               <div className='settings-content'>
-                <div className='settings-content-wrapper'>
+                <form
+                  id='name'
+                  onSubmit={handleSubmit}
+                  className='settings-content-wrapper'
+                >
                   <div className='settings-content-text'>
                     <span className='settings-content-title settings-content-profile-information-title'>
                       Name
                     </span>
                   </div>
-                  <input
-                    type='text'
-                    disabled={disabledInput.name}
-                    className='settings-content-input'
-                    value={user.name}
-                    onChange={(e) => {
-                      setUser({ ...user, name: e.target.value });
-                    }}
-                  />
-                  <button
-                    onClick={() =>
-                      setDisabledInput({ ...disabledInput, name: false })
-                    }
-                    className='settings-content-button'
-                  >
-                    change
-                  </button>
-                </div>
+                  {loadingUpdate ? (
+                    <i className='fal fa-spinner-third' />
+                  ) : (
+                    <input
+                      type='text'
+                      disabled={disabledInput.name}
+                      className='settings-content-input'
+                      value={user.name}
+                      onChange={(e) => {
+                        setUser({ ...user, name: e.target.value });
+                      }}
+                    />
+                  )}
+                  {disabledInput.name ? (
+                    <button
+                      type='button'
+                      onClick={() => {
+                        setDisabledInput({
+                          ...disabledInput,
+                          name: false,
+                        });
+                      }}
+                      className='settings-content-button'
+                    >
+                      change
+                    </button>
+                  ) : (
+                    <div className='settings-content-button-action-wrapper'>
+                      <button
+                        type='submit'
+                        className='settings-content-button-action'
+                      >
+                        <i className='fal fa-check' />
+                      </button>
+                      <button
+                        type='button'
+                        onClick={() => {
+                          setDisabledInput({
+                            ...disabledInput,
+                            name: true,
+                          });
+                          setUser({ ...user, name: currentData.name });
+                        }}
+                        className='settings-content-button-action'
+                      >
+                        <i className='fal fa-times' />
+                      </button>
+                    </div>
+                  )}
+                </form>
                 <div className='settings-content-wrapper'>
                   <div className='settings-content-text'>
                     <span className='settings-content-title settings-content-profile-information-title'>
@@ -68,7 +134,7 @@ export default function Settings() {
                   <input
                     disabled={disabledInput.username}
                     className='settings-content-input'
-                    value={user.username}
+                    defaultValue={user.username}
                     onChange={(e) =>
                       setUser({ ...user, username: e.target.value })
                     }
@@ -82,14 +148,24 @@ export default function Settings() {
                     </span>
                   </div>
                   <input
-                    disabled={disabledInput.descrption}
+                    disabled={disabledInput.description}
                     className='settings-content-input'
                     value={user.description ?? '-'}
                     onChange={(e) => {
                       setUser({ ...user, description: e.target.value });
                     }}
                   />
-                  <button className='settings-content-button'>change</button>
+                  <button
+                    onClick={() =>
+                      setDisabledInput({
+                        ...disabledInput,
+                        description: !disabledInput.description,
+                      })
+                    }
+                    className='settings-content-button'
+                  >
+                    change
+                  </button>
                 </div>
                 <div className='settings-content-wrapper'>
                   <div className='settings-content-text'>
@@ -273,7 +349,7 @@ export default function Settings() {
                     font-size: 16px;
                     font-weight: normal;
                     color: var(--primary-font-color);
-                    background: var(--primary);
+                    background: transparent;
                     outline: none;
                     transition: 0.25s;
                     text-align: center;
@@ -292,10 +368,29 @@ export default function Settings() {
                     color: var(--primary-font-color);
                     border: none;
                     font-size: 16px;
-                    padding: 4px 10px;
+                    width: 80px;
+                    height: 30px;
                     border: 1px solid var(--secondary);
                     &:hover {
                       background: var(--secondary);
+                    }
+                  }
+                  .settings-content-button-action-wrapper {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 80px;
+                    .settings-content-button-action {
+                      background: var(--primary);
+                      color: var(--primary-font-color);
+                      border: none;
+                      font-size: 16px;
+                      width: 35px;
+                      height: 30px;
+                      border: 1px solid var(--secondary);
+                      &:hover {
+                        background: var(--secondary);
+                      }
                     }
                   }
                 }
