@@ -17,8 +17,6 @@ export default function Requests() {
     }
   };
 
-  console.log(requests);
-
   if (loading || !requests) return null;
 
   return (

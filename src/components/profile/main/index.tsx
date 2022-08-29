@@ -38,7 +38,7 @@ export default function Main({ user }: MainProps) {
                   target='_blank'
                   rel='noreferrer'
                 >
-                  {user.website ?? '-'}
+                  {user.website}
                 </a>
               </p>
             </div>
@@ -104,6 +104,9 @@ export default function Main({ user }: MainProps) {
                   color: var(--primary-font-color);
                   .profile-main-info-text-link {
                     color: var(--primary-font-color);
+                    text-decoration: ${user.website === '-'
+                      ? 'none'
+                      : 'underline var(--primary-font-color)'};
                     &:hover {
                       color: var(--secondary-font-color);
                     }

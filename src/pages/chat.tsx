@@ -1,5 +1,4 @@
-import useMessagesSubscription from 'hooks/messages/useMessagesSubscription';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { ToggleContactProfileContext } from 'context/toggleContactProfile';
 import AppLayout from 'common/appLayout';
 import Nav from 'components/nav';
@@ -9,6 +8,7 @@ import ContactProfile from 'components/contactProfile';
 import useAuth from 'hooks/auth/useAuth';
 import Loading from 'components/loading';
 import { UserType } from 'types';
+import { useRouter } from 'next/router';
 
 export function ChatEvents({ currentUser }: { currentUser: UserType }) {
   const { toggle } = useContext(ToggleContactProfileContext);
@@ -62,8 +62,12 @@ export function ChatEvents({ currentUser }: { currentUser: UserType }) {
 }
 
 export default function Chat() {
+  const router = useRouter();
   const { currentUser, loading } = useAuth();
-  useMessagesSubscription();
+  useEffect(() => {
+    if (!currentUser) router.push('/signin');
+  }, [currentUser]);
+
   if (!currentUser || loading) return <Loading />;
 
   return (
