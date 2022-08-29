@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import jwt from 'jsonwebtoken';
 import { pool } from '../database';
 
-function getUsername(email: string) {
+function getUsername(email?: string) {
+  if (!email) return;
   return email.split('@')[0];
 }
 
@@ -16,10 +16,12 @@ passport.use(
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
-    async function (_accessToken, _refreshToken, profile: any, cb) {
+    async function (_accessToken, _refreshToken, profile, cb) {
       try {
         const getUser = await pool.query(
-          `SELECT * FROM users WHERE email = '${profile.emails[0].value}'`
+          `SELECT * FROM users WHERE email = '${
+            profile.emails && profile.emails[0].value
+          }'`
         );
 
         const user = getUser.rows[0] || null;
@@ -37,9 +39,9 @@ passport.use(
 
         const newUserData = {
           name: profile.displayName,
-          email: profile.emails[0].value,
-          username: getUsername(profile.emails[0].value),
-          avatar: profile.photos[0].value,
+          email: profile.emails && profile.emails[0].value,
+          username: getUsername(profile.emails && profile.emails[0].value),
+          avatar: profile.photos && profile.photos[0].value,
           provider: 'google',
         };
 

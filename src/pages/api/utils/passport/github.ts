@@ -14,8 +14,8 @@ passport.use(
       scope: ['user:email'],
     },
     async function (
-      _accessToken: any,
-      _refreshToken: any,
+      _accessToken: unknown,
+      _refreshToken: unknown,
       profile: any,
       cb: any
     ) {

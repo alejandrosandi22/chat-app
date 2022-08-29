@@ -1,3 +1,4 @@
+import useMessagesSubscription from 'hooks/messages/useMessagesSubscription';
 import useSignOut from 'hooks/auth/useSignOut';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -16,6 +17,7 @@ export default function Nav({
 }) {
   const { pathname } = useRouter();
   const { signOut } = useSignOut();
+  useMessagesSubscription();
 
   return (
     <>

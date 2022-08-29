@@ -10,15 +10,6 @@ const domains = [
 ];
 
 const nextConfig = {
-  async redirects() {
-    return [
-      {
-        source: '/signin',
-        destination: '/chat',
-        permanent: false,
-      },
-    ];
-  },
   strictMode: true,
   reactStrictMode: true,
   swcMinify: true,
