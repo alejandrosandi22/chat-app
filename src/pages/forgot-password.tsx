@@ -1,15 +1,28 @@
 import AppLayout from 'common/appLayout';
 import Input from 'components/input';
+import useForgetPassword from 'hooks/user/useForgetPassword';
 import Link from 'next/link';
-import { useState } from 'react';
+import { FormEvent, useState } from 'react';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState<string>('');
+
+  const { forgetPassword } = useForgetPassword();
+
+  const handleForgetPassword = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await forgetPassword({
+      variables: {
+        email,
+      },
+    });
+  };
+
   return (
     <>
       <AppLayout title='Chat App | Forgot Password'>
         <div className='forgot-password'>
-          <form>
+          <form onSubmit={handleForgetPassword}>
             <h1>Forgot your password?</h1>
             <p>
               Write your email that you signup to send you an recover email.

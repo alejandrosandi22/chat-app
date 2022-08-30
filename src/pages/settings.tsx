@@ -1,6 +1,7 @@
 import AppLayout from 'common/appLayout';
 import InputSettings from 'components/inputSettings';
 import Loading from 'components/loading';
+import Modal from 'components/modal';
 import Nav from 'components/nav';
 import { ThemeContext } from 'context/theme';
 import useAuth from 'hooks/auth/useAuth';
@@ -18,6 +19,7 @@ export default function Settings() {
   const { theme, toggleTheme } = useContext(ThemeContext);
   const [user, setUser] = useState<UserType>(INTIAL_VALUE as UserType);
   const { currentUser, loading } = useAuth();
+  const [modalState, setModalState] = useState<boolean>(false);
 
   useEffect(() => {
     if (currentUser) {
@@ -28,6 +30,7 @@ export default function Settings() {
   if (loading || !currentUser) return <Loading />;
   return (
     <>
+      {modalState && <Modal setModalState={setModalState} />}
       <AppLayout title='Chat App | Settings'>
         <div className='settings'>
           <Nav user={user} />
@@ -127,7 +130,12 @@ export default function Settings() {
                       Close your account if you want, it cannot be recovered
                     </p>
                   </div>
-                  <button className='settings-content-button'>close</button>
+                  <button
+                    onClick={() => setModalState(!modalState)}
+                    className='settings-content-button'
+                  >
+                    close
+                  </button>
                 </div>
               </div>
             </div>

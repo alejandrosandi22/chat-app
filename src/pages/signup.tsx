@@ -1,11 +1,8 @@
-import { useMutation } from '@apollo/client';
 import AppLayout from 'common/appLayout';
 import Input from 'components/input';
 import SocialSignIn from 'components/socialSignIn';
-import { setCookie } from 'cookies-next';
-import { SIGN_UP } from 'graphql/mutations';
+import useSignUp from 'hooks/auth/useSignUp';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { ChangeEvent, FormEvent, useState } from 'react';
 
 interface DataStateType {
@@ -16,22 +13,13 @@ interface DataStateType {
 }
 
 export default function SignUp() {
-  const router = useRouter();
   const [data, setData] = useState<DataStateType>(() => ({
     name: '',
     email: '',
     username: '',
     password: '',
   }));
-  const [handleSignUp, { loading }] = useMutation(SIGN_UP, {
-    onCompleted(data) {
-      setCookie('chat-app-user-session', data.signUp.token);
-      router.push('/chat');
-    },
-    onError(error) {
-      console.error(error);
-    },
-  });
+  const { signUp, loading } = useSignUp();
 
   const handleSetData = (e: ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -39,7 +27,7 @@ export default function SignUp() {
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    handleSignUp({
+    signUp({
       variables: data,
     });
   };

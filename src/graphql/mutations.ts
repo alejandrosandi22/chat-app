@@ -110,3 +110,29 @@ export const UPDATE_REQUEST = gql`
     }
   }
 `;
+
+export const CHANGE_PASSWORD = gql`
+  mutation ChangePassword($password: String!, $id: ID!) {
+    changePassword(password: $password, id: $id) {
+      message
+      value
+    }
+  }
+`;
+
+export const FORGET_PASSWORD = gql`
+  mutation ForgetPassword($email: String!) {
+    forgetPassword(email: $email) {
+      message
+      value
+    }
+  }
+`;
+
+export const DELETE_USER = gql`
+  mutation DeleteUser($email: String!) {
+    deleteUser(email: $email) {
+      username
+    }
+  }
+`;
