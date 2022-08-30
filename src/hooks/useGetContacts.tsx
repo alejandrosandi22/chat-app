@@ -7,7 +7,7 @@ export default function useGetContacts(userId?: number) {
   const { data, loading, refetch } = useQuery(GET_CONTACTS, {
     variables: { userId },
     onError(error) {
-      console.error(error);
+      console.error(error.message);
     },
     context: {
       headers: {

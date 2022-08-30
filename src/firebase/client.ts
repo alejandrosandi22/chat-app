@@ -55,7 +55,7 @@ export const uploadFile = async ({
     .then((res) => {
       if (typeof res === 'string') url = res;
     })
-    .catch((error) => console.error(error));
+    .catch((error) => console.error(error.message));
 
   return {
     url,

@@ -5,7 +5,7 @@ import { getAuth } from 'services/apolloClient';
 export default function useSendMessage() {
   const [sendMessage, { data, loading }] = useMutation(SEND_MESSAGE, {
     onError(error) {
-      console.error(error);
+      console.error(error.message);
     },
     context: {
       headers: {

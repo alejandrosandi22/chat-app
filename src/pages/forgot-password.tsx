@@ -6,12 +6,16 @@ import { FormEvent, useState } from 'react';
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState<string>('');
-
-  const { forgetPassword } = useForgetPassword();
+  const [sended, setSended] = useState<boolean>(false);
+  const { forgetPassword, loading, error } = useForgetPassword();
 
   const handleForgetPassword = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await forgetPassword({
+      onCompleted: () => {
+        setEmail('');
+        setSended(true);
+      },
       variables: {
         email,
       },
@@ -24,7 +28,7 @@ export default function ForgotPassword() {
         <div className='forgot-password'>
           <form onSubmit={handleForgetPassword}>
             <h1>Forgot your password?</h1>
-            <p>
+            <p className='subtitle'>
               Write your email that you signup to send you an recover email.
             </p>
             <Input
@@ -35,7 +39,21 @@ export default function ForgotPassword() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <button type='submit'>Send</button>
+            {error && <p className='error-message'>{error.message}</p>}
+            {loading ? (
+              <section className='spin-wrapper'>
+                <i className='fal fa-spinner-third' />
+              </section>
+            ) : (
+              <>
+                {!sended ? (
+                  <button type='submit'>Send</button>
+                ) : (
+                  <span>Recovery link sent to your email</span>
+                )}
+              </>
+            )}
+
             <div className='links-wrapper'>
               <Link href='/signin'>
                 <a className='links'>Go back</a>
@@ -67,23 +85,48 @@ export default function ForgotPassword() {
               color: var(--white);
               margin-bottom: 1rem;
             }
-            p {
+            .subtitle {
               text-align: center;
               font-size: 1rem;
               font-weight: 400;
               color: var(--white);
               margin-bottom: 2rem;
             }
+            .error-message {
+              text-align: center;
+              font-size: 1rem;
+              font-weight: 400;
+              color: var(--red);
+              margin-top: 10px;
+            }
             button {
               margin: 15px auto;
               font-size: 16px;
               width: 140px;
               height: 40px;
+              font-weight: normal;
               border: 0;
               background: var(--primary-font-color);
               color: var(--primary);
               &:hover {
                 background: var(--secondary);
+              }
+            }
+            span,
+            .spin-wrapper {
+              display: block;
+              text-align: center;
+              margin: 15px auto;
+              font-size: 16px;
+              width: 100%;
+              height: 40px;
+              color: var(--primary-font-color);
+            }
+            .spin-wrapper {
+              i {
+                font-size: 20px;
+                color: var(--primary-font-color);
+                animation: spin 1s infinite;
               }
             }
             .links-wrapper {
@@ -98,6 +141,15 @@ export default function ForgotPassword() {
                 }
               }
             }
+          }
+        }
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
           }
         }
       `}</style>

@@ -11,7 +11,7 @@ export default function useUpdateUser() {
       });
     },
     onError(error) {
-      console.error(error);
+      console.error(error.message);
     },
     context: {
       headers: {

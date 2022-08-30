@@ -14,7 +14,7 @@ export default function useAuth() {
       dispatch(setUser(getCurrentUser));
     },
     onError(error) {
-      console.error(error);
+      console.error(error.message);
       router.push('/signin');
     },
     context: {

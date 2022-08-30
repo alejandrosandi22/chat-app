@@ -74,7 +74,7 @@ export default function Requests() {
               position: absolute;
               top: 5px;
               right: 30%;
-              background: #9b0909;
+              background: var(--red);
               width: 7px;
               height: 7px;
               border-radius: 50%;
