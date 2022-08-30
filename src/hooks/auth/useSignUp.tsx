@@ -6,15 +6,16 @@ import { useRouter } from 'next/router';
 export default function useSignUp() {
   const router = useRouter();
 
-  const [signUp, { loading }] = useMutation(SIGN_UP, {
+  const [signUp, { loading, error }] = useMutation(SIGN_UP, {
     onCompleted: ({ signUp }) => {
       setCookie('chat-app-user-session', signUp.token);
       router.push('/chat');
     },
     onError: (error) => {
-      console.error(error);
+      console.log(error.message);
+      console.error(error.message);
     },
   });
 
-  return { signUp, loading };
+  return { signUp, loading, error };
 }

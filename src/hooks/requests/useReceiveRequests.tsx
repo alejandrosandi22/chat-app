@@ -5,7 +5,7 @@ import { getAuth } from 'services/apolloClient';
 export default function useReceiveRequest<T>() {
   const { data, loading } = useQuery(RECEIVE_REQUESTS, {
     onError(error) {
-      console.error(error);
+      console.error(error.message);
     },
     context: {
       headers: {

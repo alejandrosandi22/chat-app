@@ -19,7 +19,7 @@ export default function SignUp() {
     username: '',
     password: '',
   }));
-  const { signUp, loading } = useSignUp();
+  const { signUp, loading, error } = useSignUp();
 
   const handleSetData = (e: ChangeEvent<HTMLInputElement>) => {
     setData({ ...data, [e.target.name]: e.target.value });
@@ -38,7 +38,10 @@ export default function SignUp() {
         <div className='signup'>
           <div className='signup-wrapper'>
             <form onSubmit={handleSubmit} className='signup-form'>
-              <h1 className='signup-title'>Sign Up</h1>
+              <div className='signup-title-wrapper'>
+                <h1 className='signup-title'>Sign Up</h1>
+                {error && <p className='signup-error'>{error.message}</p>}
+              </div>
               <div className='signup-input-wrapper'>
                 <Input
                   type='text'
@@ -118,9 +121,17 @@ export default function SignUp() {
               display: flex;
               flex-direction: column;
               gap: 20px;
-              .signup-title {
-                color: var(--primary-font-color);
-                font-size: 35px;
+              .signup-title-wrapper {
+                display: flex;
+                align-items: flex-end;
+                gap: 10px;
+                .signup-title {
+                  color: var(--primary-font-color);
+                  font-size: 35px;
+                }
+                .signup-error {
+                  color: var(--red);
+                }
               }
               .signup-input-wrapper {
                 position: relative;

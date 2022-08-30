@@ -11,7 +11,7 @@ import { useRouter } from 'next/router';
 export function SignInForm() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
-  const { signIn, loading } = useSignIn();
+  const { signIn, loading, error } = useSignIn();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -44,6 +44,7 @@ export function SignInForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {error && <p className='signin-error'>{error.message}</p>}
           {loading ? (
             <div className='signin-spinner'>
               <i className='fal fa-spinner-third signin-spinner-icon' />
@@ -95,6 +96,11 @@ export function SignInForm() {
               &:hover {
                 background: var(--secondary);
               }
+            }
+            .signin-error {
+              color: var(--red);
+              font-size: 16px;
+              text-align: center;
             }
             .signin-spinner {
               margin: 5px auto;

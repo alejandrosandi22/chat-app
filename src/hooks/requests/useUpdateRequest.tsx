@@ -8,7 +8,7 @@ export default function useUpdateRequest() {
   const { updateUser } = useUpdateUser();
   const [update, { data, loading }] = useMutation(UPDATE_REQUEST, {
     onError(error) {
-      console.error(error);
+      console.error(error.message);
     },
   });
 
@@ -35,7 +35,7 @@ export default function useUpdateRequest() {
         if (updateRequest.value) {
           await updateUser({
             onError(error) {
-              console.error(error);
+              console.error(error.message);
             },
             variables: {
               userId: request.sender,

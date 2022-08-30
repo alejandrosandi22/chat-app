@@ -6,7 +6,7 @@ import { getAuth } from 'services/apolloClient';
 export default function useRemoveContact() {
   const [removeContact, { data, loading }] = useMutation(REMOVE_CONTACT, {
     onError(error) {
-      console.error(error);
+      console.error(error.message);
     },
     context: {
       headers: {

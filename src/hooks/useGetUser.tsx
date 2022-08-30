@@ -10,7 +10,7 @@ export default function useGetUser(id: number) {
       setUser(getUser);
     },
     onError(error) {
-      console.error(error);
+      console.error(error.message);
     },
     variables: {
       id,

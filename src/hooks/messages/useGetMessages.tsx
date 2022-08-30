@@ -16,7 +16,7 @@ export function useGetMessages() {
 
   const { data, loading, error } = useQuery(GET_MESSAGES, {
     onError(error) {
-      console.error(error);
+      console.error(error.message);
     },
     variables: {
       contactId,
