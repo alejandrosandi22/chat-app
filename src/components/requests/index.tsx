@@ -3,7 +3,7 @@ import useRequestsSubscription from 'hooks/requests/useRequestsSubscription';
 import useUpdateRequest from 'hooks/requests/useUpdateRequest';
 import { useState } from 'react';
 import { RequestType } from 'types';
-import RequestsCard from './requestsCard';
+import RequestsCard from 'components/requests/requestsCard';
 
 export default function Requests() {
   useRequestsSubscription();
@@ -12,9 +12,7 @@ export default function Requests() {
   const { updateState } = useUpdateRequest();
 
   const handleUpdate = async () => {
-    if (!toggle) {
-      await updateState(requests, true);
-    }
+    if (!toggle) await updateState(requests, true);
   };
 
   if (loading || !requests) return null;

@@ -6,7 +6,7 @@
 
 @mixin dark {
   --background: #070a13;
-  --background-opacity: #070a13a8;
+  --background-opacity: #030407a8;
   --primary: #030407;
   --secondary: #3e87a1;
   --third: #030407;
@@ -19,6 +19,7 @@
 
 @mixin light {
   --background: #f5f5f5;
+  --background-opacity: #f5f5f5a8;
   --primary: #dfdfde;
   --secondary: #00fff0;
   --third: #dfdfde;

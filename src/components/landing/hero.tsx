@@ -69,7 +69,8 @@ export default function Hero() {
         section {
           position: relative;
           display: grid;
-          height: 100vh;
+          height: calc(100vh - 70px);
+          margin-top: 70px;
           width: 100%;
           grid-template-columns: 50% 50%;
           grid-template-rows: 100%;
@@ -80,9 +81,10 @@ export default function Hero() {
             flex-direction: column;
             justify-content: center;
             padding: 0 25px;
+            max-height: 700px;
             h1 {
               color: var(--primary-font-color);
-              font-size: 5rem;
+              font-size: clamp(2rem, 11vh, 6rem);
               font-weight: 500;
             }
             p {
@@ -125,7 +127,7 @@ export default function Hero() {
             align-items: center;
             img {
               z-index: 10;
-              height: 75%;
+              height: 85%;
               aspect-ratio: 1 / 1;
               filter: drop-shadow(-10px 10px 10px #ffffff15);
               transition: 1s;

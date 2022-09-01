@@ -1,6 +1,8 @@
 import { useAppSelector } from 'hooks';
 import useRemoveContact from 'hooks/useRemoveContact';
+import Link from 'next/link';
 import client from 'services/apolloClient';
+import Avatar from './avatar';
 
 export default function ContactProfile() {
   const { contact } = useAppSelector((state) => state.selectContact);
@@ -30,11 +32,14 @@ export default function ContactProfile() {
           )}
         </div>
         <section>
-          <img
-            className='contact-profile-avatar'
-            src={contact?.avatar}
-            alt=''
-          />
+          {contact && (
+            <Link href={`/[username]`} as={`/${contact.username}`}>
+              <a className='contact-card-avatar'>
+                <Avatar user={contact} />
+              </a>
+            </Link>
+          )}
+
           <h1 className='contact-profile-name'>{contact?.name}</h1>
           <p className='contact-profile-username'>@{contact?.username}</p>
         </section>
@@ -72,6 +77,15 @@ export default function ContactProfile() {
               .contact-profile-avatar {
                 width: 100px;
                 aspect-ratio: 1 / 1;
+              }
+              .contact-card-avatar {
+                position: relative;
+                width: 120px;
+                height: 120px;
+                aspect-ratio: 1 / 1;
+                border-radius: 50%;
+                overflow: hidden;
+                cursor: pointer;
               }
               .contact-profile-name {
                 width: 100%;

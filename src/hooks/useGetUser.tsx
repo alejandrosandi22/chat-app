@@ -3,9 +3,16 @@ import { GET_USER } from 'graphql/queries';
 import { useState } from 'react';
 import { UserType } from 'types';
 
-export default function useGetUser(id: number) {
-  const [user, setUser] = useState<UserType>({} as UserType);
-  const { loading } = useQuery(GET_USER, {
+interface GetUserProps {
+  id?: number;
+  username?: string;
+}
+
+type UserState = UserType | null | undefined;
+
+export default function useGetUser({ id, username }: GetUserProps) {
+  const [user, setUser] = useState<UserState>(undefined);
+  const { loading, error } = useQuery(GET_USER, {
     onCompleted({ getUser }) {
       setUser(getUser);
     },
@@ -14,8 +21,10 @@ export default function useGetUser(id: number) {
     },
     variables: {
       id,
+      username,
     },
+    fetchPolicy: 'no-cache',
   });
 
-  return { user, loading };
+  return { user, loading, error };
 }
