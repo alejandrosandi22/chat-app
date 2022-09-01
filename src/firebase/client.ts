@@ -20,19 +20,13 @@ const storage = getStorage(app);
 
 interface FileUpload {
   file: File;
-  username: string;
-  setProgress: (progress: number) => void;
+  fileName: string;
 }
 
-export const uploadFile = async ({
-  file,
-  username,
-  setProgress,
-}: FileUpload) => {
+export const uploadFile = async ({ file, fileName }: FileUpload) => {
   if (!file) return;
   let url = '';
 
-  const fileName = `/avatares/${username}`;
   const storageRef = ref(storage, fileName);
   const uploadTask = uploadBytesResumable(storageRef, file);
 
@@ -42,7 +36,7 @@ export const uploadFile = async ({
       (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setProgress(progress);
+        console.log('Upload is ' + progress + '% done');
       },
       () => req(new Error('Upload Filed')),
       () => {
@@ -55,9 +49,7 @@ export const uploadFile = async ({
     .then((res) => {
       if (typeof res === 'string') url = res;
     })
-    .catch((error) => console.error(error.message));
+    .catch((error) => console.error(error));
 
-  return {
-    url,
-  };
+  return { url };
 };

@@ -1,47 +1,27 @@
 import { useAppDispatch } from 'hooks';
-import { useEffect, useState } from 'react';
 import { setSelectContact } from 'store/reducers/selectContact';
 import { UserType } from 'types';
-import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
-import useErrorImage from 'hooks/useErrorImage';
 import Link from 'next/link';
 import moment from 'moment';
+import Avatar from 'components/avatar';
 
 interface ContactCardProps {
   contact: UserType;
 }
 
 export default function ContactCard({ contact }: ContactCardProps) {
-  const { imageOnError } = useErrorImage();
-  const { currentUser } = useGetCurrentUser();
-  const [avatar, setAvatar] = useState<string | undefined>();
   const dispatch = useAppDispatch();
 
   const handleSelectContact = () => {
     dispatch(setSelectContact(contact));
   };
 
-  useEffect(() => {
-    if (contact.show_profile_photo === 'only-contacts') {
-      if (!contact.contacts.includes(currentUser.id))
-        setAvatar('static/images/user.png');
-    }
-
-    if (contact.show_profile_photo === 'just-me') {
-      if (contact.id !== currentUser.id) setAvatar('static/images/user.png');
-    }
-  }, [contact]);
-
   return (
     <>
       <div onClick={handleSelectContact} className='contact-card'>
         <Link href={`/[username]`} as={`/${contact.username}`}>
           <a className='contact-card-avatar'>
-            <img
-              src={avatar ? avatar : contact.avatar}
-              alt='avatar'
-              onError={imageOnError}
-            />
+            <Avatar user={contact} />
           </a>
         </Link>
         <div className='contact-card-info'>

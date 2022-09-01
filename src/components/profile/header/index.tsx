@@ -1,38 +1,59 @@
 import { uploadFile } from '../../../firebase/client';
-import useErrorImage from 'hooks/useErrorImage';
 import useUpdateUser from 'hooks/user/useUpdateUser';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { UserType } from 'types';
 import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
+import useSendRequest from 'hooks/requests/useSendRequest';
+import refetchQueries from 'services/refetchQueries';
+import Avatar from 'components/avatar';
 
 interface HeaderProps {
   user: UserType;
 }
 
 export default function Header({ user }: HeaderProps) {
-  const [avatar, setAvatar] = useState<string>('/static/images/user.png');
-  const [progress, setProgress] = useState<number>(0);
+  const [avatar, setAvatar] = useState<string>(user.avatar);
+  const [coverPhoto, setCoverPhoto] = useState<string | null>(user.cover_photo);
   const { currentUser } = useGetCurrentUser();
-  const { imageOnError } = useErrorImage();
   const { updateUser } = useUpdateUser();
+  const { sendRequest } = useSendRequest(user.id, currentUser.name);
 
-  useEffect(() => {
-    if (user.show_profile_photo === 'public') setAvatar(user.avatar);
+  const handleDeleteCoverPhoto = async () => {
+    await updateUser({
+      onCompleted: async ({ updateUser }) => {
+        await refetchQueries();
+        setCoverPhoto(updateUser.cover_photo);
+      },
+      variables: {
+        coverPhoto: null,
+      },
+    });
+  };
 
-    if (user.show_profile_photo === 'only-contacts') {
-      if (user.contacts.includes(currentUser.id)) setAvatar(user.avatar);
+  const handleUpdateCoverPhoto = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (!e.target.files) return;
+    const file: File = e.target.files[0];
+
+    if (file.size > 5000000) {
+      alert('File is too big');
+      return;
     }
-
-    if (user.show_profile_photo === 'just-me') {
-      if (user.id === currentUser.id) setAvatar(user.avatar);
-    }
-  }, [currentUser, user]);
-
-  useEffect(() => {
-    if (progress === 100) {
-      setProgress(0);
-    }
-  }, [progress]);
+    await uploadFile({
+      file,
+      fileName: `/cover-photo/${currentUser.username}-cover-photo`,
+    }).then(async (res) => {
+      await updateUser({
+        onCompleted({ updateUser }) {
+          setCoverPhoto(updateUser.cover_photo);
+        },
+        variables: {
+          coverPhoto: res?.url,
+        },
+      });
+    });
+  };
 
   const handleUpdateAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -42,16 +63,13 @@ export default function Header({ user }: HeaderProps) {
       alert('File is too big');
       return;
     }
-    uploadFile({
+    await uploadFile({
       file,
-      setProgress,
-      username: `${currentUser.username}-avatar`,
-    }).then((res) => {
-      updateUser({
-        onCompleted: () => {
-          if (res) {
-            setAvatar(res.url);
-          }
+      fileName: `/avatar/${currentUser.username}-avatar`,
+    }).then(async (res) => {
+      await updateUser({
+        onCompleted({ updateUser }) {
+          setAvatar(updateUser.avatar);
         },
         variables: {
           avatar: res?.url,
@@ -65,32 +83,42 @@ export default function Header({ user }: HeaderProps) {
         <div className='profile-header-cover-photo-wrapper'>
           {currentUser && currentUser.id === user.id && (
             <span className='profile-header-cover-photo-change'>
-              <button className='profile-header-cover-photo-change-button'>
+              <input
+                type='file'
+                id='coverPhoto'
+                onChange={handleUpdateCoverPhoto}
+                hidden
+                accept='image/*'
+              />
+              <label
+                htmlFor='coverPhoto'
+                className='profile-header-cover-photo-change-button'
+              >
                 <i className='fal fa-upload' />
-              </button>
-              <button className='profile-header-cover-photo-change-button'>
+              </label>
+              <button
+                onClick={handleDeleteCoverPhoto}
+                className='profile-header-cover-photo-change-button'
+              >
                 <i className='fal fa-trash' />
               </button>
             </span>
           )}
-          {!user.cover_photo ? (
+          {!coverPhoto ? (
             <div className='profile-header-cover-photo'></div>
           ) : (
             <img
               className='profile-header-cover-photo'
-              src={user.cover_photo}
+              src={coverPhoto}
               alt='cover-photo'
             />
           )}
         </div>
         <div className='profile-header-user-wrapper'>
           <div className='profile-header-avatar'>
-            <img
-              className='profile-header-avatar-image'
-              src={avatar}
-              onError={imageOnError}
-              alt='avatar'
-            />
+            <span className='profile-header-avatar-image'>
+              <Avatar user={{ ...user, avatar }} />
+            </span>
             {currentUser && currentUser.id === user.id && (
               <label
                 htmlFor='update-avatar'
@@ -101,13 +129,31 @@ export default function Header({ user }: HeaderProps) {
                   type='file'
                   hidden
                   onChange={handleUpdateAvatar}
+                  accept='image/*'
                 />
                 <i className='fal fa-upload' />
               </label>
             )}
           </div>
-          <div className='profile-header-user-name-wrapper'>
-            <h1 className='profile-header-user-name'>{user.name}</h1>
+          <div className='profile-header-user-data-wrapper'>
+            <div className='profile-header-user-name-wrapper'>
+              <h1 className='profile-header-user-name'>{user.name}</h1>
+              {currentUser.id !== user.id &&
+              !user.contacts.includes(currentUser.id) ? (
+                <>
+                  <button
+                    className='profile-send-request'
+                    onClick={() => sendRequest()}
+                  >
+                    <i className='fal fa-plus' />
+                  </button>
+                  <p className='profile-send-request-text'>
+                    <i className='fal fa-info-circle' />
+                    Send request
+                  </p>
+                </>
+              ) : null}
+            </div>
             <h2 className='profile-header-user-contacts'>
               {user.description ?? '-'}
             </h2>
@@ -184,6 +230,8 @@ export default function Header({ user }: HeaderProps) {
               aspect-ratio: 1 / 1;
               box-sizing: unset;
               .profile-header-avatar-image {
+                position: relative;
+                display: block;
                 pointer-events: all;
                 background: var(--primary);
                 width: 100%;
@@ -219,16 +267,43 @@ export default function Header({ user }: HeaderProps) {
                 }
               }
             }
-            .profile-header-user-name-wrapper {
+            .profile-header-user-data-wrapper {
               margin: 0 20px;
               display: flex;
               flex-direction: column;
               justify-content: flex-end;
-              .profile-header-user-name {
-                font-size: 50px;
-                font-weight: normal;
-                color: var(--primary-font-color);
-                pointer-events: all;
+              .profile-header-user-name-wrapper {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+                .profile-header-user-name {
+                  font-size: 50px;
+                  font-weight: normal;
+                  color: var(--primary-font-color);
+                  pointer-events: all;
+                }
+                .profile-send-request {
+                  pointer-events: all;
+                  background: var(--primary);
+                  color: var(--primary-font-color);
+                  border: none;
+                  font-size: 16px;
+                  border-radius: 50%;
+                  width: 40px;
+                  height: 40px;
+                  border: 1px solid var(--secondary);
+                  font-weight: normal;
+                  &:hover {
+                    background: var(--secondary);
+                  }
+                }
+                .profile-send-request-text {
+                  display: flex;
+                  color: var(--secondary-font-color);
+                  font-size: 16px;
+                  font-weight: normal;
+                  gap: 5px;
+                }
               }
               .profile-header-user-contacts {
                 font-size: 25px;
