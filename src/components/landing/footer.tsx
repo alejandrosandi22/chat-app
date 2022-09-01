@@ -39,7 +39,9 @@ export default function Footer() {
           align-items: center;
           width: 100%;
           padding: 10px;
+          background: none;
           p {
+            font-size: 1rem;
             color: var(--primary-font-color);
           }
           ul {
@@ -66,6 +68,28 @@ export default function Footer() {
           .logo {
             img {
               width: 64px;
+            }
+          }
+        }
+
+        @media (max-width: 768px) {
+          footer {
+            display: grid;
+            grid-template-columns: 70% 30%;
+            grid-template-rows: 50% 50%;
+            grid-template-areas:
+              'links logo'
+              'text text';
+            p {
+              grid-area: text;
+              font-size: 1rem;
+              text-align: center;
+            }
+            ul {
+              grid-area: links;
+            }
+            .logo {
+              grid-area: logo;
             }
           }
         }

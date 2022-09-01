@@ -162,6 +162,12 @@ export function SignInForm() {
           .signin-wrapper {
             width: 100%;
             box-shadow: unset;
+            padding: 30px 20px;
+            .signin-links-wrapper {
+              .signin-links {
+                white-space: nowrap;
+              }
+            }
           }
         }
 

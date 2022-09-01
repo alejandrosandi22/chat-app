@@ -144,6 +144,15 @@ export default function ForgotPassword() {
           }
         }
 
+        @media (max-width: 768px) {
+          .forgot-password {
+            form {
+              padding: 0 5px;
+              box-shadow: none;
+            }
+          }
+        }
+
         @keyframes spin {
           0% {
             transform: rotate(0deg);
