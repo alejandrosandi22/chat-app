@@ -5,9 +5,10 @@ export default function ContactsList({ contacts }: { contacts: UserType[] }) {
   return (
     <>
       <div className='contacts-list'>
-        {contacts.map((contact: UserType) => (
-          <ContactCard key={contact.username} contact={contact} />
-        ))}
+        {contacts &&
+          contacts.map((contact: UserType) => (
+            <ContactCard key={contact.username} contact={contact} />
+          ))}
       </div>
       <style jsx>{`
         .contacts-list {

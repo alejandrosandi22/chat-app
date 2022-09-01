@@ -1,11 +1,12 @@
 import { uploadFile } from '../../../firebase/client';
 import useUpdateUser from 'hooks/user/useUpdateUser';
 import { useState } from 'react';
-import { UserType } from 'types';
+import { RequestType, UserType } from 'types';
 import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
 import useSendRequest from 'hooks/requests/useSendRequest';
 import refetchQueries from 'services/refetchQueries';
 import Avatar from 'components/avatar';
+import useReceiveRequest from 'hooks/requests/useReceiveRequests';
 
 interface HeaderProps {
   user: UserType;
@@ -17,6 +18,7 @@ export default function Header({ user }: HeaderProps) {
   const { currentUser } = useGetCurrentUser();
   const { updateUser } = useUpdateUser();
   const { sendRequest } = useSendRequest(user.id, currentUser.name);
+  const { requests } = useReceiveRequest<RequestType[]>(user.id);
 
   const handleDeleteCoverPhoto = async () => {
     await updateUser({
@@ -139,7 +141,10 @@ export default function Header({ user }: HeaderProps) {
             <div className='profile-header-user-name-wrapper'>
               <h1 className='profile-header-user-name'>{user.name}</h1>
               {currentUser.id !== user.id &&
-              !user.contacts.includes(currentUser.id) ? (
+              !user.contacts.includes(currentUser.id) &&
+              requests &&
+              !requests.filter((request) => request.response === null)
+                .length ? (
                 <>
                   <button
                     className='profile-send-request'

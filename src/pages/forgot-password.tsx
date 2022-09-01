@@ -82,14 +82,14 @@ export default function ForgotPassword() {
               text-align: center;
               font-size: 2rem;
               font-weight: 500;
-              color: var(--white);
+              color: var(--primary-font-color);
               margin-bottom: 1rem;
             }
             .subtitle {
               text-align: center;
               font-size: 1rem;
               font-weight: 400;
-              color: var(--white);
+              color: var(--primary-font-color);
               margin-bottom: 2rem;
             }
             .error-message {

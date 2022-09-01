@@ -1,15 +1,15 @@
+import Avatar from 'components/avatar';
 import useUpdateRequest from 'hooks/requests/useUpdateRequest';
 import useGetUser from 'hooks/useGetUser';
 import moment from 'moment';
-import Image from 'next/image';
 import Link from 'next/link';
 import { RequestType } from 'types';
 
 export default function RequestsCard({ request }: { request: RequestType }) {
-  const { user, loading } = useGetUser(request.sender);
+  const { user, loading } = useGetUser({ id: request.sender });
   const { updateResponse } = useUpdateRequest();
 
-  if (loading) return null;
+  if (loading || !user) return null;
   return (
     <>
       <div className='requests-card'>
@@ -17,7 +17,7 @@ export default function RequestsCard({ request }: { request: RequestType }) {
           {(!loading || user) && (
             <Link href={`/${user.username}`}>
               <a>
-                <Image src={user.avatar} layout='fill' alt='avatar' />
+                <Avatar user={user} />
               </a>
             </Link>
           )}

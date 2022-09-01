@@ -17,7 +17,7 @@ export default function Home() {
         .landing-container {
           position: absolute;
           width: 100%;
-          background: var(--background);
+          background: var(--primary);
         }
       `}</style>
     </>

@@ -5,6 +5,7 @@ import Modal from 'components/modal';
 import Nav from 'components/nav';
 import { ThemeContext } from 'context/theme';
 import useAuth from 'hooks/auth/useAuth';
+import useUpdateUser from 'hooks/user/useUpdateUser';
 import { useContext, useEffect, useState } from 'react';
 import { UserType } from 'types';
 
@@ -20,6 +21,8 @@ export default function Settings() {
   const [user, setUser] = useState<UserType>(INTIAL_VALUE as UserType);
   const { currentUser, loading } = useAuth();
   const [modalState, setModalState] = useState<boolean>(false);
+
+  const { updateUser } = useUpdateUser();
 
   useEffect(() => {
     if (currentUser) {
@@ -90,12 +93,20 @@ export default function Settings() {
                   </div>
                   <select
                     className='settings-content-select'
-                    name='showProfilePicture'
-                    id='showProfilePicture'
+                    name='show-profile-picture'
+                    id='show-profile-picture'
+                    defaultValue={currentUser.show_profile_photo}
+                    onChange={(e) =>
+                      updateUser({
+                        variables: {
+                          showProfilePhoto: e.target.value,
+                        },
+                      })
+                    }
                   >
                     <option value='public'>Public</option>
                     <option value='contacts'>Only Contacts</option>
-                    <option value='me'>Just Me</option>
+                    <option value='just-me'>Just Me</option>
                   </select>
                 </div>
                 <div className='settings-content-wrapper'>
@@ -109,8 +120,16 @@ export default function Settings() {
                   </div>
                   <select
                     className='settings-content-select'
-                    name='showProfilePicture'
-                    id='showProfilePicture'
+                    name='contacts-requests'
+                    id='contacts-requests'
+                    defaultValue={currentUser.contacts_request}
+                    onChange={(e) =>
+                      updateUser({
+                        variables: {
+                          contactsRequest: e.target.value,
+                        },
+                      })
+                    }
                   >
                     <option value='public'>Everybody</option>
                     <option value='contacts'>Contacts of contacts</option>

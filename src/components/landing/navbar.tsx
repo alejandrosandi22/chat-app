@@ -59,6 +59,7 @@ export default function Navbar() {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          -webkit-backdrop-filter: blur(5px);
           backdrop-filter: blur(5px);
           ${scroll
             ? 'border-bottom: 1px solid var(--secondary-font-color);'
@@ -146,6 +147,15 @@ export default function Navbar() {
                 display: none;
               }
             }
+          }
+        }
+
+        @supports (
+          (not (-webkit-backdrop-filter: blur(5px))) and
+            (not (backdrop-filter: blur(5px)))
+        ) {
+          nav {
+            background: ${scroll ? 'var(--primary)' : 'none'};
           }
         }
       `}</style>

@@ -55,6 +55,19 @@ export default function Nav({
             </Link>
           </li>
           <li className='nav-links-list-item'>
+            <Link href='/explore'>
+              <a
+                className={
+                  pathname === '/explore'
+                    ? 'nav-links-list-link-active'
+                    : 'nav-links-list-link'
+                }
+              >
+                <i className='fal fa-users nav-link-list-icon'></i>
+              </a>
+            </Link>
+          </li>
+          <li className='nav-links-list-item'>
             <Link href='/settings'>
               <a
                 className={

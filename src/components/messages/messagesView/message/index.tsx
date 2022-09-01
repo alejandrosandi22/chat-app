@@ -1,11 +1,11 @@
 import React from 'react';
-import Image from 'next/image';
 import { MessageType } from 'types';
 import moment from 'moment';
 import Audio from './audio';
 import Video from './video';
 import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
 import { useAppSelector } from 'hooks';
+import Avatar from 'components/avatar';
 
 export default function Message({ message }: { message: MessageType }) {
   const { contact } = useAppSelector((state) => state.selectContact);
@@ -20,19 +20,9 @@ export default function Message({ message }: { message: MessageType }) {
       >
         <div className='message-avatar-wrapper'>
           {message.sender === currentUser.id ? (
-            <Image
-              className='message-avatar'
-              layout='fill'
-              src={currentUser.avatar ?? '/static/images/user.png'}
-              alt='user avatar'
-            />
+            <Avatar user={currentUser} />
           ) : (
-            <Image
-              className='message-avatar'
-              layout='fill'
-              src={contact?.avatar ?? '/static/images/user.png'}
-              alt='contact avatar'
-            />
+            <>{contact && <Avatar user={contact} />}</>
           )}
         </div>
 

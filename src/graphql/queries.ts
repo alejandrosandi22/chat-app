@@ -10,6 +10,15 @@ export const GET_CONTACTS = gql`
   }
 `;
 
+export const GET_ALL_USERS = gql`
+  ${USER_DETAILS}
+  query getAllUsers($limit: Int!, $offset: Int!) {
+    getAllUsers(limit: $limit, offset: $offset) {
+      ...UserDetails
+    }
+  }
+`;
+
 export const GET_CURRENT_USER = gql`
   ${USER_DETAILS}
   query getCurrentUser {
@@ -65,8 +74,8 @@ export const GET_LAST_MESSAGE = gql`
 `;
 
 export const RECEIVE_REQUESTS = gql`
-  query ReceiveRequest {
-    receiveRequest {
+  query ReceiveRequest($contactId: Int) {
+    receiveRequest(contactId: $contactId) {
       id
       content
       receiver

@@ -1,4 +1,5 @@
 import { useAppSelector } from 'hooks';
+import Link from 'next/link';
 import CurrentContact from './currentContact';
 import MessagesView from './messagesView';
 import SendMessagePanel from './sendMessagePanel';
@@ -6,42 +7,53 @@ import SendMessagePanel from './sendMessagePanel';
 export default function Messages() {
   const { contact } = useAppSelector((state) => state.selectContact);
 
-  if (!contact) {
+  if (!contact)
     return (
       <>
-        <section>
-          <header></header>
-          <main>
-            <h1>Select a contact</h1>
-          </main>
-        </section>
-        <style jsx>
-          {`
-            section {
-              height: 100%;
-              header {
-                width: 100%;
-                height: 70px;
-                background: var(--primary);
-              }
-              main {
-                width: 100%;
-                height: calc(100% - 70px);
-                display: grid;
-                place-items: center;
-                background: var(--background);
-                h1 {
-                  font-size: 2rem;
-                  font-weight: normal;
-                  color: var(--primary-font-color);
-                }
+        <header></header>
+        <div>
+          <Link href='/explore'>
+            <a>Explore more contacts</a>
+          </Link>
+        </div>
+        <style jsx>{`
+          header {
+            width: 100%;
+            height: 70px;
+            background: var(--primary);
+          }
+          div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: calc(100% - 70px);
+            a {
+              background: none;
+              border: 1px solid var(--primary-font-color);
+              color: var(--primary-font-color);
+              text-decoration: none;
+              padding: 12px;
+              border-radius: 5px;
+              transition: 0.25s;
+              &:hover {
+                background: var(--primary-font-color);
+                color: var(--background);
               }
             }
-          `}
-        </style>
+          }
+
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        `}</style>
       </>
     );
-  }
 
   return (
     <>
