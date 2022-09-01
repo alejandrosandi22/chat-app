@@ -70,6 +70,7 @@ export default function Hero() {
           position: relative;
           display: grid;
           height: 100vh;
+          width: 100%;
           grid-template-columns: 50% 50%;
           grid-template-rows: 100%;
           padding: 0 7rem;
@@ -85,7 +86,7 @@ export default function Hero() {
               font-weight: 500;
             }
             p {
-              margin: 10px 0 10px 0;
+              margin: 10px 0;
               color: var(--secondary-font-color);
               font-size: 1.1rem;
             }
@@ -135,78 +136,54 @@ export default function Hero() {
           }
         }
 
-        @keyframes animation-1 {
-          0% {
-            transform: translateY(-50%) translateX(-50%) translateX(-15%)
-              translateY(10%);
-          }
-          20% {
-            transform: translateY(-50%) translateX(-50%) translateX(-20%)
-              translateY(-30%);
-          }
-          40% {
-            transform: translateY(-50%) translateX(-50%) translateX(-25%)
-              translateY(-15%);
-          }
-          60% {
-            transform: translateY(-50%) translateX(-50%) translateX(30%)
-              translateY(20%);
-          }
-          80% {
-            transform: translateY(-50%) translateX(-50%) translateX(5%)
-              translateY(35%);
-          }
-          to {
-            transform: translateY(-50%) translateX(-50%) translateX(-15%)
-              translateY(10%);
-          }
-        }
-        @keyframes animation-2 {
-          0% {
-            transform: translateY(-50%) translateX(-50%) rotate(-20deg)
-              translateX(20%);
-          }
-          25% {
-            transform: translateY(-50%) translateX(-50%) skew(-15deg, 15deg)
-              rotate(-80deg) translateX(30%);
-          }
-          50% {
-            transform: translateY(-50%) translateX(-50%) rotate(180deg)
-              translateX(25%);
-          }
-          75% {
-            transform: translateY(-50%) translateX(-50%) skew(-15deg, 15deg)
-              rotate(240deg) translateX(15%);
-          }
-          to {
-            transform: translateY(-50%) translateX(-50%) rotate(340deg)
-              translateX(20%);
-          }
-        }
-        @keyframes animation-3 {
-          0% {
-            transform: translateY(-50%) translateX(-50%) translateX(-15%)
-              translateY(10%);
-          }
-          20% {
-            transform: translateY(-50%) translateX(-50%) translateX(20%)
-              translateY(-30%);
-          }
-          40% {
-            transform: translateY(-50%) translateX(-50%) translateX(-25%)
-              translateY(-15%);
-          }
-          60% {
-            transform: translateY(-50%) translateX(-50%) translateX(30%)
-              translateY(20%);
-          }
-          80% {
-            transform: translateY(-50%) translateX(-50%) translateX(5%)
-              translateY(35%);
-          }
-          to {
-            transform: translateY(-50%) translateX(-50%) translateX(-15%)
-              translateY(10%);
+        @media (max-width: 768px) {
+          section {
+            display: flex;
+            padding: 0;
+            .features-gradients {
+              .features-gradient {
+                &:nth-child(1) {
+                  width: 200px;
+                  height: 100px;
+                  top: 40%;
+                  left: 20%;
+                  background-color: var(--secondary-font-color);
+                }
+                &:nth-child(2) {
+                  width: 150px;
+                  height: 100px;
+                  top: 60%;
+                  left: 10%;
+                  background-color: var(--primary);
+                }
+                &:nth-child(3) {
+                  width: 150px;
+                  height: 100px;
+                  top: 50%;
+                  left: 0%;
+                  background-color: var(--secondary);
+                }
+              }
+            }
+            div {
+              padding: 0 10px;
+              h1 {
+                color: var(--primary-font-color);
+                font-size: 4rem;
+                font-weight: 500;
+              }
+              p {
+                margin: 10px 0;
+                color: var(--secondary-font-color);
+                font-size: 1rem;
+              }
+              a {
+                width: 100%;
+              }
+            }
+            .image-wrapper {
+              display: none;
+            }
           }
         }
       `}</style>

@@ -106,9 +106,11 @@ export default function SignUp() {
           background: var(--primary);
           width: 100%;
           height: 100%;
+          min-height: 800px;
           display: flex;
           justify-content: center;
           align-items: center;
+          overflow-y: auto;
           .signup-wrapper {
             display: flex;
             flex-direction: column;

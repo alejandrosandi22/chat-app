@@ -40,6 +40,7 @@ export function ChatEvents({ currentUser }: { currentUser: UserType }) {
           width: 100%;
           height: 100%;
           display: flex;
+          overflow: hidden;
           transition: 0.5s;
           .chat-contacts-wrapper {
             width: ${!contactsToggle ? '25%' : '0'};

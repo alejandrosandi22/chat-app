@@ -137,6 +137,17 @@ export default function Navbar() {
             }
           }
         }
+
+        @media (max-width: 768px) {
+          nav {
+            padding: 0 30px;
+            .logo {
+              span {
+                display: none;
+              }
+            }
+          }
+        }
       `}</style>
     </>
   );

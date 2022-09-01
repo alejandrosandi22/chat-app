@@ -62,6 +62,14 @@ export default function SocialSignIn() {
             background: #222222;
           }
         }
+
+        @media (max-width: 768px) {
+          .social-wrapper {
+            .social-item {
+              width: 100%;
+            }
+          }
+        }
       `}</style>
     </>
   );
