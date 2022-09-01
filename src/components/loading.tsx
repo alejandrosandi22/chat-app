@@ -11,6 +11,7 @@ export default function Loading() {
       <style jsx>{`
         section {
           position: absolute;
+          background: var(--primary);
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);

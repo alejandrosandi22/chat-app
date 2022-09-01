@@ -15,7 +15,7 @@ export default function useDeleteUser() {
       router.push('/');
     },
     onError(error) {
-      console.log(error);
+      console.error(error.message);
     },
     variables: {
       email: user?.email,

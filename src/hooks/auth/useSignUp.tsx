@@ -12,7 +12,6 @@ export default function useSignUp() {
       router.push('/chat');
     },
     onError: (error) => {
-      console.log(error.message);
       console.error(error.message);
     },
   });

@@ -45,7 +45,9 @@ export default function Main({ user }: MainProps) {
           </div>
         </section>
         <section className='profile-main-contacts'>
-          <h2 className='profile-main-contacts-title'>Contacts</h2>
+          <h2 className='profile-main-contacts-title'>
+            Contacts <em>{contacts && contacts.length}</em>
+          </h2>
           {!loading && (
             <div className='profile-main-contacts-wrapper'>
               {contacts &&
@@ -76,9 +78,14 @@ export default function Main({ user }: MainProps) {
               padding: 18px 32px;
               display: flex;
               align-items: center;
+              gap: 5px;
               font-size: 20px;
               font-weight: normal;
               color: var(--primary-font-color);
+              em {
+                font-size: 18px;
+                color: var(--secondary-font-color);
+              }
             }
           }
           .profile-main-info {

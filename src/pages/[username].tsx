@@ -17,7 +17,7 @@ export default function UsersProfile({ user }: { user: UserType }) {
       <AppLayout title={`Chat App | ${user.name}`}>
         <div className='profile'>
           <Nav user={currentUser} />
-          <Profile user={user} currentUser={currentUser} />
+          <Profile user={user} />
         </div>
       </AppLayout>
       <style jsx>{`
