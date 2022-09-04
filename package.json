@@ -16,6 +16,7 @@
     "cryptr": "6.0.3",
     "firebase": "9.9.0",
     "graphql-ws": "5.10.1",
+    "intersection-observer": "0.12.2",
     "jsonwebtoken": "8.5.1",
     "micro-cors": "0.1.1",
     "moment": "2.29.4",

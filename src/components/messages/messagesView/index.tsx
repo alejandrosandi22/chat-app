@@ -1,65 +1,35 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { MessageType } from 'types';
 import Message from './message';
 import moment from 'moment';
 import { useGetMessages } from 'hooks/messages/useGetMessages';
 
-export default function MessagesView() {
-  const chatRef = useRef<HTMLElement>(null);
-  const [isScroll] = useState<boolean>(false);
-  const { messages, loading, loadMoreMessages } = useGetMessages();
-
-  useEffect(() => {
-    if (chatRef.current && !isScroll)
-      chatRef.current.scrollTo({
-        left: 0,
-        top: chatRef.current.scrollHeight,
-        behavior: 'smooth',
-      });
-  }, [messages]);
-
-  if (loading || !messages) return null;
-
+export function MessagesList({ messages }: { messages: MessageType[] }) {
   return (
     <>
-      <main ref={chatRef} className='chat-messages-wrapper'>
-        <button onClick={loadMoreMessages}>load more</button>
-        {messages.length > 0 &&
-          messages.map((message: MessageType) => {
-            return (
-              <div key={message.id} className='chat-message-list-wrapper'>
-                {message?.date && (
-                  <h3 className='chat-message-date'>
-                    {moment(message.date).calendar(null, {
-                      sameDay: '[Today]',
-                      lastDay: '[Yesterday]',
-                      lastWeek: 'll',
-                      sameElse: 'll',
-                    })}
-                  </h3>
-                )}
-                <Message message={message} />
-              </div>
-            );
-          })}
-      </main>
+      {messages.length > 0 &&
+        messages.map((message: MessageType) => {
+          return (
+            <div key={message.id} className='chat-message-list-wrapper'>
+              {message?.date && (
+                <h3 className='chat-message-date'>
+                  {moment(message.date).calendar(null, {
+                    sameDay: '[Today]',
+                    lastDay: '[Yesterday]',
+                    lastWeek: 'll',
+                    sameElse: 'll',
+                  })}
+                </h3>
+              )}
+              <Message message={message} />
+            </div>
+          );
+        })}
       <style jsx>{`
-        .chat-messages-wrapper {
+        div {
+          width: 100%;
           display: flex;
           flex-direction: column;
-          padding: 20px 0;
-          width: 100%;
-          height: calc(100vh - 150px);
-          margin: 0 0 10px 0;
-          overflow-y: auto;
-          overflow-x: hidden;
-          background: var(--background);
-          transition: all 0.5s;
-          .chat-message-list-wrapper {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-          }
           .chat-message-date {
             width: 180px;
             background: var(--primary);
@@ -70,6 +40,92 @@ export default function MessagesView() {
             padding: 10px 0;
             margin: 30px auto;
             border-radius: 20px;
+          }
+        }
+      `}</style>
+    </>
+  );
+}
+
+export default function MessagesView() {
+  const chatRef = useRef<HTMLElement>(null);
+  const { messages, loadMore, loadMoreMessages, loadingMore, loading } =
+    useGetMessages();
+
+  useEffect(() => {
+    if (!chatRef.current) return;
+
+    if (!loadMore) {
+      chatRef.current.scrollTo({
+        left: 0,
+        top: chatRef.current.scrollHeight,
+        behavior: 'smooth',
+      });
+    }
+  }, [messages]);
+
+  return (
+    <>
+      <main ref={chatRef} className='chat-messages-wrapper'>
+        <div className='chat-loading-more-wrapper'>
+          {loadingMore || loading ? (
+            <i className='fal fa-spinner-third' />
+          ) : (
+            <>
+              {messages.length > 9 && (
+                <button onClick={loadMoreMessages}>Load More</button>
+              )}
+            </>
+          )}
+        </div>
+        <MessagesList messages={messages} />
+      </main>
+      <style jsx>{`
+        .chat-messages-wrapper {
+          padding: 0 0 20px 0;
+          width: 100%;
+          height: calc(100vh - 150px);
+          min-height: 560px;
+          overflow-y: auto;
+          background: var(--background);
+          .chat-loading-more-wrapper {
+            width: 100%;
+            max-height: 70px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            i {
+              font-size: 1.5rem;
+              color: var(--primary-font-color);
+              animation: spin 0.5s infinite;
+            }
+            button {
+              background: transparent;
+              border: 1px solid var(--primary-font-color);
+              padding: 8px 12px;
+              text-decoration: none;
+              border-radius: 5px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              color: var(--primary-font-color);
+              font-size: 1rem;
+              transition: 0.25s;
+              &:hover {
+                background: var(--primary-font-color);
+                color: var(--background);
+              }
+            }
+          }
+        }
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
           }
         }
       `}</style>

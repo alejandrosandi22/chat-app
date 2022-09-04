@@ -41,16 +41,57 @@ function EmojiPicker({ setMessage }: EmojiPickerProps) {
 
   const handleGropingEmojis = useCallback(
     (group: string) => {
-      if (emojis && emojis.length > 0) {
-        const groupEmojis = emojis.filter((emoji) => emoji.group === group);
-        setGropingEmojis(groupEmojis);
+      const key = 'chat-app-requently-used-emojis';
+
+      if (group === EmojiGroups.FREQUENTLY_USED) {
+        const item = window.localStorage.getItem(key);
+        if (item) {
+          const frequentUsedEmojis = [...JSON.parse(item)];
+          setGropingEmojis(frequentUsedEmojis);
+        }
+      } else {
+        if (emojis && emojis.length > 0) {
+          const groupEmojis = emojis.filter((emoji) => emoji.group === group);
+          setGropingEmojis(groupEmojis);
+        }
       }
     },
     [emojis]
   );
 
   const onSelectEmoji = (emoji: EmojiType) => {
+    const key = 'chat-app-requently-used-emojis';
     setMessage((text: string) => text + emoji.character);
+
+    const item = window.localStorage.getItem(key);
+    if (item) {
+      const findItem = JSON.parse(item).filter(
+        (item: EmojiType) => item.codePoint === emoji.codePoint
+      );
+
+      if (!findItem.length) {
+        const currentItem = [
+          { ...emoji, group: 'frequently-used' },
+          ...JSON.parse(item),
+        ];
+
+        return window.localStorage.setItem(key, JSON.stringify(currentItem));
+      }
+      const frequentEmojis = JSON.parse(item).filter(
+        (item: EmojiType) => item.codePoint !== emoji.codePoint
+      );
+      return window.localStorage.setItem(
+        key,
+        JSON.stringify([
+          { ...emoji, group: 'frequently-used' },
+          ...frequentEmojis,
+        ])
+      );
+    }
+    window.localStorage.setItem(
+      key,
+      JSON.stringify([{ ...emoji, group: 'frequently-used' }])
+    );
   };
 
   useEffect(() => {
@@ -101,7 +142,7 @@ function EmojiPicker({ setMessage }: EmojiPickerProps) {
           left: 0;
           width: 100%;
           height: 100%;
-          background: var(--background);
+          background: var(--primary);
           padding: 20px;
           .emojis-groups {
             width: 100%;
@@ -122,7 +163,7 @@ function EmojiPicker({ setMessage }: EmojiPickerProps) {
                 height: 30px;
                 cursor: pointer;
                 &:hover {
-                  background: var(--primary);
+                  background: var(--secondary);
                 }
               }
             }

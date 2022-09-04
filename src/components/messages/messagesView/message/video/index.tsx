@@ -8,7 +8,7 @@ export default function Video({ src }: { src: string }) {
   const [duration, setDuration] = useState<number>(0);
   const [currentTime, setCurrentTime] = useState<number>(0);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [scale, setScale] = useState<boolean>(false);
+  const [scale] = useState<boolean>(false);
 
   const [moveStyle, setMoveStyle] = useState<boolean>(false);
 
@@ -66,17 +66,13 @@ export default function Video({ src }: { src: string }) {
     <>
       <div className={`video-wrapper ${scale ? 'video-wrapper-scalable' : ''}`}>
         {scale && (
-          <button
-            className='video-scalable-exit'
-            onClick={() => setScale(false)}
-          >
+          <button className='video-scalable-exit'>
             <i className='fal fa-long-arrow-left video-scalable-exit-icon' />
           </button>
         )}
         <video
           onMouseMove={() => setMoveStyle(true)}
           onClick={() => {
-            setScale(true);
             handlePlay();
           }}
           className='video'
@@ -121,7 +117,6 @@ export default function Video({ src }: { src: string }) {
 
       <style jsx>{`
         .video-wrapper {
-          position: relative;
           transition: 0.5s;
           position: relative;
           overflow: hidden;
@@ -186,16 +181,16 @@ export default function Video({ src }: { src: string }) {
           }
         }
         .video-wrapper-scalable {
-          z-index: 50;
-          position: fixed;
+          z-index: 9999999;
+          position: absolute;
           display: flex;
           justify-content: center;
           align-items: center;
           background: rgba(17, 17, 17, 0.801);
           top: 0;
           left: 0;
-          width: 100%;
-          height: 100%;
+          width: 100vw;
+          height: 100vh;
           transition: 0.5s;
           .video {
             border-radius: 0px;

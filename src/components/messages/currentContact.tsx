@@ -1,27 +1,17 @@
+import Avatar from 'components/avatar';
 import { ToggleContactProfileContext } from 'context/toggleContactProfile';
-import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
-import Image from 'next/image';
-import { useContext, useEffect, useState } from 'react';
+import { useContext } from 'react';
 import { UserType } from 'types';
 
 export default function CurrentContact({ contact }: { contact: UserType }) {
   const { toggle, handleToggle } = useContext(ToggleContactProfileContext);
-  const [avatar, setAvatar] = useState<string>('/static/images/user.png');
-  const { currentUser } = useGetCurrentUser();
-
-  useEffect(() => {
-    if (contact.show_profile_photo === 'public') setAvatar(contact.avatar);
-    if (contact.show_profile_photo === 'only-contacts') {
-      if (contact.contacts.includes(currentUser.id)) setAvatar(contact.avatar);
-    }
-  }, [contact]);
 
   return (
     <>
       <header className='chat-header'>
         <div className='chat-header-wrapper'>
           <div className='chat-header-avatar'>
-            <Image src={avatar} layout='fill' alt='avatar' />
+            <Avatar user={contact} />
           </div>
           <h3 className='chat-header-name'>{contact.name}</h3>
         </div>
