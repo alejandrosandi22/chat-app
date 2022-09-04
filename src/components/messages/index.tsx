@@ -28,6 +28,7 @@ export default function Messages() {
             justify-content: center;
             width: 100%;
             height: calc(100% - 70px);
+            background: var(--background);
             a {
               background: none;
               border: 1px solid var(--primary-font-color);

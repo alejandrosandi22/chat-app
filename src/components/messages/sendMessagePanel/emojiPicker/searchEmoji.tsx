@@ -79,7 +79,7 @@ export default function SearchEmoji({
             height: 100%;
             border: none;
             outline: none;
-            background: var(--primary);
+            background: var(--background);
             color: var(--primary-font-color);
             font-size: 1rem;
             border: 1px solid transparent;

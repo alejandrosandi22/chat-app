@@ -51,15 +51,11 @@ export default function Message({ message }: { message: MessageType }) {
           </div>
         )}
         {message.type === 'file' && (
-          <a href={message.content} download>
-            {message.content}
-          </a>
-        )}
-        {message.type === 'location' && (
-          <a href={message.content}>{message.content}</a>
-        )}
-        {message.type === 'contact' && (
-          <a href={message.content}>{message.content}</a>
+          <div className='message-content message-file-content'>
+            <a href={message.content} download>
+              <i className='fa fa-download' />
+            </a>
+          </div>
         )}
         {message.type === 'sticker' && (
           <div className='message-content message-sticker-content'>
@@ -91,6 +87,8 @@ export default function Message({ message }: { message: MessageType }) {
             justify-self: center;
           }
           .message-content {
+            position: relative;
+            z-index: 0;
             grid-area: content;
             padding: 10px;
           }
@@ -145,6 +143,10 @@ export default function Message({ message }: { message: MessageType }) {
             background: var(--secondary);
             border-radius: 15px 0 15px 15px;
           }
+          .message-file-content {
+            background: var(--secondary);
+            border-radius: 15px 0 15px 15px;
+          }
         }
         .receiver {
           grid-template-columns: 20% 80%;
@@ -181,6 +183,12 @@ export default function Message({ message }: { message: MessageType }) {
           .message-time-wrapper {
             display: flex;
             justify-content: flex-end;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .message {
+            width: 90%;
           }
         }
 

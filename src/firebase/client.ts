@@ -19,11 +19,16 @@ const app = firebase.initializeApp(firebaseConfig);
 const storage = getStorage(app);
 
 interface FileUpload {
+  setProgress?: (progress: number) => void;
   file: File;
   fileName: string;
 }
 
-export const uploadFile = async ({ file, fileName }: FileUpload) => {
+export const uploadFile = async ({
+  file,
+  fileName,
+  setProgress,
+}: FileUpload) => {
   if (!file) return;
   let url = '';
 
@@ -34,9 +39,11 @@ export const uploadFile = async ({ file, fileName }: FileUpload) => {
     uploadTask.on(
       'state_changed',
       (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
+        if (setProgress) {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setProgress(progress);
+        }
       },
       () => req(new Error('Upload Filed')),
       () => {
