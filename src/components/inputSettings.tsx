@@ -49,12 +49,8 @@ export default function InputSettings({
   };
   return (
     <>
-      <form
-        id={type}
-        onSubmit={handleSubmit}
-        className='settings-content-wrapper'
-      >
-        <div className='settings-content-text'>
+      <form id={type} onSubmit={handleSubmit} className='settings-form'>
+        <div className='settings-form-text'>
           <span className='settings-content-title settings-content-profile-information-title'>
             {type}
           </span>
@@ -65,8 +61,8 @@ export default function InputSettings({
           <input
             type='text'
             disabled={disabledInput[type]}
-            className={`settings-content-input ${
-              !disabledInput[type] ? 'settings-content-input-enable' : ''
+            className={`settings-form-input ${
+              !disabledInput[type] ? 'settings-form-input-enable' : ''
             }`}
             value={user[type]}
             onChange={(e) => {
@@ -109,14 +105,14 @@ export default function InputSettings({
         )}
       </form>
       <style jsx>{`
-        .settings-content-wrapper {
+        .settings-form {
           display: flex;
           justify-content: space-between;
           align-items: center;
           padding: 0 32px;
           height: 50px;
           border-bottom: 1px solid var(--primary);
-          .settings-content-text {
+          .settings-form-text {
             .settings-content-title {
               font-size: 16px;
               font-weight: normal;
@@ -133,7 +129,7 @@ export default function InputSettings({
               color: var(--secondary-font-color);
             }
           }
-          .settings-content-input {
+          .settings-form-input {
             border: none;
             width: 300px;
             height: 30px;
@@ -147,7 +143,7 @@ export default function InputSettings({
             text-align: center;
             text-overflow: ellipsis;
           }
-          .settings-content-input-enable {
+          .settings-form-input-enable {
             background: var(--background);
           }
           .settings-loading {
@@ -182,6 +178,14 @@ export default function InputSettings({
               &:hover {
                 background: var(--secondary);
               }
+            }
+          }
+        }
+
+        @media (max-width: 768px) {
+          .settings-form {
+            .settings-form-text {
+              display: none;
             }
           }
         }

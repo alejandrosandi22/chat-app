@@ -27,8 +27,12 @@ export default function UsersProfile() {
     <>
       <AppLayout title={`Chat App | ${user.name}`}>
         <div className='profile'>
-          <Nav user={currentUser} />
-          <Profile user={user} />
+          <div className='profile-nav-wrapper'>
+            <Nav user={currentUser} />
+          </div>
+          <div className='profile-main-wrapper'>
+            <Profile user={user} />
+          </div>
         </div>
       </AppLayout>
       <style jsx>{`
@@ -40,12 +44,42 @@ export default function UsersProfile() {
           height: 100%;
           background: var(--primary);
           display: flex;
-          .profile-wrapper {
+          .profile-nav-wrapper {
+            position: relative;
+            width: 5%;
+            height: 100%;
+          }
+          .profile-main-wrapper {
             position: relative;
             width: 100%;
             height: 100%;
             background: var(--background);
             overflow-y: auto;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .profile {
+            overflow: hidden;
+            display: grid;
+            grid-template-columns: 100%;
+            grid-template-rows: calc(100% - 70px) 70px;
+            grid-template-areas:
+              'main'
+              'nav';
+            .profile-nav-wrapper {
+              grid-area: nav;
+              width: 100%;
+              height: 100%;
+              min-height: 70px;
+            }
+            .profile-main-wrapper {
+              grid-area: main;
+              width: 100%;
+              height: 100%;
+              overflow-y: auto;
+              overflow-x: hidden;
+            }
           }
         }
       `}</style>

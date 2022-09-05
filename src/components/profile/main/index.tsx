@@ -66,8 +66,8 @@ export default function Main({ user }: MainProps) {
       <style jsx>{`
         .profile-main {
           background: var(--primary);
-          width: 1000px;
-          margin: 175px auto 50px auto;
+          width: 80%;
+          margin: 100px auto 50px auto;
           border-radius: 5px;
           display: flex;
           .profile-main-info,
@@ -135,6 +135,23 @@ export default function Main({ user }: MainProps) {
               overflow-y: hidden;
               gap: 20px;
               padding: 0 14px;
+            }
+          }
+        }
+
+        @media (max-width: 768px) {
+          .profile-main {
+            display: flex;
+            flex-direction: column;
+            width: 95%;
+            .profile-main-info,
+            .profile-main-contacts {
+              height: 400px;
+              width: 100%;
+            }
+            .profile-main-info {
+              border: none;
+              border-bottom: 1px solid var(--secondary);
             }
           }
         }

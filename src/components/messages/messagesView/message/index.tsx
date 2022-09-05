@@ -36,6 +36,7 @@ export default function Message({ message }: { message: MessageType }) {
             <img
               className='message-image'
               src={message.content}
+              onLoadedData={() => console.log('image loaded')}
               alt='message'
             />
           </div>

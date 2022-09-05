@@ -5,7 +5,7 @@ import Card from './card';
 
 export default function Users() {
   const [users, setUsers] = useState<UserType[]>([]);
-  const { data, setPage, refetch } = useGetAllUsers();
+  const { data, refetch } = useGetAllUsers();
 
   useEffect(() => {
     if (data) setUsers(data);
@@ -26,6 +26,8 @@ export default function Users() {
           display: grid;
           grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
           gap: 20px;
+          place-items: center;
+          align-items: flex-start;
           overflow-y: auto;
         }
       `}</style>

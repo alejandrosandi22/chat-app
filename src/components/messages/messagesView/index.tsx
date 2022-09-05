@@ -84,9 +84,9 @@ export default function MessagesView() {
         .chat-messages-wrapper {
           padding: 0 0 20px 0;
           width: 100%;
-          height: calc(100vh - 150px);
-          min-height: 560px;
+          height: 100%;
           overflow-y: auto;
+          overflow-x: hidden;
           background: var(--background);
           .chat-loading-more-wrapper {
             width: 100%;
@@ -117,6 +117,12 @@ export default function MessagesView() {
                 color: var(--background);
               }
             }
+          }
+        }
+
+        @media (max-width: 768px) {
+          .chat-messages-wrapper {
+            height: 100%;
           }
         }
 

@@ -18,20 +18,24 @@ export function ChatEvents({ currentUser }: { currentUser: UserType }) {
   return (
     <>
       <div className='chat-container'>
-        <Nav
-          toggle={contactsToggle}
-          handleToggle={handleContactsToggle}
-          user={currentUser}
-        />
-        <div className='chat-contacts-wrapper'>
-          <Contacts />
-        </div>
-        <div className='chat-messages-wrapper'>
-          <Messages />
-        </div>
-        <div className='contact-profile-container'>
-          <ContactProfile />
-        </div>
+        <section className='chat-nav-wrapper'>
+          <Nav
+            toggle={contactsToggle}
+            handleToggle={handleContactsToggle}
+            user={currentUser}
+          />
+        </section>
+        <section className='chat-main-wrapper'>
+          <div className='chat-contacts-wrapper'>
+            <Contacts />
+          </div>
+          <div className='chat-messages-wrapper'>
+            <Messages />
+          </div>
+          <div className='contact-profile-container'>
+            <ContactProfile />
+          </div>
+        </section>
       </div>
 
       <style jsx>{`
@@ -42,19 +46,58 @@ export function ChatEvents({ currentUser }: { currentUser: UserType }) {
           display: flex;
           overflow: hidden;
           transition: 0.5s;
-          .chat-contacts-wrapper {
-            width: ${!contactsToggle ? '25%' : '0'};
-            transition: 0.5s;
-          }
-          .chat-messages-wrapper {
-            width: ${!contactsToggle || toggle ? '70%' : '95%'};
+          .chat-nav-wrapper {
+            width: 5%;
             height: 100%;
-            transition: 0.5s;
           }
-          .contact-profile-container {
-            width: ${toggle ? '25%' : '0%'};
-            background: var(--primary);
-            transition: 0.5s;
+          .chat-main-wrapper {
+            display: flex;
+            width: 95%;
+            height: 100%;
+            .chat-contacts-wrapper {
+              width: ${!contactsToggle ? '25%' : '0'};
+              transition: 0.5s;
+            }
+            .chat-messages-wrapper {
+              width: ${!contactsToggle || toggle ? '75%' : '95%'};
+              height: 100%;
+              transition: 0.5s;
+            }
+            .contact-profile-container {
+              width: ${toggle ? '25%' : '0%'};
+              background: var(--primary);
+              transition: 0.5s;
+            }
+          }
+        }
+
+        @media (max-width: 768px) {
+          .chat-container {
+            display: grid;
+            grid-template-columns: 100%;
+            grid-template-rows: calc(100% - 70px) 70px;
+            grid-template-areas:
+              'main'
+              'nav';
+            .chat-nav-wrapper {
+              grid-area: nav;
+              width: 100%;
+              height: 100%;
+              min-height: 70px;
+            }
+            .chat-main-wrapper {
+              grid-area: main;
+              width: 100%;
+              .chat-contacts-wrapper {
+                width: ${!contactsToggle ? '0%' : '100%'};
+              }
+              .chat-messages-wrapper {
+                width: ${!contactsToggle ? '100%' : '0%'};
+              }
+              .contact-profile-container {
+                width: ${!toggle ? '0%' : '0%'};
+              }
+            }
           }
         }
       `}</style>

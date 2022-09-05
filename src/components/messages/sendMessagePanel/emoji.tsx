@@ -11,7 +11,7 @@ export default function Emoji({ setMessage }: EmojiProps) {
 
   return (
     <>
-      <li>
+      <>
         <div
           className={
             openEmojisView ? 'emojis-wrapper-active' : 'emojis-wrapper'
@@ -26,7 +26,7 @@ export default function Emoji({ setMessage }: EmojiProps) {
             <i className='fal fa-smile' />
           )}
         </button>
-      </li>
+      </>
       <style jsx>{`
         .emojis-wrapper,
         .emojis-wrapper-active {
@@ -46,29 +46,26 @@ export default function Emoji({ setMessage }: EmojiProps) {
         .emojis-wrapper-active {
           animation: show 0.15s both;
         }
-        li {
+        button {
           position: relative;
-          button {
-            position: relative;
-            width: 50px;
-            height: 50px;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: var(--secondary-font-color);
-            font-size: 22px;
-            transition: 0.25s;
-            i {
-              width: 100%;
-              height: 100%;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              cursor: pointer;
-            }
-            &:hover {
-              color: var(--primary-font-color);
-            }
+          width: 50px;
+          height: 50px;
+          background: transparent;
+          border: none;
+          outline: none;
+          color: var(--secondary-font-color);
+          font-size: 22px;
+          transition: 0.25s;
+          i {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+          }
+          &:hover {
+            color: var(--primary-font-color);
           }
         }
 

@@ -100,7 +100,7 @@ export default function Nav({
           nav {
             z-index: 50;
             position: relative;
-            width: 5%;
+            width: 100%;
             height: 100%;
             display: flex;
             flex-direction: column;
@@ -188,6 +188,35 @@ export default function Nav({
                   color: var(--secondary-font-color);
                   cursor: pointer;
                 }
+              }
+            }
+          }
+          @media (max-width: 768px) {
+            nav {
+              flex-direction: row;
+              height: 100%;
+              .logo-list {
+                height: 100%;
+                width: 70px;
+              }
+              .nav-links-list {
+                display: flex;
+                flex-direction: row;
+                height: 100%;
+                width: calc(100% - 140px);
+                padding: 0;
+                .nav-links-list-item {
+                  height: 100%;
+                  width: 100px;
+                  margin: 0;
+                  .nav-links-list-link-active {
+                    border-radius: 0 0 15px 15px;
+                  }
+                }
+              }
+              .nav-sign-out-list {
+                height: 100%;
+                width: 70px;
               }
             }
           }

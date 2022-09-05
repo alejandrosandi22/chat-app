@@ -29,7 +29,9 @@ export default function Messages() {
             width: 100%;
             height: calc(100% - 70px);
             background: var(--background);
+            overflow: hidden;
             a {
+              min-width: 186px;
               background: none;
               border: 1px solid var(--primary-font-color);
               color: var(--primary-font-color);
