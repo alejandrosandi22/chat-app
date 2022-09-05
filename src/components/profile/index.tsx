@@ -9,19 +9,8 @@ interface ProfileProps {
 export default function Profile({ user }: ProfileProps) {
   return (
     <>
-      <div>
-        <Header user={user} />
-        <Main user={user} />
-      </div>
-      <style jsx>{`
-        div {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          background: var(--background);
-          overflow-y: auto;
-        }
-      `}</style>
+      <Header user={user} />
+      <Main user={user} />
     </>
   );
 }

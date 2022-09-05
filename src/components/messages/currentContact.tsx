@@ -66,6 +66,14 @@ export default function CurrentContact({ contact }: { contact: UserType }) {
             transform: rotateY(180deg);
           }
         }
+        @media (max-width: 768px) {
+          .chat-header {
+            .chat-header-toggle-button,
+            .chat-header-toggle-button-active {
+              display: none;
+            }
+          }
+        }
       `}</style>
     </>
   );

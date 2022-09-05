@@ -15,7 +15,9 @@ export default function Explore() {
     <>
       <AppLayout title='Chat App | Explore'>
         <div className='explore-container'>
-          <Nav user={{ username: 'denoland' } as UserType} />
+          <div className='explore-nav-wrapper'>
+            <Nav user={{ username: 'denoland' } as UserType} />
+          </div>
           <section>
             <header>
               <div className='explore-search-wrapper'>
@@ -35,6 +37,11 @@ export default function Explore() {
           height: 100%;
           display: flex;
           background: var(--background);
+          .explore-nav-wrapper {
+            width: 5%;
+            min-width: 70px;
+            height: 100%;
+          }
           section {
             display: flex;
             flex-direction: column;
@@ -52,6 +59,31 @@ export default function Explore() {
           main {
             height: calc(100% - 70px);
             overflow: hidden;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .explore-container {
+            display: grid;
+            grid-template-columns: 100%;
+            grid-template-rows: calc(100% - 70px) 70px;
+            grid-template-areas:
+              'main'
+              'nav';
+            .explore-nav-wrapper {
+              grid-area: nav;
+              width: 100%;
+              height: 100%;
+            }
+            section {
+              width: 100%;
+              header {
+                .explore-search-wrapper {
+                  width: 100%;
+                  padding: 0 10px;
+                }
+              }
+            }
           }
         }
       `}</style>

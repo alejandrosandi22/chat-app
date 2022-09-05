@@ -30,7 +30,7 @@ export default function Requests() {
           {requests.find((request) => request.state === false) ? (
             <span className='new-request'></span>
           ) : null}
-          <i className='fal fa-bell'></i>
+          <i className='fal fa-bell' />
         </span>
         {toggle && (
           <ul>
@@ -99,6 +99,24 @@ export default function Requests() {
               align-items: center;
               font-size: 1rem;
               color: var(--primary-font-color);
+            }
+          }
+        }
+
+        @media (max-width: 768px) {
+          li {
+            height: 100%;
+            width: 100px;
+            margin: 0;
+            ul {
+              position: fixed;
+              min-height: 60px;
+              width: 95vw;
+              background: var(--primary);
+              bottom: 85px;
+              left: 0;
+              right: 0;
+              margin: 0 auto;
             }
           }
         }

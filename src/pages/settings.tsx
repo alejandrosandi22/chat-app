@@ -36,7 +36,9 @@ export default function Settings() {
       {modalState && <Modal setModalState={setModalState} />}
       <AppLayout title='Chat App | Settings'>
         <div className='settings'>
-          <Nav user={user} />
+          <section className='settings-nav-wrapper'>
+            <Nav user={user} />
+          </section>
           <div className='settings-container'>
             <div className='settings-wrapper'>
               <div className='settings-header'>
@@ -167,6 +169,11 @@ export default function Settings() {
           height: 100%;
           width: 100%;
           display: flex;
+          overflow: hidden;
+          .settings-nav-wrapper {
+            width: 5%;
+            height: 100%;
+          }
           .settings-container {
             background: var(--background);
             width: 100%;
@@ -251,6 +258,45 @@ export default function Settings() {
                       background: var(--secondary);
                     }
                   }
+                }
+              }
+            }
+          }
+        }
+
+        @media (max-width: 768px) {
+          .settings {
+            display: grid;
+            grid-template-columns: 100%;
+            grid-template-rows: calc(100% - 70px) 70px;
+            grid-template-areas:
+              'main'
+              'nav';
+            .settings-nav-wrapper {
+              grid-area: nav;
+              width: 100%;
+              height: 100%;
+            }
+            .settings-container {
+              grid-area: main;
+              overflow: hidden;
+              .settings-wrapper {
+                margin: 0 0 10px 0;
+                background: var(--background);
+                width: 100%;
+                height: 100%;
+                overflow-y: auto;
+                border: none;
+                .settings-header {
+                  padding: 0 10px;
+                }
+                .settings-content {
+                  .settings-content-wrapper {
+                    padding: 0 10px;
+                  }
+                }
+                .settings-content-subtitle {
+                  display: none;
                 }
               }
             }

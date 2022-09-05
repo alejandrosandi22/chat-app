@@ -72,13 +72,12 @@ export default function Video({ src }: { src: string }) {
         )}
         <video
           onMouseMove={() => setMoveStyle(true)}
-          onClick={() => {
-            handlePlay();
-          }}
+          onClick={handlePlay}
           className='video'
           ref={videoRef}
           onTimeUpdate={(e) => getCurrentDuration(e.currentTarget)}
           onLoadedData={(e) => {
+            console.log('loaded');
             setDuration(Number(e.currentTarget.duration.toFixed(2)));
           }}
           preload='metadata'
