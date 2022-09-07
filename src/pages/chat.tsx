@@ -59,7 +59,7 @@ export function ChatEvents({ currentUser }: { currentUser: UserType }) {
               transition: 0.5s;
             }
             .chat-messages-wrapper {
-              width: ${!contactsToggle || toggle ? '75%' : '95%'};
+              width: ${!contactsToggle || toggle ? '80%' : '100%'};
               height: 100%;
               transition: 0.5s;
             }

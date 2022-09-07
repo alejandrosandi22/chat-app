@@ -8,6 +8,11 @@ declare global {
       PGPORT: number;
       PGUSER: string;
       PGHOST: string;
+      DBHOST: string;
+      DBUSER: string;
+      DBPASSWORD: string;
+      DATABASE: string;
+      DBPORT: number;
       PGDATABASE: string;
       ACCESS_TOKEN_SECRET: string;
       RESET_TOKEN: string;

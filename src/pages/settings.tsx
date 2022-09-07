@@ -6,6 +6,7 @@ import Nav from 'components/nav';
 import { ThemeContext } from 'context/theme';
 import useAuth from 'hooks/auth/useAuth';
 import useUpdateUser from 'hooks/user/useUpdateUser';
+import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
 import { UserType } from 'types';
 
@@ -21,10 +22,11 @@ export default function Settings() {
   const [user, setUser] = useState<UserType>(INTIAL_VALUE as UserType);
   const { currentUser, loading } = useAuth();
   const [modalState, setModalState] = useState<boolean>(false);
-
+  const router = useRouter();
   const { updateUser } = useUpdateUser();
 
   useEffect(() => {
+    if (!currentUser) router.push('/signin');
     if (currentUser) {
       setUser(currentUser);
     }
@@ -86,17 +88,17 @@ export default function Settings() {
                 <div className='settings-content-wrapper'>
                   <div className='settings-content-text'>
                     <span className='settings-content-title'>
-                      Show profile picture
+                      Show profile photo
                     </span>
                     <p className='settings-content-subtitle'>
                       Choose whether to show or hide other members&apos; profile
-                      photos.
+                      photo.
                     </p>
                   </div>
                   <select
                     className='settings-content-select'
-                    name='show-profile-picture'
-                    id='show-profile-picture'
+                    name='show-profile-photo'
+                    id='show-profile-photo'
                     defaultValue={currentUser.show_profile_photo}
                     onChange={(e) =>
                       updateUser({
@@ -113,28 +115,26 @@ export default function Settings() {
                 </div>
                 <div className='settings-content-wrapper'>
                   <div className='settings-content-text'>
-                    <span className='settings-content-title'>
-                      Contact requests
-                    </span>
+                    <span className='settings-content-title'>Show email</span>
                     <p className='settings-content-subtitle'>
-                      Choose who you want to send you contact requests
+                      Choose who you want to see your email
                     </p>
                   </div>
                   <select
                     className='settings-content-select'
-                    name='contacts-requests'
-                    id='contacts-requests'
-                    defaultValue={currentUser.contacts_request}
+                    name='show_email'
+                    id='show_email'
+                    defaultValue={currentUser.show_email}
                     onChange={(e) =>
                       updateUser({
                         variables: {
-                          contactsRequest: e.target.value,
+                          showEmail: e.target.value,
                         },
                       })
                     }
                   >
-                    <option value='public'>Everybody</option>
-                    <option value='contacts'>Contacts of contacts</option>
+                    <option value='everybody'>Everybody</option>
+                    <option value='contacts'>Contacts</option>
                   </select>
                 </div>
               </div>

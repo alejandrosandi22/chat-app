@@ -20,6 +20,7 @@
     "jsonwebtoken": "8.5.1",
     "micro-cors": "0.1.1",
     "moment": "2.29.4",
+    "mysql2": "2.3.3",
     "next": "12.2.2",
     "passport": "0.6.0",
     "passport-facebook": "3.0.0",
@@ -28,7 +29,8 @@
     "pg": "8.7.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-redux": "8.0.2"
+    "react-redux": "8.0.2",
+    "uuid": "9.0.0"
   },
   "devDependencies": {
     "@styled-jsx/plugin-sass": "^4.0.2",
@@ -44,6 +46,7 @@
     "@types/pg": "8.6.5",
     "@types/react": "18.0.15",
     "@types/react-dom": "18.0.6",
+    "@types/uuid": "8.3.4",
     "@types/ws": "^8.5.3",
     "@typescript-eslint/eslint-plugin": "5.30.7",
     "@typescript-eslint/parser": "5.30.7",

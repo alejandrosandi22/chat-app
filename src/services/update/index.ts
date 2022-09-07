@@ -29,7 +29,7 @@ const handleUpdate = async ({
       if (user.username !== '' && user.username !== currentData.username) {
         await updateUser({
           variables: {
-            name: user.username,
+            username: user.username,
           },
         });
       }
@@ -42,7 +42,7 @@ const handleUpdate = async ({
       ) {
         await updateUser({
           variables: {
-            name: user.description,
+            description: user.description,
           },
         });
       }
@@ -52,7 +52,7 @@ const handleUpdate = async ({
       if (user.website !== '' && user.website !== currentData.website) {
         await updateUser({
           variables: {
-            name: user.website,
+            website: user.website,
           },
         });
       }

@@ -12,7 +12,7 @@ export const USER_DETAILS = gql`
     description
     provider
     show_profile_photo
-    contacts_request
+    show_email
     contacts
     created_at
     updated_at

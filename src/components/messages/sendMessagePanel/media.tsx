@@ -1,8 +1,8 @@
 import { uploadFile } from '../../../firebase/client';
 import { useAppSelector } from 'hooks';
 import useSendMessage from 'hooks/messages/useSendMessage';
-import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
 import { useState } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
 interface MediaProps {
   setIsLoading: (isLoading: boolean) => void;
@@ -12,7 +12,6 @@ interface MediaProps {
 export default function Media({ setIsLoading, setProgress }: MediaProps) {
   const [media, setMedia] = useState<boolean>(false);
   const { contact } = useAppSelector((state) => state.selectContact);
-  const { currentUser } = useGetCurrentUser();
   const { sendMessage } = useSendMessage();
 
   const handleSendImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +29,7 @@ export default function Media({ setIsLoading, setProgress }: MediaProps) {
     await uploadFile({
       setProgress,
       file,
-      fileName: `/images/${currentUser.username}-${file.name}`,
+      fileName: `/images/${uuidv4()}`,
     }).then((res) => {
       sendMessage({
         onCompleted: () => {
@@ -60,7 +59,7 @@ export default function Media({ setIsLoading, setProgress }: MediaProps) {
     await uploadFile({
       setProgress,
       file,
-      fileName: `/video/${currentUser.username}-${file.name}`,
+      fileName: `/video/${uuidv4()}`,
     }).then((res) => {
       sendMessage({
         onCompleted: () => {
@@ -77,7 +76,7 @@ export default function Media({ setIsLoading, setProgress }: MediaProps) {
 
   return (
     <>
-      <li className='media-list-item'>
+      <div className='media-list-item'>
         <button
           className='media-list-item-toggle'
           onClick={() => setMedia(!media)}
@@ -114,7 +113,7 @@ export default function Media({ setIsLoading, setProgress }: MediaProps) {
             </li>
           </ul>
         )}
-      </li>
+      </div>
       <style jsx>{`
         .media-list-item {
           position: relative;

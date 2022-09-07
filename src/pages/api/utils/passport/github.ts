@@ -20,11 +20,11 @@ passport.use(
       cb: any
     ) {
       try {
-        const getUser = await pool.query(
-          `SELECT * FROM users WHERE email = '${profile.emails[0].value}'`
+        const getUser: any = await pool.query(
+          `SELECT * FROM users WHERE email = '${profile.emails[0].value}';`
         );
 
-        const user = getUser.rows[0] || null;
+        const user = getUser[0][0] || null;
 
         if (user) {
           if (user.provider === 'github') {
@@ -50,13 +50,13 @@ passport.use(
           web: profile._json.blog ? `'${profile._json.blog}'` : null,
         };
 
-        const newUser = await pool.query(
+        const newUser: any = await pool.query(
           `INSERT INTO users (id, name, email, username, password, avatar, cover_photo, description, website, provider, show_profile_photo, contacts_request, contacts, created_at, updated_at)
-        VALUES (default, '${newUserData.name}', '${newUserData.email}', '${newUserData.username}', null, '${newUserData.avatar}', null, ${newUserData.description}, ${newUserData.web}, '${newUserData.provider}' ,default, default, '{}', default, default) RETURNING *`
+        VALUES (default, '${newUserData.name}', '${newUserData.email}', '${newUserData.username}', null, '${newUserData.avatar}', null, ${newUserData.description}, ${newUserData.web}, '${newUserData.provider}' ,default, default, '{}', default, default);`
         );
 
         const token = jwt.sign(
-          { id: newUser.rows[0].id },
+          { id: newUser[0].insertId },
           process.env.ACCESS_TOKEN_SECRET,
           {
             expiresIn: '8d',

@@ -32,7 +32,7 @@ export default function InputSettings({
 
   useEffect(() => {
     setCurrentData(user);
-  }, [user]);
+  }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

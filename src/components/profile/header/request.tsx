@@ -16,17 +16,13 @@ export default function Request({ id, name }: { id: number; name: string }) {
           align-items: center;
           justify-content: center;
           button {
-            pointer-events: all;
-            background: var(--background);
-            color: var(--primary-font-color);
-            border: 1px solid var(--primary-font-color);
-            font-size: 16px;
-            border-radius: 5px;
             padding: 10px 12px;
-            font-weight: normal;
+            font-size: 16px;
+            border: 1px solid var(--secondary);
+            background: transparent;
+            color: var(--primary-font-color);
             &:hover {
-              color: var(--background);
-              background: var(--primary-font-color);
+              background: var(--secondary);
             }
           }
         }

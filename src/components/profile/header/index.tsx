@@ -1,12 +1,13 @@
 import { uploadFile } from '../../../firebase/client';
 import useUpdateUser from 'hooks/user/useUpdateUser';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { RequestType, UserType } from 'types';
 import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
 import Avatar from 'components/avatar';
 import useReceiveRequest from 'hooks/requests/useReceiveRequests';
 import CoverPhoto from './coverPhoto';
 import Request from './request';
+import ResponseRequest from 'components/requests/responseRequest';
 
 interface HeaderProps {
   user: UserType;
@@ -14,9 +15,18 @@ interface HeaderProps {
 
 export default function Header({ user }: HeaderProps) {
   const [avatar, setAvatar] = useState<string>(user.avatar);
+  const [activeRequest, setActiveRequest] = useState<RequestType[]>([]);
   const { currentUser } = useGetCurrentUser();
   const { updateUser } = useUpdateUser();
   const { requests } = useReceiveRequest<RequestType[]>(user.id);
+
+  useEffect(() => {
+    if (!requests || !requests.length) return;
+    const unansweredRequests = requests.filter(
+      (request) => request.response === null
+    );
+    setActiveRequest(unansweredRequests);
+  }, [requests]);
 
   const handleUpdateAvatar = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
@@ -71,11 +81,26 @@ export default function Header({ user }: HeaderProps) {
           </div>
           <div className='profile-header-request-wrapper'>
             {currentUser.id !== user.id &&
-            !user.contacts.includes(currentUser.id) &&
-            requests &&
-            !requests.filter((request) => request.response === null).length ? (
-              <Request id={user.id} name={currentUser.name} />
-            ) : null}
+              requests &&
+              !user.contacts.includes(currentUser.id) && (
+                <>
+                  {!activeRequest.length ? (
+                    <Request id={user.id} name={currentUser.name} />
+                  ) : (
+                    <div className='profile-header-sended-request'>
+                      {requests.filter(
+                        (request) => request.sender === currentUser.id
+                      ).length ? (
+                        <p>
+                          Sended <i className='fal fa-check-circle' />
+                        </p>
+                      ) : (
+                        <ResponseRequest request={activeRequest[0]} />
+                      )}
+                    </div>
+                  )}
+                </>
+              )}
           </div>
         </section>
       </header>
@@ -143,6 +168,7 @@ export default function Header({ user }: HeaderProps) {
               h1 {
                 font-size: 50px;
                 font-weight: normal;
+                white-space: nowrap;
                 color: var(--primary-font-color);
               }
               h2 {
@@ -157,6 +183,16 @@ export default function Header({ user }: HeaderProps) {
             .profile-header-request-wrapper {
               width: 200px;
               height: 100%;
+              .profile-header-sended-request {
+                width: 100%;
+                height: 100%;
+                display: grid;
+                place-items: center;
+                p {
+                  font-size: 18px;
+                  color: var(--primary-font-color);
+                }
+              }
             }
           }
         }
