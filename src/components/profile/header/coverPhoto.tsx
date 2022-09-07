@@ -70,7 +70,7 @@ export default function CoverPhoto({ user, currentUser }: CoverPhotoProps) {
             </button>
           </span>
         )}
-        <img src={coverPhoto ?? ''} alt='cover-photo' />
+        {coverPhoto && <img src={coverPhoto} alt='cover-photo' />}
       </section>
       <style jsx>{`
         section {

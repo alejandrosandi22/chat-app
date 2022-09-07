@@ -20,6 +20,7 @@ type UserType = {
   description?: string;
   website: string;
   show_profile_photo?: string;
+  show_email: string;
   contacts_request?: string;
   lastMessage?: MessageType;
   contacts: number[];

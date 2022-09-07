@@ -1,7 +1,7 @@
 import { useAppSelector } from 'hooks';
 import useSendMessage from 'hooks/messages/useSendMessage';
-import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
 import { uploadFile } from '../../../firebase/client';
+import { v4 as uuidv4 } from 'uuid';
 
 interface SendAudioProps {
   setIsLoading: (isLoading: boolean) => void;
@@ -12,7 +12,6 @@ export default function SendAudio({
   setIsLoading,
   setProgress,
 }: SendAudioProps) {
-  const { currentUser } = useGetCurrentUser();
   const { sendMessage } = useSendMessage();
   const { contact } = useAppSelector((state) => state.selectContact);
 
@@ -30,7 +29,7 @@ export default function SendAudio({
     await uploadFile({
       setProgress,
       file,
-      fileName: `/audio/${currentUser.username}-${file.name}`,
+      fileName: `/audio/${uuidv4}`,
     }).then((res) => {
       sendMessage({
         onCompleted: () => {

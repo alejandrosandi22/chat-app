@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import jwt from 'jsonwebtoken';
@@ -18,13 +19,13 @@ passport.use(
     },
     async function (_accessToken, _refreshToken, profile, cb) {
       try {
-        const getUser = await pool.query(
+        const getUser: any = await pool.query(
           `SELECT * FROM users WHERE email = '${
             profile.emails && profile.emails[0].value
           }'`
         );
 
-        const user = getUser.rows[0] || null;
+        const user = getUser[0][0] || null;
 
         if (user) {
           if (user.provider === 'google') {
@@ -45,13 +46,13 @@ passport.use(
           provider: 'google',
         };
 
-        const newUser = await pool.query(
+        const newUser: any = await pool.query(
           `INSERT INTO users (id, name, email, username, password, avatar, cover_photo, description, website, provider, show_profile_photo, contacts_request, contacts, created_at, updated_at)
-        VALUES (default, '${newUserData.name}', '${newUserData.email}', '${newUserData.username}', null, '${newUserData.avatar}', null, null, null, '${newUserData.provider}' ,default, default, '{}', default, default) RETURNING *`
+        VALUES (default, '${newUserData.name}', '${newUserData.email}', '${newUserData.username}', null, '${newUserData.avatar}', null, null, null, '${newUserData.provider}' ,default, default, '{}', default, default);`
         );
 
         const token = jwt.sign(
-          { id: newUser.rows[0].id },
+          { id: newUser[0].insertId },
           process.env.ACCESS_TOKEN_SECRET
         );
         return cb(null, newUser, { message: 'Sign in successful', token });

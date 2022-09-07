@@ -4,7 +4,13 @@ import Message from './message';
 import moment from 'moment';
 import { useGetMessages } from 'hooks/messages/useGetMessages';
 
-export function MessagesList({ messages }: { messages: MessageType[] }) {
+export function MessagesList({
+  messages,
+  handleScroll,
+}: {
+  messages: MessageType[];
+  handleScroll: () => void;
+}) {
   return (
     <>
       {messages.length > 0 &&
@@ -21,7 +27,7 @@ export function MessagesList({ messages }: { messages: MessageType[] }) {
                   })}
                 </h3>
               )}
-              <Message message={message} />
+              <Message message={message} handleScroll={handleScroll} />
             </div>
           );
         })}
@@ -49,19 +55,35 @@ export function MessagesList({ messages }: { messages: MessageType[] }) {
 
 export default function MessagesView() {
   const chatRef = useRef<HTMLElement>(null);
-  const { messages, loadMore, loadMoreMessages, loadingMore, loading } =
-    useGetMessages();
+  const {
+    messages,
+    loadMore,
+    loadMoreMessages,
+    loadingMore,
+    loading,
+    setLoadMore,
+  } = useGetMessages();
+
+  const handleScroll = () => {
+    if (!chatRef.current || loadMore) return;
+    chatRef.current.scrollTo({
+      left: 0,
+      top: chatRef.current.scrollHeight,
+      behavior: 'smooth',
+    });
+  };
 
   useEffect(() => {
     if (!chatRef.current) return;
 
-    if (!loadMore) {
-      chatRef.current.scrollTo({
-        left: 0,
-        top: chatRef.current.scrollHeight,
-        behavior: 'smooth',
-      });
-    }
+    chatRef.current.addEventListener('scroll', () => {
+      if (loadMore) setLoadMore(false);
+    });
+  }, [chatRef]);
+
+  useEffect(() => {
+    if (!chatRef.current) return;
+    handleScroll();
   }, [messages]);
 
   return (
@@ -78,7 +100,7 @@ export default function MessagesView() {
             </>
           )}
         </div>
-        <MessagesList messages={messages} />
+        <MessagesList messages={messages} handleScroll={handleScroll} />
       </main>
       <style jsx>{`
         .chat-messages-wrapper {

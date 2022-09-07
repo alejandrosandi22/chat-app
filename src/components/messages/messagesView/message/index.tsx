@@ -7,7 +7,13 @@ import useGetCurrentUser from 'hooks/user/useGetCurrentUser';
 import { useAppSelector } from 'hooks';
 import Avatar from 'components/avatar';
 
-export default function Message({ message }: { message: MessageType }) {
+export default function Message({
+  message,
+  handleScroll,
+}: {
+  message: MessageType;
+  handleScroll: () => void;
+}) {
   const { contact } = useAppSelector((state) => state.selectContact);
   const { currentUser } = useGetCurrentUser();
 
@@ -36,19 +42,19 @@ export default function Message({ message }: { message: MessageType }) {
             <img
               className='message-image'
               src={message.content}
-              onLoadedData={() => console.log('image loaded')}
+              onLoad={() => handleScroll()}
               alt='message'
             />
           </div>
         )}
         {message.type === 'video' && (
           <div className='message-content message-video-content'>
-            <Video src={message.content} />
+            <Video src={message.content} handleScroll={handleScroll} />
           </div>
         )}
         {message.type === 'audio' && (
           <div className='message-content message-audio-content'>
-            <Audio src={message.content} />
+            <Audio src={message.content} handleScroll={handleScroll} />
           </div>
         )}
         {message.type === 'file' && (

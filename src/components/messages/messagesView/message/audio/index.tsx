@@ -3,7 +3,13 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import ControlPanel from './controls/controlPanel';
 import Slider from './slider';
 
-export default function Audio({ src }: { src: string }) {
+export default function Audio({
+  src,
+  handleScroll,
+}: {
+  src: string;
+  handleScroll: () => void;
+}) {
   const [percentage, setPercentage] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState<number>(0);
@@ -72,6 +78,7 @@ export default function Audio({ src }: { src: string }) {
           ref={audioRef}
           onTimeUpdate={(e) => getCurrentDuration(e.currentTarget)}
           onLoadedData={(e) => {
+            handleScroll();
             setDuration(Number(e.currentTarget.duration.toFixed(2)));
           }}
           src={src}

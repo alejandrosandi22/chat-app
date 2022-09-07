@@ -57,7 +57,6 @@ export function useGetMessages() {
       }).then((res) => {
         if (loadMore) {
           dispatch(setMessages(res.data.getMessages.concat(messages)));
-          setLoadMore(false);
           setLoadingMore(false);
         }
       });
@@ -75,6 +74,7 @@ export function useGetMessages() {
     error,
     loadMore,
     loadingMore,
+    setLoadMore,
     loadMoreMessages,
   };
 }

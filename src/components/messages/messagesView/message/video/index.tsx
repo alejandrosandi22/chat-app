@@ -2,7 +2,13 @@ import Slider from 'components/messages/messagesView/message/audio/slider';
 import useCalculateTime from 'hooks/useCalculateTime';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 
-export default function Video({ src }: { src: string }) {
+export default function Video({
+  src,
+  handleScroll,
+}: {
+  src: string;
+  handleScroll: () => void;
+}) {
   const [percentage, setPercentage] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState<number>(0);
@@ -77,7 +83,7 @@ export default function Video({ src }: { src: string }) {
           ref={videoRef}
           onTimeUpdate={(e) => getCurrentDuration(e.currentTarget)}
           onLoadedData={(e) => {
-            console.log('loaded');
+            handleScroll();
             setDuration(Number(e.currentTarget.duration.toFixed(2)));
           }}
           preload='metadata'

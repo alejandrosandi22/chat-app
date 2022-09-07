@@ -69,7 +69,7 @@ export const UPDATE_USER = gql`
     $website: String
     $description: String
     $showProfilePhoto: String
-    $contactsRequest: String
+    $showEmail: String
     $contacts: [Int]
   ) {
     updateUser(
@@ -81,7 +81,7 @@ export const UPDATE_USER = gql`
       website: $website
       description: $description
       show_profile_photo: $showProfilePhoto
-      contacts_request: $contactsRequest
+      show_email: $showEmail
       contacts: $contacts
     ) {
       ...UserDetails
